@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="src/Demo/Demo.fsproj" Id="de3cace0-c09f-499a-8788-a3daabd98b08" />
+  <Project Path="src/WinUI.Elmish.SourceGenerator/WinUI.Elmish.SourceGenerator.fsproj" Id="e5c96b4f-795e-4641-8232-aa46322e86b0" />
+  <Project Path="src/WinUI.Elmish/WinUI.Elmish.fsproj" Id="35138965-6229-4405-b2bd-f3da269d66fe" />
+</Solution>

@@ -1,0 +1,251 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net11.0-windows10.0.26100.0</TargetFramework>
+
+		<SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+
+		<PlatformTarget>x64</PlatformTarget>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<Platforms>x64;AnyCPU</Platforms>
+
+		<WindowsPackageType>None</WindowsPackageType>
+
+		<WindowsAppSDKBootstrapInitialize>false</WindowsAppSDKBootstrapInitialize>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="IdGenerator.fs" />
+		<Compile Include="VirtualElements.fs" />
+		<Compile Include="EventSubscriptions.fs" />
+		<Compile Include="Diff.fs" />
+		<Compile Include="Reconciler.fs" />
+		<Compile Include="Patcher.fs" />
+		<Compile Include="View\_Common.fs" />
+		<Compile Include="View\Window.fs" />
+
+		<Compile Include="View\_UIElement.fs" />
+		<Compile Include="View/FrameworkElement/_FrameworkElement.fs" />
+		<Compile Include="View/FrameworkElement/AnimatedVisualPlayer.fs" />
+		<Compile Include="View/FrameworkElement/Border.fs" />
+		<Compile Include="View/FrameworkElement/ContentPresenter/ContentPresenter.fs" />
+		<Compile Include="View/FrameworkElement/ContentPresenter/GridViewItemPresenter.fs" />
+		<Compile Include="View/FrameworkElement/ContentPresenter/ListViewItemPresenter/ListViewItemPresenter.fs" />
+		<Compile Include="View/FrameworkElement/ContentPresenter/ListViewItemPresenter/RevealListViewItemPresenter.fs" />
+		<Compile Include="View/FrameworkElement/ContentPresenter/ScrollContentPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/_Control.fs" />
+		<Compile Include="View/FrameworkElement/Control/AnnotatedScrollBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/AppBarSeparator.fs" />
+		<Compile Include="View/FrameworkElement/Control/BreadcrumbBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/CalendarDatePicker.fs" />
+		<Compile Include="View/FrameworkElement/Control/CalendarView.fs" />
+		<Compile Include="View/FrameworkElement/Control/CalendarViewDayItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/Chart.fs" />
+		<Compile Include="View/FrameworkElement/Control/ColorPicker.fs" />
+		<Compile Include="View/FrameworkElement/Control/ColorSpectrum.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ContentControl.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/AppBar/AppBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/AppBar/CommandBar/CommandBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/AppBar/CommandBar/CommandBarFlyoutCommandBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/AppBarElementContainer.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/BreadcrumbBarItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/_ButtonBase.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/Button/Button.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/Button/AppBarButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/Button/DropDownButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/HyperlinkButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/InkToolbarFlyoutItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/RepeatButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/ToggleButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/AppBarToggleButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/CheckBox/CheckBox.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/CheckBox/InkToolbarToggleButton/_InkToolbarToggleButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/CheckBox/InkToolbarToggleButton/InkToolbarCustomToggleButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/CheckBox/InkToolbarToggleButton/InkToolbarRulerButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/InkToolbarMenuButton/_InkToolbarMenuButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/InkToolbarMenuButton/InkToolbarStencilButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/RadioButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/InkToolbarToolButton/_InkToolbarToolButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/InkToolbarToolButton/InkToolbarCustomToolButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/InkToolbarToolButton/InkToolbarEraserButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/InkToolbarToolButton/InkToolbarPenButton/_InkToolbarPenButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/InkToolbarToolButton/InkToolbarPenButton/InkToolbarBallpointPenButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/InkToolbarToolButton/InkToolbarPenButton/InkToolbarCustomPenButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/InkToolbarToolButton/InkToolbarPenButton/InkToolbarHighlighterButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ButtonBase/ToggleButton/RadioButton/InkToolbarToolButton/InkToolbarPenButton/InkToolbarPencilButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ContentDialog.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/Expander.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/FlyoutPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/Frame.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/GroupItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ListViewBaseHeaderItem/_ListViewBaseHeaderItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ListViewBaseHeaderItem/GridViewHeaderItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ListViewBaseHeaderItem/ListViewHeaderItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/_LoopingSelectorItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/NavigationView.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/NavigationViewItemBase/_NavigationViewItemBase.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/NavigationViewItemBase/NavigationViewItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/NavigationViewItemBase/NavigationViewItemHeader.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/NavigationViewItemBase/NavigationViewItemSeparator.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/NavigationViewItemPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/_PickerFlyoutPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/PivotHeaderItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/PivotItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/RefreshContainer.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ScrollViewer.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SelectorItem/_SelectorItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SelectorItem/ComboBoxItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SelectorItem/FlipViewItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SelectorItem/GridViewItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SelectorItem/ListBoxItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SelectorItem/ListViewItem/ListViewItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SelectorItem/ListViewItem/TabViewItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SelectorItem/ListViewItem/TreeViewItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SplitButton/SplitButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SplitButton/ToggleSplitButton.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/SwipeControl.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/TableViewGroupHeader.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/TeachingTip.fs" />
+		<Compile Include="View/FrameworkElement/Control/ContentControl/ToolTip.fs" />
+		<Compile Include="View/FrameworkElement/Control/DatePicker.fs" />
+		<Compile Include="View/FrameworkElement/Control/_DatePickerFlyoutPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/Hub.fs" />
+		<Compile Include="View/FrameworkElement/Control/HubSection.fs" />
+		<Compile Include="View/FrameworkElement/Control/InfoBadge.fs" />
+		<Compile Include="View/FrameworkElement/Control/InfoBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/InkToolbar.fs" />
+		<Compile Include="View/FrameworkElement/Control/InkToolbarPenConfigurationControl.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemContainer/ItemContainer.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemContainer/SelectorBarItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/ItemsControl.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/AutoSuggestBox.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/CommandBarOverflowPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/MenuFlyoutPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Pivot.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/_Selector.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/ComboBox.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/FlipView.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/ListBox.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/ListViewBase/_ListViewBase.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/ListViewBase/GridView.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/ListViewBase/ListView/ListView.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/ListViewBase/ListView/TabViewListView.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsControl/Selector/ListViewBase/ListView/TreeViewList.fs" />
+		<Compile Include="View/FrameworkElement/Control/ItemsView.fs" />
+		<Compile Include="View/FrameworkElement/Control/_ListPickerFlyoutPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/_LoopingSelector.fs" />
+		<Compile Include="View/FrameworkElement/Control/MapControl.fs" />
+		<Compile Include="View/FrameworkElement/Control/MediaPlayerElement.fs" />
+		<Compile Include="View/FrameworkElement/Control/MediaTransportControls.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuBarItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuFlyoutItemBase/_MenuFlyoutItemBase.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuFlyoutItemBase/MenuFlyoutItem/MenuFlyoutItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuFlyoutItemBase/MenuFlyoutItem/RadioMenuFlyoutItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuFlyoutItemBase/MenuFlyoutItem/SplitMenuFlyoutItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuFlyoutItemBase/MenuFlyoutItem/ToggleMenuFlyoutItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuFlyoutItemBase/MenuFlyoutSeparator.fs" />
+		<Compile Include="View/FrameworkElement/Control/MenuFlyoutItemBase/MenuFlyoutSubItem.fs" />
+		<Compile Include="View/FrameworkElement/Control/NumberBox.fs" />
+		<Compile Include="View/FrameworkElement/Control/PagerControl.fs" />
+		<Compile Include="View/FrameworkElement/Control/PasswordBox.fs" />
+		<Compile Include="View/FrameworkElement/Control/PersonPicture.fs" />
+		<Compile Include="View/FrameworkElement/Control/PipsPager.fs" />
+		<Compile Include="View/FrameworkElement/Control/ProgressRing.fs" />
+		<Compile Include="View/FrameworkElement/Control/RadioButtons.fs" />
+		<Compile Include="View/FrameworkElement/Control/RangeBase/_RangeBase.fs" />
+		<Compile Include="View/FrameworkElement/Control/RangeBase/ProgressBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/RangeBase/ScrollBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/RangeBase/Slider/Slider.fs" />
+		<Compile Include="View/FrameworkElement/Control/RangeBase/Slider/ColorPickerSlider.fs" />
+		<Compile Include="View/FrameworkElement/Control/RangeBase/Slider/InkToolbarStrokeWidthSlider.fs" />
+		<Compile Include="View/FrameworkElement/Control/RatingControl.fs" />
+		<Compile Include="View/FrameworkElement/Control/RefreshVisualizer.fs" />
+		<Compile Include="View/FrameworkElement/Control/RichEditBox.fs" />
+		<Compile Include="View/FrameworkElement/Control/ScrollView.fs" />
+		<Compile Include="View/FrameworkElement/Control/SelectorBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/SemanticZoom.fs" />
+		<Compile Include="View/FrameworkElement/Control/SplitView.fs" />
+		<Compile Include="View/FrameworkElement/Control/TableView.fs" />
+		<Compile Include="View/FrameworkElement/Control/TableViewRow.fs" />
+		<Compile Include="View/FrameworkElement/Control/TabView.fs" />
+		<Compile Include="View/FrameworkElement/Control/TextBox.fs" />
+		<Compile Include="View/FrameworkElement/Control/Thumb.fs" />
+		<Compile Include="View/FrameworkElement/Control/TimePicker.fs" />
+		<Compile Include="View/FrameworkElement/Control/_TimePickerFlyoutPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Control/TitleBar.fs" />
+		<Compile Include="View/FrameworkElement/Control/ToggleSwitch.fs" />
+		<Compile Include="View/FrameworkElement/Control/TreeView.fs" />
+		<Compile Include="View/FrameworkElement/Control/TwoPaneView.fs" />
+		<Compile Include="View/FrameworkElement/Control/UserControl/UserControl.fs" />
+		<Compile Include="View/FrameworkElement/Control/UserControl/Page.fs" />
+		<Compile Include="View/FrameworkElement/Glyphs.fs" />
+		<Compile Include="View/FrameworkElement/IconElement/_IconElement.fs" />
+		<Compile Include="View/FrameworkElement/IconElement/AnimatedIcon.fs" />
+		<Compile Include="View/FrameworkElement/IconElement/BitmapIcon.fs" />
+		<Compile Include="View/FrameworkElement/IconElement/FontIcon.fs" />
+		<Compile Include="View/FrameworkElement/IconElement/IconSourceElement.fs" />
+		<Compile Include="View/FrameworkElement/IconElement/ImageIcon.fs" />
+		<Compile Include="View/FrameworkElement/IconElement/PathIcon.fs" />
+		<Compile Include="View/FrameworkElement/IconElement/SymbolIcon.fs" />
+		<Compile Include="View/FrameworkElement/Image.fs" />
+		<Compile Include="View/FrameworkElement/InkCanvas.fs" />
+		<Compile Include="View/FrameworkElement/ItemsPresenter.fs" />
+		<Compile Include="View/FrameworkElement/ItemsRepeater.fs" />
+		<Compile Include="View/FrameworkElement/ItemsRepeaterScrollHost.fs" />
+		<Compile Include="View/FrameworkElement/MediaPlayerPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Panel/_Panel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/CalendarPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/Canvas/Canvas.fs" />
+		<Compile Include="View/FrameworkElement/Panel/Canvas/_LoopingSelectorPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/Canvas/PivotHeaderPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/Grid/Grid.fs" />
+		<Compile Include="View/FrameworkElement/Panel/Grid/MonochromaticOverlayPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Panel/Grid/SwapChainBackgroundPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/Grid/SwapChainPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/InfoBarPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/ItemsStackPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/ItemsWrapGrid.fs" />
+		<Compile Include="View/FrameworkElement/Panel/LayoutPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/PivotPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/RelativePanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/StackPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/TableViewCellsPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/VariableSizedWrapGrid.fs" />
+		<Compile Include="View/FrameworkElement/Panel/VirtualizingPanel/_VirtualizingPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/VirtualizingPanel/CarouselPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/VirtualizingPanel/OrientedVirtualizingPanel/_OrientedVirtualizingPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/VirtualizingPanel/OrientedVirtualizingPanel/VirtualizingStackPanel.fs" />
+		<Compile Include="View/FrameworkElement/Panel/VirtualizingPanel/OrientedVirtualizingPanel/WrapGrid.fs" />
+		<Compile Include="View/FrameworkElement/Panel/WrapPanel.fs" />
+		<Compile Include="View/FrameworkElement/ParallaxView.fs" />
+		<Compile Include="View/FrameworkElement/Popup.fs" />
+		<Compile Include="View/FrameworkElement/RichTextBlock.fs" />
+		<Compile Include="View/FrameworkElement/RichTextBlockOverflow.fs" />
+		<Compile Include="View/FrameworkElement/ScrollPresenter.fs" />
+		<Compile Include="View/FrameworkElement/Shape/_Shape.fs" />
+		<Compile Include="View/FrameworkElement/Shape/Ellipse.fs" />
+		<Compile Include="View/FrameworkElement/Shape/Line.fs" />
+		<Compile Include="View/FrameworkElement/Shape/Path.fs" />
+		<Compile Include="View/FrameworkElement/Shape/Polygon.fs" />
+		<Compile Include="View/FrameworkElement/Shape/Polyline.fs" />
+		<Compile Include="View/FrameworkElement/Shape/Rectangle.fs" />
+		<Compile Include="View/FrameworkElement/SystemBackdropElement.fs" />
+		<Compile Include="View/FrameworkElement/TextBlock.fs" />
+		<Compile Include="View/FrameworkElement/TickBar.fs" />
+		<Compile Include="View/FrameworkElement/Viewbox.fs" />
+		<Compile Include="View/FrameworkElement/WebView2.fs" />
+
+		<Compile Include="ViewState.fs" />
+		<Compile Include="App.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Elmish" Version="5.0.2" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.6-experimental" />
+	</ItemGroup>
+
+	<!-- WinUI needs this target -->
+	<Target Name="XamlPreCompile" />
+
+</Project>
