@@ -4,7 +4,6 @@
 
 <h1 align="center">WinUI.Elmish</h1>
 
----
 
 WinUI is a modern desktop framework for Windows 11 (and latest versions of Windows 10). This project is an Elmish implementation for WinUI with the amazing F# programming language.
 The implementation is directly tied to WinUI itself without any unnecessary abstractions, which makes the project easier to understand and maintain.
