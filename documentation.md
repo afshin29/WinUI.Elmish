@@ -405,7 +405,7 @@ Collection controls such as `ListView` require you to provide these:
  - an optional key selector for the collection (if you don't provide, then index will be key)
  - a function that turns your model into a node
 
-```fsahrp
+```fsharp
 listView()
     .itemsSource(model.Contacts, fun contact -> contact.Name)
     .itemTemplate(fun contact ->
@@ -440,7 +440,7 @@ This might cause an issue on some controls. One that I'm aware of is the `TreeVi
 
 You can also provide multiple templates and a function that decides which index to choose:
 
-```fsahrp
+```fsharp
 type internal InternalTemplateSelector<'source>(templates: DataTemplate array, selector: 'source -> int) =
     inherit DataTemplateSelector()
 
@@ -466,7 +466,7 @@ let internal createTemplateSelector templates selector =
 
 usage:
 
-```fsahrp
+```fsharp
 listView()
     .itemsSource(model.Contacts, fun contact -> contact.Name)
     .selectedItem(model.SelectedContact |> Option.toObj)
