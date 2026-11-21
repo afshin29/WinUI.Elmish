@@ -436,7 +436,7 @@ let internal getDataTemplate (template: 'source -> #IVirtualNode) =
     )
 ```
 
-This might cause an issue on some control. One that I'm aware of is the `TreeView` control.
+This might cause an issue on some controls. One that I'm aware of is the `TreeView` control.
 
 You can also provide multiple templates and a function that decides which index to choose:
 
