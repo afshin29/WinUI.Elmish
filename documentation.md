@@ -291,7 +291,7 @@ static member tag<'m when 'm :> FrameworkElement and 'm: not struct>
 
 We can flag a node to be rendered conditionally like this:
 
-```fsahrp
+```fsharp
 button()
     .content("Click Me")
     .renderIf(model.SomeCondition)
