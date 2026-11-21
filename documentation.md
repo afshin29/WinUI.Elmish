@@ -187,7 +187,7 @@ stackPanel()
 
 We can set properties using various extension methods:
 
-```fsahrp
+```fsharp
 titleBar()
     .title("Title")
 
