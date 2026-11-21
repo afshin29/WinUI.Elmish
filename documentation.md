@@ -169,3 +169,231 @@ The diff algorithm will NOT understand that the minimum work is to just add `Bor
 recreate all 3 previous children. The only time this behavior is acceptable is for initializing startup data which 
 happens only one time. Other than that, you really should not reorder your nodes on Elmish iterations.
 
+---
+
+### Creating a Node
+
+Creating a node is as simple as this:
+
+```fsharp
+button()
+
+titleBar()
+
+stackPanel()
+```
+
+### Setting properties
+
+We can set properties using various extension methods:
+
+```fsahrp
+titleBar()
+    .title("Title")
+
+button()
+    .content(
+        fontIcon'("\uF000")
+            .fontSize(16)
+    )
+    .height(48)
+    .cornerRadius(CornerRadius(0))
+    .borderThickness(Thickness(0))
+    .background(SolidColorBrush(Colors.Transparent))
+```
+
+We can set conditional properties with `setIf` method:
+
+```fsharp
+button()
+    .setIf(
+        // bool Condition:
+        model.SomeBool,
+
+        // a function to set properties
+        fun node -> node.height(48)
+    )
+```
+
+It's important to know that the boolean condition is not a guard, and the setter function will always be called. Let's 
+take a look at `setIf` definition:
+
+```fsharp
+[<Extension>]
+static member setIf(node: VirtualNode<_>, condition: bool, setter: (VirtualNode<_> -> VirtualNode<_>)) =
+    if condition then
+        setter node
+    else
+        let existingIds =
+            node.Props
+            |> List.map (fun p -> p.Id)
+            |> Set.ofList
+
+        let toUnset =
+            (setter node).Props
+            |> List.filter (fun p -> not (isPropValueNull p) && not (existingIds.Contains p.Id))
+
+        { node with
+            MemoizedPropsToUnset = toUnset @ node.MemoizedPropsToUnset }
+```
+
+We need to keep track of conditional props for memoized nodes. This means that the following will throw exception:
+
+```fsharp
+listView()
+    .setIf(
+        model.SelectedContact.IsSome,
+        fun node -> node.selectedItem(model.SelectedContact.Value)
+    )
+```
+
+As mentioned, do not treat the condition as guard.
+
+### 'marker Generic
+
+But how can we limit an extension method to appear only on correct nodes? For example the `isOpen()` method on an `InfoBar` 
+should not appear for a `Button`. The answer is the `'marker` generic:
+
+```fsharp
+type VirtualNode<'marker when 'marker: not struct> =
+    internal {
+        Id: NodeId
+        Props: VirtualProperty list
+        Events: VirtualEvent list
+        Configs: NodeConfig<'marker> list
+        MemoizationKey: obj option
+        MemoizedPropsToUnset: VirtualProperty list
+        RenderCondition: bool option
+        Ref: WeakReference<'marker> option
+    }
+```
+
+with that marker we can limit an extension method like this:
+
+```fsharp
+[<Extension>]
+static member isOpen(node: VirtualNode<InfoBar>, value: bool) =
+    createDependencyProperty isOpenPropertyId InfoBar.IsOpenProperty value
+    |> node.set
+```
+
+or like this:
+
+```fsharp
+[<Extension>]
+static member tag<'m when 'm :> FrameworkElement and 'm: not struct>
+    (node: VirtualNode<'m>, value: obj) =
+    createDependencyProperty tagPropertyId FrameworkElement.TagProperty value
+    |> node.set
+```
+
+### Conditional rendering
+
+We can flag a node to be rendered conditionally like this:
+
+```fsahrp
+button()
+    .content("Click Me")
+    .renderIf(model.SomeCondition)
+```
+
+The definition is:
+
+```fsharp
+[<Extension>]
+static member renderIf(node: VirtualNode<_>, condition: bool) =
+    { node with
+        RenderCondition = Some condition }
+```
+
+### Node configs
+
+`NodeConfig` is a one time configuration of the node:
+
+```fsharp
+and NodeConfig<'marker> = 'marker -> unit
+```
+
+extension:
+
+```fsharp
+[<Extension>]
+static member config(node: VirtualNode<_>, config: NodeConfig<_>) =
+    { node with
+        Configs = config :: node.Configs }
+```
+
+Usage example:
+
+```fsharp
+grid(
+    //...
+)
+    .config(fun grid ->
+        grid.Shadow <- ThemeShadow()
+        grid.Translation <- Vector3(0f, 0f, 20f)
+    )
+```
+
+### Memoization
+
+Memoization tells the diff function, should this node be diffed or skipped. If you have a node that does not change on 
+Elmish iteration then you should memoize it:
+
+```fsharp
+titleBar()
+    .title("Title")
+    .memoize()
+```
+
+If you know some node will only change based on a field in your model, then you can use that field as the memo key:
+
+```fsharp
+button()
+    .content("Click Me")
+    .memoizeOn(model.SomeField)
+```
+
+This means the diff function will skip changing this node, unless that key changes between two Elmish iterations.
+
+### Reference to the UI element
+
+We can ask for a reference to the rendered element like this:
+
+```fsharp
+let dialog = WeakReference<ContentDialog>(null)
+
+// ...
+
+contentDialog()
+    .ref(dialog)
+```
+
+and a reference to main window like this:
+
+```fsahrp
+let mutable appWindow: Window ref = ref null
+
+// ...
+
+mainWindow(
+    // ...
+)
+    .ref(appWindow)
+```
+
+### Event subscription
+
+Let's take a look at `VirtualEvent`:
+
+```fsharp
+and VirtualEvent =
+    internal {
+        Key: string
+        Subscribe: obj -> IDisposable
+    }
+```
+
+Since we can't compare the `Subscribe` function, the diff function will decide if the subscription should be updated 
+or not based on the provided key. This means that if you want conditional handlers for an event on a node, you need to 
+provide different keys for each handler.
