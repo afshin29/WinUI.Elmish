@@ -397,3 +397,88 @@ and VirtualEvent =
 Since we can't compare the `Subscribe` function, the diff function will decide if the subscription should be updated 
 or not based on the provided key. This means that if you want conditional handlers for an event on a node, you need to 
 provide different keys for each handler.
+
+### Collection controls
+
+Collection controls such as `ListView` require you to provide these:
+ - some collection
+ - an optional key selector for the collection (if you don't provide, then index will be key)
+ - a function that turns your model into a node
+
+```fsahrp
+listView()
+    .itemsSource(model.Contacts, fun contact -> contact.Name)
+    .itemTemplate(fun contact ->
+        let favoriteStr = if contact.IsFavorite then " ⭐" else ""
+        textBlock'($"Item: {contact.Name}{favoriteStr}")
+    )
+```
+
+One thing you need to be aware of, is that the template you provide, will be wrapped in a `ContentControl`. This is 
+because of how code-first `DataTemplate` works:
+
+```fsharp
+let internal getDataTemplate (template: 'source -> #IVirtualNode) =
+    DataTemplate(fun () ->
+        let host = ContentControl(
+            HorizontalContentAlignment = HorizontalAlignment.Stretch,
+            VerticalContentAlignment = VerticalAlignment.Stretch
+        )
+
+        host.add_DataContextChanged(fun _ args ->
+            host.Content <-
+                match args.NewValue with
+                | :? 'source as item -> item |> template |> renderNode
+                | _ -> null
+        )
+                
+        host :> UIElement
+    )
+```
+
+This might cause an issue on some control. One that I'm aware of is the `TreeView` control.
+
+You can also provide multiple templates and a function that decides which index to choose:
+
+```fsahrp
+type internal InternalTemplateSelector<'source>(templates: DataTemplate array, selector: 'source -> int) =
+    inherit DataTemplateSelector()
+
+    let select item =
+        item
+        |> unbox<'source>
+        |> selector
+        |> min (templates.Length - 1)
+        |> max 0
+        |> Array.get templates
+
+    override _.SelectTemplateCore(item: obj) = select item
+    override _.SelectTemplateCore(item: obj, _) = select item
+
+let internal createTemplateSelector templates selector =
+    let templates =
+        templates
+        |> Seq.map getDataTemplate
+        |> Seq.toArray
+
+    InternalTemplateSelector(templates, selector)
+```
+
+usage:
+
+```fsahrp
+listView()
+    .itemsSource(model.Contacts, fun contact -> contact.Name)
+    .selectedItem(model.SelectedContact |> Option.toObj)
+    .itemTemplateSelector(
+        [
+            fun item -> 
+                let favoriteStr = if item.IsFavorite then " ⭐" else ""
+                textBlock'($"Item: {item.Name}{favoriteStr}")
+            fun item -> 
+                let favoriteStr = if item.IsFavorite then " ❤️" else ""
+                textBlock'($"Item: {item.Name}{favoriteStr}")
+        ],
+        (fun (contact: Contact) -> if contact.Name.Contains("John") then 0 else 1)
+    )
+```
