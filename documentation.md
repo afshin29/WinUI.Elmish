@@ -351,7 +351,8 @@ If you know some node will only change based on a field in your model, then you 
 ```fsharp
 button()
     .content("Click Me")
-    .memoizeOn(model.SomeField)
+    .height(model.BtnHeight)
+    .memoizeOn(model.BtnHeight)
 ```
 
 This means the diff function will skip changing this node, unless that key changes between two Elmish iterations.
