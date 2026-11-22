@@ -59,9 +59,10 @@ module ItemsControlMod =
             |> node.set
 
         [<Extension>]
-        static member itemContainerStyleSelector<'m when 'm :> ItemsControl and 'm: not struct>
-            (node: VirtualNode<'m>, value: StyleSelector) =
-            createDependencyProperty itemContainerStyleSelectorPropertyId ItemsControl.ItemContainerStyleSelectorProperty value
+        static member itemContainerStyleSelector<'m, 'source when 'm :> ItemsControl and 'm: not struct>
+            (node: VirtualNode<'m>, styles: Style seq, selector: ('source -> int)) =
+            InternalStyleSelector(styles, selector)
+            |> createDependencyProperty itemContainerStyleSelectorPropertyId ItemsControl.ItemContainerStyleSelectorProperty
             |> node.set
 
         [<Extension>]

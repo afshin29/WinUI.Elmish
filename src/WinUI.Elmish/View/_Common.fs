@@ -152,6 +152,8 @@ module Common =
     type internal InternalStyleSelector<'source>(styles: Style seq, selector: 'source -> int) =
         inherit StyleSelector()
 
+        let styles = styles |> Seq.toArray
+
         override _.SelectStyleCore(item: obj, _) =
             item
             |> unbox<'source>

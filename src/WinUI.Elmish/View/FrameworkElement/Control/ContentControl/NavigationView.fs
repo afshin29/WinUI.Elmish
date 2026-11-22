@@ -181,8 +181,9 @@ module NavigationViewMod =
             |> node.set
 
         [<Extension>]
-        static member menuItemContainerStyleSelector(node: VirtualNode<NavigationView>, value: StyleSelector) =
-            createDependencyProperty menuItemContainerStyleSelectorPropertyId NavigationView.MenuItemContainerStyleSelectorProperty value
+        static member menuItemContainerStyleSelector(node: VirtualNode<NavigationView>, styles: Style seq, selector: ('source -> int)) =
+            InternalStyleSelector(styles, selector)
+            |> createDependencyProperty menuItemContainerStyleSelectorPropertyId NavigationView.MenuItemContainerStyleSelectorProperty
             |> node.set
 
         [<Extension>]

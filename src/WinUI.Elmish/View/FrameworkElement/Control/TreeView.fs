@@ -57,8 +57,9 @@ module TreeViewMod =
             |> node.set
 
         [<Extension>]
-        static member itemContainerStyleSelector(node: VirtualNode<TreeView>, value: StyleSelector) =
-            createDependencyProperty itemContainerStyleSelectorPropertyId TreeView.ItemContainerStyleSelectorProperty value
+        static member itemContainerStyleSelector(node: VirtualNode<TreeView>, styles: Style seq, selector: ('source -> int)) =
+            InternalStyleSelector(styles, selector)
+            |> createDependencyProperty itemContainerStyleSelectorPropertyId TreeView.ItemContainerStyleSelectorProperty
             |> node.set
 
         [<Extension>]
