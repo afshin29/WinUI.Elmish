@@ -51,10 +51,10 @@ module NodeExtensions =
                 { node with
                     MemoizedPropsToUnset = toUnset @ node.MemoizedPropsToUnset }
 
-        //[<Extension>]
-        //static member internal useDiffKey(prop: VirtualProperty, value: obj option) =
-        //    { prop with
-        //        DiffKey = value }
+        [<Extension>]
+        static member internal useDiffKey(prop: VirtualProperty, value: obj option) =
+            { prop with
+                DiffKey = value }
 
         [<Extension>]
         static member config(node: VirtualNode<_>, config: NodeConfig<_>) =

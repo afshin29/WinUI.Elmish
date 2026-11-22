@@ -20,6 +20,7 @@ module private Impl =
         | DpTemplate                    // DataTemplate DP
         | DpTemplateSelector            // DataTemplateSelector DP
         | DpStyleSelector               // StyleSelector DP
+        | DpTransitions                 // TransitionCollection DP: takes a Transition seq
         | DpItems                       // obj DP named *ItemsSource: createCollectionItemsProperty
         | ChildrenProp                  // read-only collection of UIElements: createInnerChildrenProperty
         | InnerChildProp                // property typed UIElement (e.g. Border.Child): createInnerChildProperty
@@ -297,6 +298,7 @@ module private Impl =
                         elif i.DpValue = typeof<DataTemplate> then DpTemplate
                         elif i.DpValue = typeof<DataTemplateSelector> then DpTemplateSelector
                         elif i.DpValue = typeof<StyleSelector> then DpStyleSelector
+                        elif i.DpValue = typeof<Microsoft.UI.Xaml.Media.Animation.TransitionCollection> then DpTransitions
                         elif i.DpValue = typeof<obj> && i.Base.EndsWith("ItemsSource") then DpItems
                         elif i.DpValue = typeof<obj>
                              && not (i.Base.EndsWith("Source"))
@@ -590,6 +592,17 @@ module private Impl =
                             "templates: ('source -> 'vnode) seq, selector: ('source -> int)"
                         add "            createTemplateSelector templates selector"
                         add (sprintf "            |> createDependencyProperty %sPropertyId %s" x dp)
+                        add "            |> node.set"
+                        add ""
+
+                    | DpTransitions ->
+                        signature name None [] [] "transitions: Transition seq, ?diffKey: obj"
+                        add "            let transitionCollection = TransitionCollection()"
+                        add "            transitions"
+                        add "            |> Seq.iter transitionCollection.Add"
+                        add ""
+                        add (sprintf "            createDependencyProperty %sPropertyId %s transitionCollection" x dp)
+                        add "            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))"
                         add "            |> node.set"
                         add ""
 
