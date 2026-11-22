@@ -528,4 +528,4 @@ navigationView()
 ```
 
 Here, we are providing different views based on our current page, which is tracked in our model in the `CurrentPage`. 
-This should use that state as the replacement key and replace our inner UI element when `model.CurrentPage` changes.
+We should use that state as the replacement key and replace our inner UI element when `model.CurrentPage` changes.
