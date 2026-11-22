@@ -79,10 +79,9 @@ module ItemsControlMod =
 
         [<Extension>]
         static member itemTemplateSelector<'m, 'source, 'vnode when 'm :> ItemsControl and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, templates: ('source -> 'vnode) seq, selector: ('source -> int), ?diffKey) =
+            (node: VirtualNode<'m>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
             createTemplateSelector templates selector
             |> createDependencyProperty itemTemplateSelectorPropertyId ItemsControl.ItemTemplateSelectorProperty
-            |> fun p -> p.useDiffKey diffKey
             |> node.set
 
         [<Extension>]

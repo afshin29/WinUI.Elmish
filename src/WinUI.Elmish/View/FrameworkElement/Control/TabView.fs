@@ -108,10 +108,9 @@ module TabViewMod =
 
         [<Extension>]
         static member tabItemTemplateSelector<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TabView>, templates: ('source -> 'vnode) seq, selector: ('source -> int), diffKey) =
+            (node: VirtualNode<TabView>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
             createTemplateSelector templates selector
             |> createDependencyProperty tabItemTemplateSelectorPropertyId TabView.TabItemTemplateSelectorProperty
-            |> fun p -> p.useDiffKey (Some diffKey)
             |> node.set
 
         [<Extension>]

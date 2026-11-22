@@ -62,10 +62,9 @@ module ExpanderMod =
 
         [<Extension>]
         static member headerTemplateSelector<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<Expander>, templates: ('source -> 'vnode) seq, selector: ('source -> int), diffKey) =
+            (node: VirtualNode<Expander>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
             createTemplateSelector templates selector
             |> createDependencyProperty headerTemplateSelectorPropertyId Expander.HeaderTemplateSelectorProperty
-            |> fun p -> p.useDiffKey (Some diffKey)
             |> node.set
 
         [<Extension>]

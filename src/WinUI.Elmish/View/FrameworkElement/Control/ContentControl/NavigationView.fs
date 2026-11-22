@@ -194,10 +194,9 @@ module NavigationViewMod =
 
         [<Extension>]
         static member menuItemTemplateSelector<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<NavigationView>, templates: ('source -> 'vnode) seq, selector: ('source -> int), diffKey) =
+            (node: VirtualNode<NavigationView>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
             createTemplateSelector templates selector
             |> createDependencyProperty menuItemTemplateSelectorPropertyId NavigationView.MenuItemTemplateSelectorProperty
-            |> fun p -> p.useDiffKey (Some diffKey)
             |> node.set
 
         [<Extension>]

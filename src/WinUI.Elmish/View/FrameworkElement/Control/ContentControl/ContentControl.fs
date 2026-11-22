@@ -57,10 +57,9 @@ module ContentControlMod =
 
         [<Extension>]
         static member contentTemplateSelector<'m, 'source, 'vnode when 'm :> ContentControl and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, templates: ('source -> 'vnode) seq, selector: ('source -> int), diffKey) =
+            (node: VirtualNode<'m>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
             createTemplateSelector templates selector
             |> createDependencyProperty contentTemplateSelectorPropertyId ContentControl.ContentTemplateSelectorProperty
-            |> fun p -> p.useDiffKey (Some diffKey)
             |> node.set
 
         [<Extension>]
