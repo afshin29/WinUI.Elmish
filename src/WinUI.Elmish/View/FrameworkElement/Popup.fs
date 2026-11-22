@@ -51,8 +51,13 @@ module PopupMod =
             |> node.set
 
         [<Extension>]
-        static member childTransitions(node: VirtualNode<Popup>, value: TransitionCollection) =
-            createDependencyProperty childTransitionsPropertyId Popup.ChildTransitionsProperty value
+        static member childTransitions(node: VirtualNode<Popup>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty childTransitionsPropertyId Popup.ChildTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

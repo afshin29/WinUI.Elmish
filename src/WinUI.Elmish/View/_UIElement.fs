@@ -324,8 +324,13 @@ module UIElementMod =
 
         [<Extension>]
         static member transitions<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, value: TransitionCollection) =
-            createDependencyProperty transitionsPropertyId UIElement.TransitionsProperty value
+            (node: VirtualNode<'m>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty transitionsPropertyId UIElement.TransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

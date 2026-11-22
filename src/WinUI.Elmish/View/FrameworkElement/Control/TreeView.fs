@@ -63,8 +63,13 @@ module TreeViewMod =
             |> node.set
 
         [<Extension>]
-        static member itemContainerTransitions(node: VirtualNode<TreeView>, value: TransitionCollection) =
-            createDependencyProperty itemContainerTransitionsPropertyId TreeView.ItemContainerTransitionsProperty value
+        static member itemContainerTransitions(node: VirtualNode<TreeView>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty itemContainerTransitionsPropertyId TreeView.ItemContainerTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

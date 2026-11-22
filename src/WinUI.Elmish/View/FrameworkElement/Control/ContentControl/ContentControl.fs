@@ -64,8 +64,13 @@ module ContentControlMod =
 
         [<Extension>]
         static member contentTransitions<'m when 'm :> ContentControl and 'm: not struct>
-            (node: VirtualNode<'m>, value: TransitionCollection) =
-            createDependencyProperty contentTransitionsPropertyId ContentControl.ContentTransitionsProperty value
+            (node: VirtualNode<'m>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty contentTransitionsPropertyId ContentControl.ContentTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
     let contentControl () =

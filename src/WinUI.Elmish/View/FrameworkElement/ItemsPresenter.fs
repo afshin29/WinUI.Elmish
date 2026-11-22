@@ -60,8 +60,13 @@ module ItemsPresenterMod =
             |> node.set
 
         [<Extension>]
-        static member footerTransitions(node: VirtualNode<ItemsPresenter>, value: TransitionCollection) =
-            createDependencyProperty footerTransitionsPropertyId ItemsPresenter.FooterTransitionsProperty value
+        static member footerTransitions(node: VirtualNode<ItemsPresenter>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty footerTransitionsPropertyId ItemsPresenter.FooterTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -88,8 +93,13 @@ module ItemsPresenterMod =
             |> node.set
 
         [<Extension>]
-        static member headerTransitions(node: VirtualNode<ItemsPresenter>, value: TransitionCollection) =
-            createDependencyProperty headerTransitionsPropertyId ItemsPresenter.HeaderTransitionsProperty value
+        static member headerTransitions(node: VirtualNode<ItemsPresenter>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty headerTransitionsPropertyId ItemsPresenter.HeaderTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

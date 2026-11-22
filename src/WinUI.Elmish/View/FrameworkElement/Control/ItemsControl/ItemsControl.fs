@@ -67,8 +67,13 @@ module ItemsControlMod =
 
         [<Extension>]
         static member itemContainerTransitions<'m when 'm :> ItemsControl and 'm: not struct>
-            (node: VirtualNode<'m>, value: TransitionCollection) =
-            createDependencyProperty itemContainerTransitionsPropertyId ItemsControl.ItemContainerTransitionsProperty value
+            (node: VirtualNode<'m>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty itemContainerTransitionsPropertyId ItemsControl.ItemContainerTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

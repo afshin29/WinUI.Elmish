@@ -91,8 +91,13 @@ module ListViewBaseMod =
 
         [<Extension>]
         static member footerTransitions<'m when 'm :> ListViewBase and 'm: not struct>
-            (node: VirtualNode<'m>, value: TransitionCollection) =
-            createDependencyProperty footerTransitionsPropertyId ListViewBase.FooterTransitionsProperty value
+            (node: VirtualNode<'m>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty footerTransitionsPropertyId ListViewBase.FooterTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -121,8 +126,13 @@ module ListViewBaseMod =
 
         [<Extension>]
         static member headerTransitions<'m when 'm :> ListViewBase and 'm: not struct>
-            (node: VirtualNode<'m>, value: TransitionCollection) =
-            createDependencyProperty headerTransitionsPropertyId ListViewBase.HeaderTransitionsProperty value
+            (node: VirtualNode<'m>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty headerTransitionsPropertyId ListViewBase.HeaderTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

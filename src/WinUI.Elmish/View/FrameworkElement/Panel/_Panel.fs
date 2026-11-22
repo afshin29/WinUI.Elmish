@@ -35,8 +35,13 @@ module PanelMod =
 
         [<Extension>]
         static member childrenTransitions<'m when 'm :> Panel and 'm: not struct>
-            (node: VirtualNode<'m>, value: TransitionCollection) =
-            createDependencyProperty childrenTransitionsPropertyId Panel.ChildrenTransitionsProperty value
+            (node: VirtualNode<'m>, transitions: Transition seq, ?diffKey: obj) =
+            let transitionCollection = TransitionCollection()
+            transitions
+            |> Seq.iter transitionCollection.Add
+
+            createDependencyProperty childrenTransitionsPropertyId Panel.ChildrenTransitionsProperty transitionCollection
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
