@@ -580,10 +580,9 @@ module private Impl =
                             None
                             templateParams
                             vnodeConstraints
-                            "templates: ('source -> 'vnode) seq, selector: ('source -> int), diffKey"
+                            "templates: ('source -> 'vnode) seq, selector: ('source -> int)"
                         add "            createTemplateSelector templates selector"
                         add (sprintf "            |> createDependencyProperty %sPropertyId %s" x dp)
-                        add "            |> fun p -> p.useDiffKey (Some diffKey)"
                         add "            |> node.set"
                         add ""
 
