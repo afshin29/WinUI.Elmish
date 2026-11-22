@@ -19,6 +19,7 @@ module private Impl =
         | DpContent                     // obj DP with an XTemplate sibling: string overload + child-element overload
         | DpTemplate                    // DataTemplate DP
         | DpTemplateSelector            // DataTemplateSelector DP
+        | DpStyleSelector               // StyleSelector DP
         | DpItems                       // obj DP named *ItemsSource: createCollectionItemsProperty
         | ChildrenProp                  // read-only collection of UIElements: createInnerChildrenProperty
         | InnerChildProp                // property typed UIElement (e.g. Border.Child): createInnerChildProperty
@@ -292,9 +293,10 @@ module private Impl =
                     match i.Attached with
                     | Some target -> DpAttached target
                     | None ->
-                        if i.DpValue = typeof<UIElement> then InnerChildProp
+                        if typeof<UIElement>.IsAssignableFrom i.DpValue then InnerChildProp
                         elif i.DpValue = typeof<DataTemplate> then DpTemplate
                         elif i.DpValue = typeof<DataTemplateSelector> then DpTemplateSelector
+                        elif i.DpValue = typeof<StyleSelector> then DpStyleSelector
                         elif i.DpValue = typeof<obj> && i.Base.EndsWith("ItemsSource") then DpItems
                         elif i.DpValue = typeof<obj>
                              && not (i.Base.EndsWith("Source"))
@@ -319,8 +321,8 @@ module private Impl =
                 elif isStaticProperty p then
                     skip "property" p.Name "static"
                     None
-                elif isNull (p.GetSetMethod()) && isUsableType p.PropertyType && isUIElementCollection p.PropertyType then
-                    // e.g. Panel.Children: read-only, but its content can be filled
+                elif isUsableType p.PropertyType && isUIElementCollection p.PropertyType then
+                    // e.g. Panel.Children: usually read-only, but its content can be filled
                     Some { PropName = p.Name; ValueType = p.PropertyType; Kind = ChildrenProp }
                 elif isNull (p.GetSetMethod()) then
                     skip "property" p.Name "read-only"
@@ -329,7 +331,7 @@ module private Impl =
                     skip "property" p.Name "unsupported type"
                     None
                 else
-                    let kind = if p.PropertyType = typeof<UIElement> then InnerChildProp else ClrProp
+                    let kind = if typeof<UIElement>.IsAssignableFrom p.PropertyType then InnerChildProp else ClrProp
                     Some { PropName = p.Name; ValueType = p.PropertyType; Kind = kind })
             |> List.sortBy (fun p -> p.PropName)
 
@@ -540,8 +542,13 @@ module private Impl =
                         add "            createInnerChildProperty"
                         add (sprintf "                %sPropertyId" x)
                         add "                value"
-                        add (sprintf "                (fun element child -> (element :?> %s).%s <- child)" cls p.PropName)
-                        add (sprintf "                (fun element -> (element :?> %s).%s)" cls p.PropName)
+                        // the child arrives as UIElement: derived property types (IconElement, InfoBadge, ...)
+                        // need a cast on the way in and an upcast on the way out
+                        let isExact = (p.ValueType = typeof<UIElement>)
+                        let setValue = if isExact then "child" else sprintf "(child :?> %s)" valueType
+                        let getSuffix = if isExact then "" else " :> UIElement"
+                        add (sprintf "                (fun element child -> (element :?> %s).%s <- %s)" cls p.PropName setValue)
+                        add (sprintf "                (fun element -> (element :?> %s).%s%s)" cls p.PropName getSuffix)
                         add "                (contentReplaceKey |> Option.defaultValue 1)"
                         add "            |> node.set"
                         add ""
@@ -582,6 +589,13 @@ module private Impl =
                             vnodeConstraints
                             "templates: ('source -> 'vnode) seq, selector: ('source -> int)"
                         add "            createTemplateSelector templates selector"
+                        add (sprintf "            |> createDependencyProperty %sPropertyId %s" x dp)
+                        add "            |> node.set"
+                        add ""
+
+                    | DpStyleSelector ->
+                        signature name None [ "'source" ] [] "styles: Style seq, selector: ('source -> int)"
+                        add "            InternalStyleSelector(styles, selector)"
                         add (sprintf "            |> createDependencyProperty %sPropertyId %s" x dp)
                         add "            |> node.set"
                         add ""
