@@ -372,7 +372,7 @@ contentDialog()
 
 and a reference to main window like this:
 
-```fsahrp
+```fsharp
 let mutable appWindow: Window ref = ref null
 
 // ...
