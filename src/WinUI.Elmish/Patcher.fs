@@ -53,8 +53,6 @@ let rec private applyDiff (target: UIElement) (diff: NodeDiff) : UIElement =
 
 
 and private patchProperties (uiElement: UIElement) (diffs: PropertyDiff list) =
-    //let json = System.Text.Json.JsonSerializer.Serialize(diffs)
-    //System.IO.File.WriteAllText("diff_debug.json", json)
     diffs
     |> List.iter (
         function
