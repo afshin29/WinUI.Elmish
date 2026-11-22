@@ -203,20 +203,6 @@ module Common =
             host :> UIElement
         )
 
-    //let getTreeViewItemTemplate (template: 'source -> VirtualNode<TreeViewItem>) =
-    //    DataTemplate(DataTemplateElementFactory(fun () ->
-    //        let host = TreeViewItem()
-    //        host.add_DataContextChanged(
-    //            Windows.Foundation.TypedEventHandler<FrameworkElement, DataContextChangedEventArgs>(fun _ args ->
-    //                match args.NewValue with
-    //                | :? 'source as item ->
-    //                    let tvi =  item |> template |> renderNode :?> TreeViewItem
-    //                    host.ItemsSource <- tvi.ItemsSource
-    //                    host.Content <- tvi.Content
-    //                    host.IsExpanded <- tvi.IsExpanded
-    //                | _ -> ()))
-    //        host :> UIElement))
-
     let internal createTemplateSelector templates selector =
         let templates =
             templates
