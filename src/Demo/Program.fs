@@ -3,10 +3,9 @@
 open Elmish
 open Microsoft.UI.Xaml
 open Microsoft.UI.Xaml.Controls
-
+open Microsoft.UI.Xaml.Media.Animation
 open WinUI.Elmish
 open WinUI.Elmish.View
-
 
 
 let titleBarRef = System.WeakReference<TitleBar>(null)
@@ -106,6 +105,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                     .isPaneToggleButtonVisible(false)
                     .isPaneOpen(model.IsPaneOpen)
                     .openPaneLength(160)
+                    .contentTransitions([ContentThemeTransition() :> Transition])
                     .grid_row(1)
                     .content(
                         (match model.CurrentPage with

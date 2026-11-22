@@ -483,3 +483,49 @@ listView()
         (fun (contact: Contact) -> if contact.Name.Contains("John") then 0 else 1)
     )
 ```
+
+### Content replacement key
+
+If we look at `InnerChild` properties, we see a `contentReplaceKey` value:
+
+```fsharp
+    | InnerChild of IVirtualNode * set: (UIElement -> UIElement -> unit) * get: (UIElement -> UIElement) * contentReplaceKey: obj
+```
+
+this value tells the diff function that should this child element be diffed or replaced. Meaning, if the key is same 
+between two Elmish iteration, the inner child will be diffed, but, if the key changes between two iterations, then 
+the old child will be destroyed and a new one will be created. This key is necessary for implementing navigation. 
+You can use `ContentControl` or any of its sub-controls (including `Frame`) as the navigation host. And you need to 
+provide your navigation state as the key, which means when tha page/view changes, the inner child will be replaced.
+
+Let's look at the `content` property of `ContentControl`:
+
+```fsharp
+[<Extension>]
+static member content<'m, 'vnode when 'm :> ContentControl and 'm: not struct and 'vnode :> IVirtualNode>
+    (node: VirtualNode<'m>, value: 'vnode, ?contentReplaceKey: obj) =
+    createInnerChildProperty
+        vnode_contentPropertyId
+        value
+        (fun element child -> (element :?> ContentControl).Content <- child)
+        (fun element -> (element :?> ContentControl).Content :?> UIElement)
+        (contentReplaceKey |> Option.defaultValue 1)
+    |> node.set
+```
+
+One of suitable controls for implementing navigation is `NavigationView`, which is derived from `ContentControl`:
+
+```fsharp
+navigationView()
+    .content(
+        (match model.CurrentPage with
+        | CounterPageStateful -> Pages.Counter.view model.CounterModelStateful (CounterMsg >> dispatch) :> IVirtualNode
+        | CounterPageStateless -> Pages.Counter.view model.CounterModelStateless.Value (CounterMsg >> dispatch)
+        | ListPage -> Pages.List.view model.ListModel (ListMsg >> dispatch)
+        | SettingsPage -> Pages.Settings.view model.SettingsModel (SettingsMsg >> dispatch)),
+        model.CurrentPage
+    )
+```
+
+Here, we are providing different views based on our current page, which is tracked in our model in the `CurrentPage`. 
+This should use that state as the replacement key and replace our inner UI element when `model.CurrentPage` changes.
