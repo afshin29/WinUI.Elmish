@@ -496,7 +496,7 @@ this value tells the diff function that should this child element be diffed or r
 between two Elmish iteration, the inner child will be diffed, but, if the key changes between two iterations, then 
 the old child will be destroyed and a new one will be created. This key is necessary for implementing navigation. 
 You can use `ContentControl` or any of its sub-controls (including `Frame`) as the navigation host. And you need to 
-provide your navigation state as the key, which means when tha page/view changes, the inner child will be replaced.
+provide your navigation state as the key, which means when the page/view changes, the inner child will be replaced.
 
 Let's look at the `content` property of `ContentControl`:
 
