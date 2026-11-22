@@ -149,7 +149,7 @@ module Common =
             )
 
 
-    type internal InternalStyleSelector<'source>(styles: Style array, selector: 'source -> int) =
+    type internal InternalStyleSelector<'source>(styles: Style seq, selector: 'source -> int) =
         inherit StyleSelector()
 
         override _.SelectStyleCore(item: obj, _) =
