@@ -25,9 +25,11 @@ The projects relies on the WinUI experimental release channel because of the fol
 
 As of version 2.6.6 these two features on the stable channel are only possible via XAML.
 
-### Source Generator
+### Setup
 
-I have created a source generator (with WinUI.Elmish itself) that generated all controls of WinUI.
-
-<img src="SG_Dark.png" alt="WinUI Source Generator" />
-
+```
+dotnet new install WinUI.Elmish.Template
+dotnet new winui-elmish -n MyApp
+cd .\MyApp
+dotnet restore
+```
