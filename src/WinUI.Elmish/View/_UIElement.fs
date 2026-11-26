@@ -1,4 +1,4 @@
-﻿namespace WinUI.Elmish.View
+namespace WinUI.Elmish.View
 
 open Microsoft.UI.Xaml
 open Microsoft.UI.Xaml.Controls

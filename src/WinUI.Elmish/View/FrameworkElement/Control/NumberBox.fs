@@ -77,10 +77,11 @@ module NumberBoxMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<NumberBox>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<NumberBox>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId NumberBox.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

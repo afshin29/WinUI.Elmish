@@ -55,11 +55,6 @@ module BorderMod =
             |> node.set
 
         [<Extension>]
-        static member childTransitions(node: VirtualNode<Border>, value: TransitionCollection) =
-            createDependencyProperty childTransitionsPropertyId Border.ChildTransitionsProperty value
-            |> node.set
-
-        [<Extension>]
         static member childTransitions(node: VirtualNode<Border>, transitions: Transition seq, ?diffKey: obj) =
             let transitionCollection = TransitionCollection()
             transitions
@@ -68,7 +63,6 @@ module BorderMod =
             createDependencyProperty childTransitionsPropertyId Border.ChildTransitionsProperty transitionCollection
             |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
-
 
         [<Extension>]
         static member cornerRadius(node: VirtualNode<Border>, value: CornerRadius) =

@@ -34,10 +34,11 @@ module LoopingSelectorMod =
             |> node.set
 
         [<Extension>]
-        static member itemTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<LoopingSelector>, template: ('source -> 'vnode)) =
+        static member itemTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<LoopingSelector>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty itemTemplatePropertyId LoopingSelector.ItemTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

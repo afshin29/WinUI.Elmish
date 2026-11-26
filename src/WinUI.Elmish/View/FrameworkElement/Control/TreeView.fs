@@ -57,9 +57,11 @@ module TreeViewMod =
             |> node.set
 
         [<Extension>]
-        static member itemContainerStyleSelector(node: VirtualNode<TreeView>, styles: Style seq, selector: ('source -> int)) =
+        static member itemContainerStyleSelector<'source>
+            (node: VirtualNode<TreeView>, styles: Style seq, selector: ('source -> int), ?diffKey: obj) =
             InternalStyleSelector(styles, selector)
             |> createDependencyProperty itemContainerStyleSelectorPropertyId TreeView.ItemContainerStyleSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -73,17 +75,19 @@ module TreeViewMod =
             |> node.set
 
         [<Extension>]
-        static member itemTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TreeView>, template: ('source -> 'vnode)) =
+        static member itemTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TreeView>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty itemTemplatePropertyId TreeView.ItemTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
-        static member itemTemplateSelector<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TreeView>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
+        static member itemTemplateSelector<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TreeView>, templates: ('source -> VirtualNode<'el>) seq, selector: ('source -> int), ?diffKey: obj) =
             createTemplateSelector templates selector
             |> createDependencyProperty itemTemplateSelectorPropertyId TreeView.ItemTemplateSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

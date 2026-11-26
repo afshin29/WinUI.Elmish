@@ -134,10 +134,11 @@ module NavigationViewMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<NavigationView>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<NavigationView>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId NavigationView.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -181,23 +182,27 @@ module NavigationViewMod =
             |> node.set
 
         [<Extension>]
-        static member menuItemContainerStyleSelector(node: VirtualNode<NavigationView>, styles: Style seq, selector: ('source -> int)) =
+        static member menuItemContainerStyleSelector<'source>
+            (node: VirtualNode<NavigationView>, styles: Style seq, selector: ('source -> int), ?diffKey: obj) =
             InternalStyleSelector(styles, selector)
             |> createDependencyProperty menuItemContainerStyleSelectorPropertyId NavigationView.MenuItemContainerStyleSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
-        static member menuItemTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<NavigationView>, template: ('source -> 'vnode)) =
+        static member menuItemTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<NavigationView>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty menuItemTemplatePropertyId NavigationView.MenuItemTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
-        static member menuItemTemplateSelector<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<NavigationView>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
+        static member menuItemTemplateSelector<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<NavigationView>, templates: ('source -> VirtualNode<'el>) seq, selector: ('source -> int), ?diffKey: obj) =
             createTemplateSelector templates selector
             |> createDependencyProperty menuItemTemplateSelectorPropertyId NavigationView.MenuItemTemplateSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

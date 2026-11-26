@@ -65,10 +65,11 @@ module TableViewMod =
             |> node.set
 
         [<Extension>]
-        static member emptyTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TableView>, template: ('source -> 'vnode)) =
+        static member emptyTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TableView>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty emptyTemplatePropertyId TableView.EmptyTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -77,10 +78,11 @@ module TableViewMod =
             |> node.set
 
         [<Extension>]
-        static member groupHeaderTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TableView>, template: ('source -> 'vnode)) =
+        static member groupHeaderTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TableView>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty groupHeaderTemplatePropertyId TableView.GroupHeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

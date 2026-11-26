@@ -49,17 +49,19 @@ module ContentControlMod =
             |> node.set
 
         [<Extension>]
-        static member contentTemplate<'m, 'source, 'vnode when 'm :> ContentControl and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, template: ('source -> 'vnode)) =
+        static member contentTemplate<'m, 'source, 'el when 'm :> ContentControl and 'm: not struct and 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<'m>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty contentTemplatePropertyId ContentControl.ContentTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
-        static member contentTemplateSelector<'m, 'source, 'vnode when 'm :> ContentControl and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
+        static member contentTemplateSelector<'m, 'source, 'el when 'm :> ContentControl and 'm: not struct and 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<'m>, templates: ('source -> VirtualNode<'el>) seq, selector: ('source -> int), ?diffKey: obj) =
             createTemplateSelector templates selector
             |> createDependencyProperty contentTemplateSelectorPropertyId ContentControl.ContentTemplateSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

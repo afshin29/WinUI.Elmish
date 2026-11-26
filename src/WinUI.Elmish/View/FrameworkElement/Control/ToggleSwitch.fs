@@ -52,10 +52,11 @@ module ToggleSwitchMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<ToggleSwitch>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<ToggleSwitch>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId ToggleSwitch.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -80,10 +81,11 @@ module ToggleSwitchMod =
             |> node.set
 
         [<Extension>]
-        static member offContentTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<ToggleSwitch>, template: ('source -> 'vnode)) =
+        static member offContentTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<ToggleSwitch>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty offContentTemplatePropertyId ToggleSwitch.OffContentTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -103,10 +105,11 @@ module ToggleSwitchMod =
             |> node.set
 
         [<Extension>]
-        static member onContentTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<ToggleSwitch>, template: ('source -> 'vnode)) =
+        static member onContentTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<ToggleSwitch>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty onContentTemplatePropertyId ToggleSwitch.OnContentTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

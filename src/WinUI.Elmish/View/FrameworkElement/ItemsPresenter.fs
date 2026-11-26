@@ -53,10 +53,11 @@ module ItemsPresenterMod =
             |> node.set
 
         [<Extension>]
-        static member footerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<ItemsPresenter>, template: ('source -> 'vnode)) =
+        static member footerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<ItemsPresenter>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty footerTemplatePropertyId ItemsPresenter.FooterTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -86,10 +87,11 @@ module ItemsPresenterMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<ItemsPresenter>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<ItemsPresenter>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId ItemsPresenter.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

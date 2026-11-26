@@ -84,10 +84,11 @@ module InfoBarMod =
             |> node.set
 
         [<Extension>]
-        static member contentTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<InfoBar>, template: ('source -> 'vnode)) =
+        static member contentTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<InfoBar>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty contentTemplatePropertyId InfoBar.ContentTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

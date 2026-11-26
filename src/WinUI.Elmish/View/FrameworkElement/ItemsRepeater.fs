@@ -46,8 +46,11 @@ module ItemsRepeaterMod =
             |> node.set
 
         [<Extension>]
-        static member itemTemplate(node: VirtualNode<ItemsRepeater>, value: obj) =
-            createDependencyProperty itemTemplatePropertyId ItemsRepeater.ItemTemplateProperty value
+        static member itemTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<ItemsRepeater>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
+            getDataTemplate template
+            |> createDependencyProperty itemTemplatePropertyId ItemsRepeater.ItemTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

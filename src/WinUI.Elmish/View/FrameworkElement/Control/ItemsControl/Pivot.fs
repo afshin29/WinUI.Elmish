@@ -46,10 +46,11 @@ module PivotMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<Pivot>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<Pivot>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId Pivot.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -79,10 +80,11 @@ module PivotMod =
             |> node.set
 
         [<Extension>]
-        static member leftHeaderTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<Pivot>, template: ('source -> 'vnode)) =
+        static member leftHeaderTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<Pivot>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty leftHeaderTemplatePropertyId Pivot.LeftHeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -102,10 +104,11 @@ module PivotMod =
             |> node.set
 
         [<Extension>]
-        static member rightHeaderTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<Pivot>, template: ('source -> 'vnode)) =
+        static member rightHeaderTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<Pivot>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty rightHeaderTemplatePropertyId Pivot.RightHeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -141,10 +144,11 @@ module PivotMod =
             |> node.set
 
         [<Extension>]
-        static member titleTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<Pivot>, template: ('source -> 'vnode)) =
+        static member titleTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<Pivot>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty titleTemplatePropertyId Pivot.TitleTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

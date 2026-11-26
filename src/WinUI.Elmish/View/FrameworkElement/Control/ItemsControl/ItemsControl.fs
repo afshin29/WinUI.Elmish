@@ -60,9 +60,10 @@ module ItemsControlMod =
 
         [<Extension>]
         static member itemContainerStyleSelector<'m, 'source when 'm :> ItemsControl and 'm: not struct>
-            (node: VirtualNode<'m>, styles: Style seq, selector: ('source -> int)) =
+            (node: VirtualNode<'m>, styles: Style seq, selector: ('source -> int), ?diffKey: obj) =
             InternalStyleSelector(styles, selector)
             |> createDependencyProperty itemContainerStyleSelectorPropertyId ItemsControl.ItemContainerStyleSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -77,17 +78,19 @@ module ItemsControlMod =
             |> node.set
 
         [<Extension>]
-        static member itemTemplate<'m, 'source, 'vnode when 'm :> ItemsControl and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, template: ('source -> 'vnode)) =
+        static member itemTemplate<'m, 'source, 'el when 'm :> ItemsControl and 'm: not struct and 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<'m>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty itemTemplatePropertyId ItemsControl.ItemTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
-        static member itemTemplateSelector<'m, 'source, 'vnode when 'm :> ItemsControl and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
+        static member itemTemplateSelector<'m, 'source, 'el when 'm :> ItemsControl and 'm: not struct and 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<'m>, templates: ('source -> VirtualNode<'el>) seq, selector: ('source -> int), ?diffKey: obj) =
             createTemplateSelector templates selector
             |> createDependencyProperty itemTemplateSelectorPropertyId ItemsControl.ItemTemplateSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
