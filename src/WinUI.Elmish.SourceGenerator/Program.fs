@@ -245,7 +245,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                                         fontIcon'("\uF000")
                                             .fontSize(16)
                                     )
-                                    .height(48)
+                                    .height(32)
                                     .cornerRadius(CornerRadius(0))
                                     .borderThickness(Thickness(0))
                                     .background(SolidColorBrush(Colors.Transparent))
@@ -256,15 +256,13 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                                         fontIcon'("\uE713")
                                             .fontSize(16)
                                     )
-                                    .height(48)
+                                    .height(32)
                                     .cornerRadius(CornerRadius(0))
                                     .borderThickness(Thickness(0))
                                     .background(SolidColorBrush(Colors.Transparent))
                             ])
                     )
-                    .config(fun titleBar ->
-                        titleBar.Resources["TitleBarContentHorizontalAlignment"] <- HorizontalAlignment.Stretch
-                    )
+                    .config(fun titleBar -> titleBar.Resources["TitleBarExpandedHeight"] <- 32)
                     .memoize()
 
                 match model.Data with
