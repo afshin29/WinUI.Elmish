@@ -24,7 +24,7 @@ let private patchEvents (uiElement: UIElement) (diffs: EventDiff list) =
     )
 
 
-let rec private applyDiff (target: UIElement) (diff: NodeDiff) : UIElement =
+let rec applyDiff (target: UIElement) (diff: NodeDiff) : UIElement =
     match diff with
     | SkipNode | MemoUnchanged -> target
 
@@ -71,7 +71,7 @@ and private patchProperties (uiElement: UIElement) (diffs: PropertyDiff list) =
             |> List.map renderNode
             |> set uiElement
         | UpdateChildrenProp (childrenDiff, get) -> applyChildrenDiff (get uiElement) childrenDiff
-        | ClearChildrenProp set -> set uiElement []
+        | ClearChildrenProp get -> (get uiElement).Clear()
 
         | SetCollectionProp (items, set) -> set uiElement items
         | UpdateCollectionProp (itemsDiff, get) -> applyItemsDiff (get uiElement) itemsDiff

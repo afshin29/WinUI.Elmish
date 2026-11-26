@@ -35,7 +35,7 @@ and PropertyDiff =
 
     | SetChildrenProp of IVirtualNode list * set: (UIElement -> UIElement list -> unit)
     | UpdateChildrenProp of ChildrenDiff list * get: (UIElement -> IList<UIElement>)
-    | ClearChildrenProp of set: (UIElement -> UIElement list -> unit)
+    | ClearChildrenProp of get: (UIElement -> IList<UIElement>)
     
     | SetCollectionProp of items: obj list * set: (UIElement -> obj seq -> unit)
     | UpdateCollectionProp of CollectionDiff list * get: (UIElement -> ObservableCollection<obj>)
@@ -212,7 +212,7 @@ let clearPropMap p =
     | Dependency (dp, _) -> ClearDependencyProp dp
     | Clr (_, clear, _) -> ClearClrProp clear
     | InnerChild (_, set, clear, _) -> SetChildProp (Destroy, set, clear)
-    | InnerChildren (_, set, _) -> ClearChildrenProp set
+    | InnerChildren (_, _, get) -> ClearChildrenProp get
     | CollectionItems (_, _, set, _) -> ClearCollectionProp set
 
 
@@ -225,7 +225,7 @@ let setPropMap p =
     | CollectionItems (items, _, set, _) -> SetCollectionProp (items, set)
 
 
-let rec private diffNodes oldNode newNode : NodeDiff =
+let rec diffNodes oldNode newNode : NodeDiff =
     let diffSameNodes (oldNode: IVirtualNode) (newNode: IVirtualNode) =
         let propDiffs = diffProperties oldNode.Props newNode.Props
         let eventDiffs = diffEvents oldNode.Events newNode.Events
