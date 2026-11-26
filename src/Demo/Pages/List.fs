@@ -4,8 +4,6 @@ open Elmish
 open Microsoft.UI.Xaml.Controls
 open System
 open WinUI.Elmish.View
-open Microsoft.UI.Xaml.Data
-open Microsoft.UI.Xaml
 
 type Contact =
     {
@@ -80,10 +78,6 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
             //    )
 
             listView()
-                //.setIf(
-                //    model.SelectedContact.IsSome,
-                //    fun node -> node.selectedItem(model.SelectedContact.Value)
-                //)
                 .itemsSource(model.Contacts, fun contact -> contact.Name)
                 .selectedItem(model.SelectedContact |> Option.toObj)
                 .itemTemplateSelector(

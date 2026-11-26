@@ -282,10 +282,13 @@ module private Impl =
                             None)
 
         // ---- phase 2: decide how each one is generated
+        // DataTemplate, or object-typed *Template properties such as RadioButtons.ItemTemplate
+        let isTemplateDp (i: DpInfo) =
+            i.Attached.IsNone
+            && (i.DpValue = typeof<DataTemplate> || (i.DpValue = typeof<obj> && i.Base.EndsWith("Template")))
+
         let hasTemplateSibling (name: string) =
-            dpInfos
-            |> List.exists (fun i ->
-                i.Base = name + "Template" && i.Attached.IsNone && i.DpValue = typeof<DataTemplate>)
+            dpInfos |> List.exists (fun i -> i.Base = name + "Template" && isTemplateDp i)
 
         let dependencyProps =
             dpInfos
@@ -295,7 +298,7 @@ module private Impl =
                     | Some target -> DpAttached target
                     | None ->
                         if typeof<UIElement>.IsAssignableFrom i.DpValue then InnerChildProp
-                        elif i.DpValue = typeof<DataTemplate> then DpTemplate
+                        elif isTemplateDp i then DpTemplate
                         elif i.DpValue = typeof<DataTemplateSelector> then DpTemplateSelector
                         elif i.DpValue = typeof<StyleSelector> then DpStyleSelector
                         elif i.DpValue = typeof<Microsoft.UI.Xaml.Media.Animation.TransitionCollection> then DpTransitions
@@ -489,7 +492,10 @@ module private Impl =
 
                 let vnodeParams = [ "'vnode" ]
                 let vnodeConstraints = [ "'vnode :> IVirtualNode" ]
-                let templateParams = [ "'source"; "'vnode" ]
+                // templates are generic in their root element: the template function returns VirtualNode<'el>
+                let templateParams = [ "'source"; "'el" ]
+                let templateConstraints =
+                    [ "'el :> FrameworkElement"; "'el: (new: unit -> 'el)"; "'el: not struct" ]
 
                 // ---- dependency properties and CLR properties
                 for p in m.Props do
@@ -577,9 +583,10 @@ module private Impl =
                         add ""
 
                     | DpTemplate ->
-                        signature name None templateParams vnodeConstraints "template: ('source -> 'vnode)"
+                        signature name None templateParams templateConstraints "template: ('source -> VirtualNode<'el>), ?diffKey: obj"
                         add "            getDataTemplate template"
                         add (sprintf "            |> createDependencyProperty %sPropertyId %s" x dp)
+                        add "            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))"
                         add "            |> node.set"
                         add ""
 
@@ -588,10 +595,11 @@ module private Impl =
                             name
                             None
                             templateParams
-                            vnodeConstraints
-                            "templates: ('source -> 'vnode) seq, selector: ('source -> int)"
+                            templateConstraints
+                            "templates: ('source -> VirtualNode<'el>) seq, selector: ('source -> int), ?diffKey: obj"
                         add "            createTemplateSelector templates selector"
                         add (sprintf "            |> createDependencyProperty %sPropertyId %s" x dp)
+                        add "            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))"
                         add "            |> node.set"
                         add ""
 
@@ -607,9 +615,10 @@ module private Impl =
                         add ""
 
                     | DpStyleSelector ->
-                        signature name None [ "'source" ] [] "styles: Style seq, selector: ('source -> int)"
+                        signature name None [ "'source" ] [] "styles: Style seq, selector: ('source -> int), ?diffKey: obj"
                         add "            InternalStyleSelector(styles, selector)"
                         add (sprintf "            |> createDependencyProperty %sPropertyId %s" x dp)
+                        add "            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))"
                         add "            |> node.set"
                         add ""
 

@@ -96,10 +96,11 @@ module TextBoxMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TextBox>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TextBox>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId TextBox.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

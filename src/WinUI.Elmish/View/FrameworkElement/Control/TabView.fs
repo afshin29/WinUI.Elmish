@@ -100,17 +100,19 @@ module TabViewMod =
             |> node.set
 
         [<Extension>]
-        static member tabItemTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TabView>, template: ('source -> 'vnode)) =
+        static member tabItemTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TabView>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty tabItemTemplatePropertyId TabView.TabItemTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
-        static member tabItemTemplateSelector<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TabView>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
+        static member tabItemTemplateSelector<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TabView>, templates: ('source -> VirtualNode<'el>) seq, selector: ('source -> int), ?diffKey: obj) =
             createTemplateSelector templates selector
             |> createDependencyProperty tabItemTemplateSelectorPropertyId TabView.TabItemTemplateSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -141,10 +143,11 @@ module TabViewMod =
             |> node.set
 
         [<Extension>]
-        static member tabStripFooterTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TabView>, template: ('source -> 'vnode)) =
+        static member tabStripFooterTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TabView>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty tabStripFooterTemplatePropertyId TabView.TabStripFooterTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -164,10 +167,11 @@ module TabViewMod =
             |> node.set
 
         [<Extension>]
-        static member tabStripHeaderTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<TabView>, template: ('source -> 'vnode)) =
+        static member tabStripHeaderTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<TabView>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty tabStripHeaderTemplatePropertyId TabView.TabStripHeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

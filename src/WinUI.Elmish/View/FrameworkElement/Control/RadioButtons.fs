@@ -27,6 +27,7 @@ module RadioButtonsMod =
     let private headerTemplatePropertyId = getNextId ()
     let private itemTemplatePropertyId = getNextId ()
     let private itemsSourcePropertyId = getNextId ()
+    let private itemsPropertyId = getNextId ()
     let private maxColumnsPropertyId = getNextId ()
     let private selectedIndexPropertyId = getNextId ()
     let private selectedItemPropertyId = getNextId ()
@@ -51,15 +52,19 @@ module RadioButtonsMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<RadioButtons>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<RadioButtons>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId RadioButtons.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
-        static member itemTemplate(node: VirtualNode<RadioButtons>, value: obj) =
-            createDependencyProperty itemTemplatePropertyId RadioButtons.ItemTemplateProperty value
+        static member itemTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<RadioButtons>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
+            getDataTemplate template
+            |> createDependencyProperty itemTemplatePropertyId RadioButtons.ItemTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -71,6 +76,12 @@ module RadioButtonsMod =
                 (keySelector |> Option.map (fun f -> f >> box))
                 (fun element items -> (element :?> RadioButtons).ItemsSource <- ObservableCollection(items))
                 (fun element -> (element :?> RadioButtons).ItemsSource :?> ObservableCollection<obj>)
+            |> node.set
+
+        [<Extension>]
+        static member items'<'source, 'key>
+            (node: VirtualNode<RadioButtons>, items: VirtualNode<RadioButton> list) =
+            createDependencyProperty itemsPropertyId RadioButtons.ItemsSourceProperty items
             |> node.set
 
         [<Extension>]

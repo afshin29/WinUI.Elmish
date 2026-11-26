@@ -55,10 +55,11 @@ module SliderMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'m, 'source, 'vnode when 'm :> Slider and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'m, 'source, 'el when 'm :> Slider and 'm: not struct and 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<'m>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId Slider.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

@@ -54,17 +54,19 @@ module ExpanderMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<Expander>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<Expander>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId Expander.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
-        static member headerTemplateSelector<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<Expander>, templates: ('source -> 'vnode) seq, selector: ('source -> int)) =
+        static member headerTemplateSelector<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<Expander>, templates: ('source -> VirtualNode<'el>) seq, selector: ('source -> int), ?diffKey: obj) =
             createTemplateSelector templates selector
             |> createDependencyProperty headerTemplateSelectorPropertyId Expander.HeaderTemplateSelectorProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

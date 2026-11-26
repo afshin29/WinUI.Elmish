@@ -1,12 +1,14 @@
 ﻿namespace WinUI.Elmish.View
 
-open WinUI.Elmish.VirtualElements
-open WinUI.Elmish.EventSubscriptions
-open WinUI.Elmish.Reconciler
-
 open Microsoft.UI.Xaml
 open Microsoft.UI.Xaml.Controls
 open System.Runtime.CompilerServices
+
+open WinUI.Elmish.VirtualElements
+open WinUI.Elmish.EventSubscriptions
+open WinUI.Elmish.Diff
+open WinUI.Elmish.Reconciler
+open WinUI.Elmish.Patcher
 
 
 [<AutoOpen>]
@@ -188,24 +190,74 @@ module Common =
             uiElement
         )
     
-    let internal getDataTemplate (template: 'source -> #IVirtualNode) =
-        DataTemplate(fun () ->
-            let host = ContentControl(
-                HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                VerticalContentAlignment = VerticalAlignment.Stretch
-            )
+    let private refreshDiff (previous: IVirtualNode option) (node: IVirtualNode) : NodeDiff =
+        let newPropIds = node.Props |> List.map (fun p -> p.Id) |> Set.ofList
+        let newEventKeys = node.Events |> List.map (fun e -> e.Key) |> Set.ofList
 
-            host.add_DataContextChanged(fun _ args ->
-                host.Content <-
-                    match args.NewValue with
-                    | :? 'source as item -> item |> template |> renderNode
-                    | _ -> null
-            )
-                
-            host :> UIElement
+        let staleProps =
+            match previous with
+            | Some old ->
+                old.Props
+                |> List.filter (fun p ->
+                    match p.Prop with
+                    | InnerChildren _ -> true
+                    | _ -> not (newPropIds.Contains p.Id))
+                |> List.map clearPropMap
+            | None -> []
+
+        let staleEvents =
+            match previous with
+            | Some old ->
+                old.Events
+                |> List.filter (fun e -> not (newEventKeys.Contains e.Key))
+                |> List.map (fun e -> UnHandle e.Key)
+            | None -> []
+
+        Patch (
+            node.Id,
+            staleProps @ (node.Props |> List.map setPropMap),
+            staleEvents @ (node.Events |> List.map Handle)
         )
 
-    let internal createTemplateSelector templates selector =
+    let internal getDataTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+        (template: 'source -> VirtualNode<'el>) =
+        DataTemplate(fun () ->
+            System.Diagnostics.Debug.WriteLine("---")
+            System.Diagnostics.Debug.WriteLine("inside dt")
+            let element = new 'el()
+            let frameworkElement = element :> FrameworkElement
+            let uiElement = frameworkElement :> UIElement
+            let previous: IVirtualNode option ref = ref None
+
+            frameworkElement.add_DataContextChanged(fun _ args ->
+                System.Diagnostics.Debug.WriteLine($"inside handler: {args.NewValue}")
+                args.Handled <- true
+
+                match args.NewValue with
+                | :? 'source as item ->
+                    let node = template item
+
+                    if previous.Value.IsNone then
+                        applyConfigs element node.Configs
+
+                    node.Ref
+                    |> Option.iter (fun weakRef -> weakRef.SetTarget(element))
+
+                    refreshDiff previous.Value node
+                    |> applyDiff uiElement
+                    |> ignore
+
+                    previous.Value <- Some (node :> IVirtualNode)
+
+                | _ -> ()
+            )
+
+            uiElement
+        )
+
+    let internal createTemplateSelector<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+        (templates: ('source -> VirtualNode<'el>) seq)
+        (selector: 'source -> int) =
         let templates =
             templates
             |> Seq.map getDataTemplate

@@ -83,10 +83,11 @@ module ListViewBaseMod =
             |> node.set
 
         [<Extension>]
-        static member footerTemplate<'m, 'source, 'vnode when 'm :> ListViewBase and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, template: ('source -> 'vnode)) =
+        static member footerTemplate<'m, 'source, 'el when 'm :> ListViewBase and 'm: not struct and 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<'m>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty footerTemplatePropertyId ListViewBase.FooterTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
@@ -118,10 +119,11 @@ module ListViewBaseMod =
             |> node.set
 
         [<Extension>]
-        static member headerTemplate<'m, 'source, 'vnode when 'm :> ListViewBase and 'm: not struct and 'vnode :> IVirtualNode>
-            (node: VirtualNode<'m>, template: ('source -> 'vnode)) =
+        static member headerTemplate<'m, 'source, 'el when 'm :> ListViewBase and 'm: not struct and 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<'m>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty headerTemplatePropertyId ListViewBase.HeaderTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

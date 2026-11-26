@@ -47,10 +47,11 @@ module AnimatedVisualPlayerMod =
             |> node.set
 
         [<Extension>]
-        static member fallbackContent<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<AnimatedVisualPlayer>, template: ('source -> 'vnode)) =
+        static member fallbackContent<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<AnimatedVisualPlayer>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty fallbackContentPropertyId AnimatedVisualPlayer.FallbackContentProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]

@@ -141,10 +141,11 @@ module ContentDialogMod =
             |> node.set
 
         [<Extension>]
-        static member titleTemplate<'source, 'vnode when 'vnode :> IVirtualNode>
-            (node: VirtualNode<ContentDialog>, template: ('source -> 'vnode)) =
+        static member titleTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+            (node: VirtualNode<ContentDialog>, template: ('source -> VirtualNode<'el>), ?diffKey: obj) =
             getDataTemplate template
             |> createDependencyProperty titleTemplatePropertyId ContentDialog.TitleTemplateProperty
+            |> fun p -> p.useDiffKey(diffKey |> Option.orElse (Some 1))
             |> node.set
 
         [<Extension>]
