@@ -31,7 +31,7 @@
 	<ItemGroup>
 		<PackageReference Include="ColorCode.Core" Version="2.0.15" />
 		<PackageReference Include="ColorCode.WinUI" Version="2.0.15" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2526" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
 	</ItemGroup>
 
 	<ItemGroup>
