@@ -672,3 +672,23 @@ mainWindow(
 )
     .requestedTheme(model.UserTheme)
 ```
+
+### Dynamic Theme Binding
+
+As of version 2.6.6 of the experimental release of WinUI, it's possible to use dynamic theme binding without XAML. 
+`FrameworkElement` has a method called `SetThemeResourceBinding`. In WinUI.Elmish, `VirtualNode`s also provide an 
+extension method to facilitate this:
+
+```fsharp
+[<Extension>]
+static member bindThemeResource<'m when 'm :> FrameworkElement and 'm: not struct>
+    (node: VirtualNode<'m>, property: DependencyProperty, resourceName: string) =
+    node.config(fun node -> node.SetThemeResourceBinding(property, resourceName))
+```
+
+Example sage:
+
+```fsharp
+border()
+    .bindThemeResource(Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush")
+```
