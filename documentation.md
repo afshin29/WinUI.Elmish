@@ -686,7 +686,7 @@ static member bindThemeResource<'m when 'm :> FrameworkElement and 'm: not struc
     node.config(fun node -> node.SetThemeResourceBinding(property, resourceName))
 ```
 
-Example sage:
+Example usage:
 
 ```fsharp
 border()
