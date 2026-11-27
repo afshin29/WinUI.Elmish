@@ -80,7 +80,7 @@ module private Impl =
             elif i = s.Length then s.ToLowerInvariant()
             else s.Substring(0, i - 1).ToLowerInvariant() + s.Substring(i - 1)
 
-    let reservedLocals = set [ "handler"; "key"; "node"; "uiElement"; "h"; "e"; "value" ]
+    let reservedLocals = set [ "handler"; "key"; "node"; "uiElement"; "h"; "e"; "value"; "sender" ]
 
     /// Local variable used for the cast element inside an event subscription.
     let localVar (className: string) =
@@ -626,12 +626,23 @@ module private Impl =
                 for e in m.Events do
                     let local = localVar t.Name
                     let args = fmt e.ArgsType
-                    signature (sprintf "on%s" e.EventName) None [] [] (sprintf "handler: %s -> unit, ?key: string" args)
+                    // the handler receives the element that raised the event, typed as the node's control
+                    let senderType = if isLeaf then cls else "'m"
+                    signature
+                        (sprintf "on%s" e.EventName)
+                        None
+                        []
+                        []
+                        (sprintf "handler: %s -> %s -> unit, ?key: string" senderType args)
                     add "            node.handle({"
                     add (sprintf "                Key = key |> Option.defaultValue \"%s\"" e.EventName)
                     add "                Subscribe = (fun uiElement ->"
                     add (sprintf "                    let %s = uiElement :?> %s" local cls)
-                    add (sprintf "                    let h = %s(fun _ e -> handler e)" (fmt e.DelegateType))
+                    if isLeaf then
+                        add (sprintf "                    let h = %s(fun _ e -> handler %s e)" (fmt e.DelegateType) local)
+                    else
+                        add "                    let sender = uiElement :?> 'm"
+                        add (sprintf "                    let h = %s(fun _ e -> handler sender e)" (fmt e.DelegateType))
                     if e.IsStandard then
                         add (sprintf "                    %s.%s.AddHandler h" local e.EventName)
                         add "                    { new IDisposable with"
