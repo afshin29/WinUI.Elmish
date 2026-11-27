@@ -49,7 +49,6 @@ let renderWindow (window: VirtualWindow) =
         |> Option.iter (fun titleBar ->
             mainWindow.ExtendsContentIntoTitleBar <- true
             mainWindow.SetTitleBar(titleBar)
-            //mainWindow.AppWindow.TitleBar.PreferredHeightOption <- TitleBarHeightOption.Tall
             (content :?> FrameworkElement).add_ActualThemeChanged(fun sender args ->
                 mainWindow.AppWindow.TitleBar.PreferredTheme <-
                     match sender.ActualTheme with
