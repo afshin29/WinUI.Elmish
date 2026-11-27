@@ -38,12 +38,12 @@ module SelectorBarMod =
             |> node.set
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<SelectorBar>, handler: SelectorBarSelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<SelectorBar>, handler: SelectorBar -> SelectorBarSelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let selectorBar = uiElement :?> SelectorBar
-                    let h = TypedEventHandler<SelectorBar, SelectorBarSelectionChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<SelectorBar, SelectorBarSelectionChangedEventArgs>(fun _ e -> handler selectorBar e)
                     selectorBar.add_SelectionChanged h
                     { new IDisposable with
                         member _.Dispose() = selectorBar.remove_SelectionChanged h }

@@ -26,12 +26,12 @@ module ThumbMod =
     type ThumbExtensions =
 
         [<Extension>]
-        static member onDragCompleted(node: VirtualNode<Thumb>, handler: DragCompletedEventArgs -> unit, ?key: string) =
+        static member onDragCompleted(node: VirtualNode<Thumb>, handler: Thumb -> DragCompletedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragCompleted"
                 Subscribe = (fun uiElement ->
                     let thumb = uiElement :?> Thumb
-                    let h = DragCompletedEventHandler(fun _ e -> handler e)
+                    let h = DragCompletedEventHandler(fun _ e -> handler thumb e)
                     thumb.DragCompleted.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = thumb.DragCompleted.RemoveHandler h }
@@ -39,12 +39,12 @@ module ThumbMod =
             })
 
         [<Extension>]
-        static member onDragDelta(node: VirtualNode<Thumb>, handler: DragDeltaEventArgs -> unit, ?key: string) =
+        static member onDragDelta(node: VirtualNode<Thumb>, handler: Thumb -> DragDeltaEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragDelta"
                 Subscribe = (fun uiElement ->
                     let thumb = uiElement :?> Thumb
-                    let h = DragDeltaEventHandler(fun _ e -> handler e)
+                    let h = DragDeltaEventHandler(fun _ e -> handler thumb e)
                     thumb.DragDelta.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = thumb.DragDelta.RemoveHandler h }
@@ -52,12 +52,12 @@ module ThumbMod =
             })
 
         [<Extension>]
-        static member onDragStarted(node: VirtualNode<Thumb>, handler: DragStartedEventArgs -> unit, ?key: string) =
+        static member onDragStarted(node: VirtualNode<Thumb>, handler: Thumb -> DragStartedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragStarted"
                 Subscribe = (fun uiElement ->
                     let thumb = uiElement :?> Thumb
-                    let h = DragStartedEventHandler(fun _ e -> handler e)
+                    let h = DragStartedEventHandler(fun _ e -> handler thumb e)
                     thumb.DragStarted.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = thumb.DragStarted.RemoveHandler h }

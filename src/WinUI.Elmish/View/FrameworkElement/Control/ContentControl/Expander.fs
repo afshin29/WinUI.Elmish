@@ -75,12 +75,12 @@ module ExpanderMod =
             |> node.set
 
         [<Extension>]
-        static member onCollapsed(node: VirtualNode<Expander>, handler: ExpanderCollapsedEventArgs -> unit, ?key: string) =
+        static member onCollapsed(node: VirtualNode<Expander>, handler: Expander -> ExpanderCollapsedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Collapsed"
                 Subscribe = (fun uiElement ->
                     let expander = uiElement :?> Expander
-                    let h = TypedEventHandler<Expander, ExpanderCollapsedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<Expander, ExpanderCollapsedEventArgs>(fun _ e -> handler expander e)
                     expander.add_Collapsed h
                     { new IDisposable with
                         member _.Dispose() = expander.remove_Collapsed h }
@@ -88,12 +88,12 @@ module ExpanderMod =
             })
 
         [<Extension>]
-        static member onExpanding(node: VirtualNode<Expander>, handler: ExpanderExpandingEventArgs -> unit, ?key: string) =
+        static member onExpanding(node: VirtualNode<Expander>, handler: Expander -> ExpanderExpandingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Expanding"
                 Subscribe = (fun uiElement ->
                     let expander = uiElement :?> Expander
-                    let h = TypedEventHandler<Expander, ExpanderExpandingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<Expander, ExpanderExpandingEventArgs>(fun _ e -> handler expander e)
                     expander.add_Expanding h
                     { new IDisposable with
                         member _.Dispose() = expander.remove_Expanding h }

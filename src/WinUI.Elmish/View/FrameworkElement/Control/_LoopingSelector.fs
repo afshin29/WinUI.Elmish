@@ -67,12 +67,12 @@ module LoopingSelectorMod =
             |> node.set
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<LoopingSelector>, handler: SelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<LoopingSelector>, handler: LoopingSelector -> SelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let loopingSelector = uiElement :?> LoopingSelector
-                    let h = SelectionChangedEventHandler(fun _ e -> handler e)
+                    let h = SelectionChangedEventHandler(fun _ e -> handler loopingSelector e)
                     loopingSelector.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = loopingSelector.SelectionChanged.RemoveHandler h }

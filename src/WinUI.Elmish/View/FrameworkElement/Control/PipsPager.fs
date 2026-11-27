@@ -93,12 +93,12 @@ module PipsPagerMod =
             |> node.set
 
         [<Extension>]
-        static member onSelectedIndexChanged(node: VirtualNode<PipsPager>, handler: PipsPagerSelectedIndexChangedEventArgs -> unit, ?key: string) =
+        static member onSelectedIndexChanged(node: VirtualNode<PipsPager>, handler: PipsPager -> PipsPagerSelectedIndexChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectedIndexChanged"
                 Subscribe = (fun uiElement ->
                     let pipsPager = uiElement :?> PipsPager
-                    let h = TypedEventHandler<PipsPager, PipsPagerSelectedIndexChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<PipsPager, PipsPagerSelectedIndexChangedEventArgs>(fun _ e -> handler pipsPager e)
                     pipsPager.add_SelectedIndexChanged h
                     { new IDisposable with
                         member _.Dispose() = pipsPager.remove_SelectedIndexChanged h }

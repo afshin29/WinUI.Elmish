@@ -469,12 +469,12 @@ module CalendarViewMod =
             |> node.set
 
         [<Extension>]
-        static member onCalendarViewDayItemChanging(node: VirtualNode<CalendarView>, handler: CalendarViewDayItemChangingEventArgs -> unit, ?key: string) =
+        static member onCalendarViewDayItemChanging(node: VirtualNode<CalendarView>, handler: CalendarView -> CalendarViewDayItemChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CalendarViewDayItemChanging"
                 Subscribe = (fun uiElement ->
                     let calendarView = uiElement :?> CalendarView
-                    let h = TypedEventHandler<CalendarView, CalendarViewDayItemChangingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<CalendarView, CalendarViewDayItemChangingEventArgs>(fun _ e -> handler calendarView e)
                     calendarView.add_CalendarViewDayItemChanging h
                     { new IDisposable with
                         member _.Dispose() = calendarView.remove_CalendarViewDayItemChanging h }
@@ -482,12 +482,12 @@ module CalendarViewMod =
             })
 
         [<Extension>]
-        static member onSelectedDatesChanged(node: VirtualNode<CalendarView>, handler: CalendarViewSelectedDatesChangedEventArgs -> unit, ?key: string) =
+        static member onSelectedDatesChanged(node: VirtualNode<CalendarView>, handler: CalendarView -> CalendarViewSelectedDatesChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectedDatesChanged"
                 Subscribe = (fun uiElement ->
                     let calendarView = uiElement :?> CalendarView
-                    let h = TypedEventHandler<CalendarView, CalendarViewSelectedDatesChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<CalendarView, CalendarViewSelectedDatesChangedEventArgs>(fun _ e -> handler calendarView e)
                     calendarView.add_SelectedDatesChanged h
                     { new IDisposable with
                         member _.Dispose() = calendarView.remove_SelectedDatesChanged h }

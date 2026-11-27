@@ -142,12 +142,12 @@ module PagerControlMod =
             |> node.set
 
         [<Extension>]
-        static member onSelectedIndexChanged(node: VirtualNode<PagerControl>, handler: PagerControlSelectedIndexChangedEventArgs -> unit, ?key: string) =
+        static member onSelectedIndexChanged(node: VirtualNode<PagerControl>, handler: PagerControl -> PagerControlSelectedIndexChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectedIndexChanged"
                 Subscribe = (fun uiElement ->
                     let pagerControl = uiElement :?> PagerControl
-                    let h = TypedEventHandler<PagerControl, PagerControlSelectedIndexChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<PagerControl, PagerControlSelectedIndexChangedEventArgs>(fun _ e -> handler pagerControl e)
                     pagerControl.add_SelectedIndexChanged h
                     { new IDisposable with
                         member _.Dispose() = pagerControl.remove_SelectedIndexChanged h }

@@ -42,12 +42,12 @@ module RefreshContainerMod =
             |> node.set
 
         [<Extension>]
-        static member onRefreshRequested(node: VirtualNode<RefreshContainer>, handler: RefreshRequestedEventArgs -> unit, ?key: string) =
+        static member onRefreshRequested(node: VirtualNode<RefreshContainer>, handler: RefreshContainer -> RefreshRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "RefreshRequested"
                 Subscribe = (fun uiElement ->
                     let refreshContainer = uiElement :?> RefreshContainer
-                    let h = TypedEventHandler<RefreshContainer, RefreshRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RefreshContainer, RefreshRequestedEventArgs>(fun _ e -> handler refreshContainer e)
                     refreshContainer.add_RefreshRequested h
                     { new IDisposable with
                         member _.Dispose() = refreshContainer.remove_RefreshRequested h }

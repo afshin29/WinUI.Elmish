@@ -158,12 +158,12 @@ module TeachingTipMod =
             |> node.set
 
         [<Extension>]
-        static member onActionButtonClick(node: VirtualNode<TeachingTip>, handler: obj -> unit, ?key: string) =
+        static member onActionButtonClick(node: VirtualNode<TeachingTip>, handler: TeachingTip -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ActionButtonClick"
                 Subscribe = (fun uiElement ->
                     let teachingTip = uiElement :?> TeachingTip
-                    let h = TypedEventHandler<TeachingTip, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TeachingTip, obj>(fun _ e -> handler teachingTip e)
                     teachingTip.add_ActionButtonClick h
                     { new IDisposable with
                         member _.Dispose() = teachingTip.remove_ActionButtonClick h }
@@ -171,12 +171,12 @@ module TeachingTipMod =
             })
 
         [<Extension>]
-        static member onCloseButtonClick(node: VirtualNode<TeachingTip>, handler: obj -> unit, ?key: string) =
+        static member onCloseButtonClick(node: VirtualNode<TeachingTip>, handler: TeachingTip -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CloseButtonClick"
                 Subscribe = (fun uiElement ->
                     let teachingTip = uiElement :?> TeachingTip
-                    let h = TypedEventHandler<TeachingTip, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TeachingTip, obj>(fun _ e -> handler teachingTip e)
                     teachingTip.add_CloseButtonClick h
                     { new IDisposable with
                         member _.Dispose() = teachingTip.remove_CloseButtonClick h }
@@ -184,12 +184,12 @@ module TeachingTipMod =
             })
 
         [<Extension>]
-        static member onClosed(node: VirtualNode<TeachingTip>, handler: TeachingTipClosedEventArgs -> unit, ?key: string) =
+        static member onClosed(node: VirtualNode<TeachingTip>, handler: TeachingTip -> TeachingTipClosedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closed"
                 Subscribe = (fun uiElement ->
                     let teachingTip = uiElement :?> TeachingTip
-                    let h = TypedEventHandler<TeachingTip, TeachingTipClosedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TeachingTip, TeachingTipClosedEventArgs>(fun _ e -> handler teachingTip e)
                     teachingTip.add_Closed h
                     { new IDisposable with
                         member _.Dispose() = teachingTip.remove_Closed h }
@@ -197,12 +197,12 @@ module TeachingTipMod =
             })
 
         [<Extension>]
-        static member onClosing(node: VirtualNode<TeachingTip>, handler: TeachingTipClosingEventArgs -> unit, ?key: string) =
+        static member onClosing(node: VirtualNode<TeachingTip>, handler: TeachingTip -> TeachingTipClosingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closing"
                 Subscribe = (fun uiElement ->
                     let teachingTip = uiElement :?> TeachingTip
-                    let h = TypedEventHandler<TeachingTip, TeachingTipClosingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TeachingTip, TeachingTipClosingEventArgs>(fun _ e -> handler teachingTip e)
                     teachingTip.add_Closing h
                     { new IDisposable with
                         member _.Dispose() = teachingTip.remove_Closing h }
@@ -210,12 +210,12 @@ module TeachingTipMod =
             })
 
         [<Extension>]
-        static member onOpened(node: VirtualNode<TeachingTip>, handler: TeachingTipOpenedEventArgs -> unit, ?key: string) =
+        static member onOpened(node: VirtualNode<TeachingTip>, handler: TeachingTip -> TeachingTipOpenedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Opened"
                 Subscribe = (fun uiElement ->
                     let teachingTip = uiElement :?> TeachingTip
-                    let h = TypedEventHandler<TeachingTip, TeachingTipOpenedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TeachingTip, TeachingTipOpenedEventArgs>(fun _ e -> handler teachingTip e)
                     teachingTip.add_Opened h
                     { new IDisposable with
                         member _.Dispose() = teachingTip.remove_Opened h }

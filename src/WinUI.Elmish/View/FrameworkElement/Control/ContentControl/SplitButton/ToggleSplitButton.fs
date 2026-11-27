@@ -31,12 +31,12 @@ module ToggleSplitButtonMod =
             |> node.set
 
         [<Extension>]
-        static member onIsCheckedChanged(node: VirtualNode<ToggleSplitButton>, handler: ToggleSplitButtonIsCheckedChangedEventArgs -> unit, ?key: string) =
+        static member onIsCheckedChanged(node: VirtualNode<ToggleSplitButton>, handler: ToggleSplitButton -> ToggleSplitButtonIsCheckedChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "IsCheckedChanged"
                 Subscribe = (fun uiElement ->
                     let toggleSplitButton = uiElement :?> ToggleSplitButton
-                    let h = TypedEventHandler<ToggleSplitButton, ToggleSplitButtonIsCheckedChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ToggleSplitButton, ToggleSplitButtonIsCheckedChangedEventArgs>(fun _ e -> handler toggleSplitButton e)
                     toggleSplitButton.add_IsCheckedChanged h
                     { new IDisposable with
                         member _.Dispose() = toggleSplitButton.remove_IsCheckedChanged h }

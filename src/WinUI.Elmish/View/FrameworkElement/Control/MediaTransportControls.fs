@@ -176,12 +176,12 @@ module MediaTransportControlsMod =
             |> node.set
 
         [<Extension>]
-        static member onThumbnailRequested(node: VirtualNode<MediaTransportControls>, handler: MediaTransportControlsThumbnailRequestedEventArgs -> unit, ?key: string) =
+        static member onThumbnailRequested(node: VirtualNode<MediaTransportControls>, handler: MediaTransportControls -> MediaTransportControlsThumbnailRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ThumbnailRequested"
                 Subscribe = (fun uiElement ->
                     let mediaTransportControls = uiElement :?> MediaTransportControls
-                    let h = TypedEventHandler<MediaTransportControls, MediaTransportControlsThumbnailRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<MediaTransportControls, MediaTransportControlsThumbnailRequestedEventArgs>(fun _ e -> handler mediaTransportControls e)
                     mediaTransportControls.add_ThumbnailRequested h
                     { new IDisposable with
                         member _.Dispose() = mediaTransportControls.remove_ThumbnailRequested h }

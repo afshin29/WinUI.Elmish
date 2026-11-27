@@ -88,12 +88,12 @@ module ColorSpectrumMod =
             |> node.set
 
         [<Extension>]
-        static member onColorChanged(node: VirtualNode<ColorSpectrum>, handler: ColorChangedEventArgs -> unit, ?key: string) =
+        static member onColorChanged(node: VirtualNode<ColorSpectrum>, handler: ColorSpectrum -> ColorChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ColorChanged"
                 Subscribe = (fun uiElement ->
                     let colorSpectrum = uiElement :?> ColorSpectrum
-                    let h = TypedEventHandler<ColorSpectrum, ColorChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ColorSpectrum, ColorChangedEventArgs>(fun _ e -> handler colorSpectrum e)
                     colorSpectrum.add_ColorChanged h
                     { new IDisposable with
                         member _.Dispose() = colorSpectrum.remove_ColorChanged h }

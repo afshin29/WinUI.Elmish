@@ -55,12 +55,12 @@ module RichTextBlockOverflowMod =
             |> node.set
 
         [<Extension>]
-        static member onIsTextTrimmedChanged(node: VirtualNode<RichTextBlockOverflow>, handler: IsTextTrimmedChangedEventArgs -> unit, ?key: string) =
+        static member onIsTextTrimmedChanged(node: VirtualNode<RichTextBlockOverflow>, handler: RichTextBlockOverflow -> IsTextTrimmedChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "IsTextTrimmedChanged"
                 Subscribe = (fun uiElement ->
                     let richTextBlockOverflow = uiElement :?> RichTextBlockOverflow
-                    let h = TypedEventHandler<RichTextBlockOverflow, IsTextTrimmedChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichTextBlockOverflow, IsTextTrimmedChangedEventArgs>(fun _ e -> handler richTextBlockOverflow e)
                     richTextBlockOverflow.add_IsTextTrimmedChanged h
                     { new IDisposable with
                         member _.Dispose() = richTextBlockOverflow.remove_IsTextTrimmedChanged h }

@@ -57,12 +57,12 @@ module MapControlMod =
             |> node.set
 
         [<Extension>]
-        static member onMapElementClick(node: VirtualNode<MapControl>, handler: MapElementClickEventArgs -> unit, ?key: string) =
+        static member onMapElementClick(node: VirtualNode<MapControl>, handler: MapControl -> MapElementClickEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "MapElementClick"
                 Subscribe = (fun uiElement ->
                     let mapControl = uiElement :?> MapControl
-                    let h = TypedEventHandler<MapControl, MapElementClickEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<MapControl, MapElementClickEventArgs>(fun _ e -> handler mapControl e)
                     mapControl.add_MapElementClick h
                     { new IDisposable with
                         member _.Dispose() = mapControl.remove_MapElementClick h }
@@ -70,12 +70,12 @@ module MapControlMod =
             })
 
         [<Extension>]
-        static member onMapServiceErrorOccurred(node: VirtualNode<MapControl>, handler: MapControlMapServiceErrorOccurredEventArgs -> unit, ?key: string) =
+        static member onMapServiceErrorOccurred(node: VirtualNode<MapControl>, handler: MapControl -> MapControlMapServiceErrorOccurredEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "MapServiceErrorOccurred"
                 Subscribe = (fun uiElement ->
                     let mapControl = uiElement :?> MapControl
-                    let h = TypedEventHandler<MapControl, MapControlMapServiceErrorOccurredEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<MapControl, MapControlMapServiceErrorOccurredEventArgs>(fun _ e -> handler mapControl e)
                     mapControl.add_MapServiceErrorOccurred h
                     { new IDisposable with
                         member _.Dispose() = mapControl.remove_MapServiceErrorOccurred h }

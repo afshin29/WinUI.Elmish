@@ -27,12 +27,12 @@ module SwapChainPanelMod =
     type SwapChainPanelExtensions =
 
         [<Extension>]
-        static member onCompositionScaleChanged(node: VirtualNode<SwapChainPanel>, handler: obj -> unit, ?key: string) =
+        static member onCompositionScaleChanged(node: VirtualNode<SwapChainPanel>, handler: SwapChainPanel -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CompositionScaleChanged"
                 Subscribe = (fun uiElement ->
                     let swapChainPanel = uiElement :?> SwapChainPanel
-                    let h = TypedEventHandler<SwapChainPanel, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<SwapChainPanel, obj>(fun _ e -> handler swapChainPanel e)
                     swapChainPanel.add_CompositionScaleChanged h
                     { new IDisposable with
                         member _.Dispose() = swapChainPanel.remove_CompositionScaleChanged h }

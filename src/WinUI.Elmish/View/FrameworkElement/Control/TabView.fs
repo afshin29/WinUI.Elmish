@@ -180,12 +180,12 @@ module TabViewMod =
             |> node.set
 
         [<Extension>]
-        static member onAddTabButtonClick(node: VirtualNode<TabView>, handler: obj -> unit, ?key: string) =
+        static member onAddTabButtonClick(node: VirtualNode<TabView>, handler: TabView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "AddTabButtonClick"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, obj>(fun _ e -> handler tabView e)
                     tabView.add_AddTabButtonClick h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_AddTabButtonClick h }
@@ -193,12 +193,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onExternalTornOutTabsDropped(node: VirtualNode<TabView>, handler: TabViewExternalTornOutTabsDroppedEventArgs -> unit, ?key: string) =
+        static member onExternalTornOutTabsDropped(node: VirtualNode<TabView>, handler: TabView -> TabViewExternalTornOutTabsDroppedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ExternalTornOutTabsDropped"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, TabViewExternalTornOutTabsDroppedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, TabViewExternalTornOutTabsDroppedEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_ExternalTornOutTabsDropped h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_ExternalTornOutTabsDropped h }
@@ -206,12 +206,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onExternalTornOutTabsDropping(node: VirtualNode<TabView>, handler: TabViewExternalTornOutTabsDroppingEventArgs -> unit, ?key: string) =
+        static member onExternalTornOutTabsDropping(node: VirtualNode<TabView>, handler: TabView -> TabViewExternalTornOutTabsDroppingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ExternalTornOutTabsDropping"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, TabViewExternalTornOutTabsDroppingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, TabViewExternalTornOutTabsDroppingEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_ExternalTornOutTabsDropping h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_ExternalTornOutTabsDropping h }
@@ -219,12 +219,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<TabView>, handler: SelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<TabView>, handler: TabView -> SelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = SelectionChangedEventHandler(fun _ e -> handler e)
+                    let h = SelectionChangedEventHandler(fun _ e -> handler tabView e)
                     tabView.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = tabView.SelectionChanged.RemoveHandler h }
@@ -232,12 +232,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabCloseRequested(node: VirtualNode<TabView>, handler: TabViewTabCloseRequestedEventArgs -> unit, ?key: string) =
+        static member onTabCloseRequested(node: VirtualNode<TabView>, handler: TabView -> TabViewTabCloseRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabCloseRequested"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, TabViewTabCloseRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, TabViewTabCloseRequestedEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_TabCloseRequested h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_TabCloseRequested h }
@@ -245,12 +245,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabDragCompleted(node: VirtualNode<TabView>, handler: TabViewTabDragCompletedEventArgs -> unit, ?key: string) =
+        static member onTabDragCompleted(node: VirtualNode<TabView>, handler: TabView -> TabViewTabDragCompletedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabDragCompleted"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, TabViewTabDragCompletedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, TabViewTabDragCompletedEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_TabDragCompleted h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_TabDragCompleted h }
@@ -258,12 +258,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabDragStarting(node: VirtualNode<TabView>, handler: TabViewTabDragStartingEventArgs -> unit, ?key: string) =
+        static member onTabDragStarting(node: VirtualNode<TabView>, handler: TabView -> TabViewTabDragStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabDragStarting"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, TabViewTabDragStartingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, TabViewTabDragStartingEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_TabDragStarting h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_TabDragStarting h }
@@ -271,12 +271,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabDroppedOutside(node: VirtualNode<TabView>, handler: TabViewTabDroppedOutsideEventArgs -> unit, ?key: string) =
+        static member onTabDroppedOutside(node: VirtualNode<TabView>, handler: TabView -> TabViewTabDroppedOutsideEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabDroppedOutside"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, TabViewTabDroppedOutsideEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, TabViewTabDroppedOutsideEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_TabDroppedOutside h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_TabDroppedOutside h }
@@ -284,12 +284,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabItemsChanged(node: VirtualNode<TabView>, handler: IVectorChangedEventArgs -> unit, ?key: string) =
+        static member onTabItemsChanged(node: VirtualNode<TabView>, handler: TabView -> IVectorChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabItemsChanged"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, IVectorChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, IVectorChangedEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_TabItemsChanged h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_TabItemsChanged h }
@@ -297,12 +297,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabStripDragOver(node: VirtualNode<TabView>, handler: DragEventArgs -> unit, ?key: string) =
+        static member onTabStripDragOver(node: VirtualNode<TabView>, handler: TabView -> DragEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabStripDragOver"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = DragEventHandler(fun _ e -> handler e)
+                    let h = DragEventHandler(fun _ e -> handler tabView e)
                     tabView.TabStripDragOver.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = tabView.TabStripDragOver.RemoveHandler h }
@@ -310,12 +310,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabStripDrop(node: VirtualNode<TabView>, handler: DragEventArgs -> unit, ?key: string) =
+        static member onTabStripDrop(node: VirtualNode<TabView>, handler: TabView -> DragEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabStripDrop"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = DragEventHandler(fun _ e -> handler e)
+                    let h = DragEventHandler(fun _ e -> handler tabView e)
                     tabView.TabStripDrop.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = tabView.TabStripDrop.RemoveHandler h }
@@ -323,12 +323,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabTearOutRequested(node: VirtualNode<TabView>, handler: TabViewTabTearOutRequestedEventArgs -> unit, ?key: string) =
+        static member onTabTearOutRequested(node: VirtualNode<TabView>, handler: TabView -> TabViewTabTearOutRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabTearOutRequested"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, TabViewTabTearOutRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, TabViewTabTearOutRequestedEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_TabTearOutRequested h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_TabTearOutRequested h }
@@ -336,12 +336,12 @@ module TabViewMod =
             })
 
         [<Extension>]
-        static member onTabTearOutWindowRequested(node: VirtualNode<TabView>, handler: TabViewTabTearOutWindowRequestedEventArgs -> unit, ?key: string) =
+        static member onTabTearOutWindowRequested(node: VirtualNode<TabView>, handler: TabView -> TabViewTabTearOutWindowRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TabTearOutWindowRequested"
                 Subscribe = (fun uiElement ->
                     let tabView = uiElement :?> TabView
-                    let h = TypedEventHandler<TabView, TabViewTabTearOutWindowRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabView, TabViewTabTearOutWindowRequestedEventArgs>(fun _ e -> handler tabView e)
                     tabView.add_TabTearOutWindowRequested h
                     { new IDisposable with
                         member _.Dispose() = tabView.remove_TabTearOutWindowRequested h }

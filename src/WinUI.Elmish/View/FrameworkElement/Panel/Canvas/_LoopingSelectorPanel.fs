@@ -23,12 +23,12 @@ module LoopingSelectorPanelMod =
     type LoopingSelectorPanelExtensions =
 
         [<Extension>]
-        static member onHorizontalSnapPointsChanged(node: VirtualNode<LoopingSelectorPanel>, handler: obj -> unit, ?key: string) =
+        static member onHorizontalSnapPointsChanged(node: VirtualNode<LoopingSelectorPanel>, handler: LoopingSelectorPanel -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "HorizontalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let loopingSelectorPanel = uiElement :?> LoopingSelectorPanel
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler loopingSelectorPanel e)
                     loopingSelectorPanel.HorizontalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = loopingSelectorPanel.HorizontalSnapPointsChanged.RemoveHandler h }
@@ -36,12 +36,12 @@ module LoopingSelectorPanelMod =
             })
 
         [<Extension>]
-        static member onVerticalSnapPointsChanged(node: VirtualNode<LoopingSelectorPanel>, handler: obj -> unit, ?key: string) =
+        static member onVerticalSnapPointsChanged(node: VirtualNode<LoopingSelectorPanel>, handler: LoopingSelectorPanel -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "VerticalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let loopingSelectorPanel = uiElement :?> LoopingSelectorPanel
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler loopingSelectorPanel e)
                     loopingSelectorPanel.VerticalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = loopingSelectorPanel.VerticalSnapPointsChanged.RemoveHandler h }

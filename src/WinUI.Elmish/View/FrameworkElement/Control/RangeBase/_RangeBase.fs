@@ -57,12 +57,13 @@ module RangeBaseMod =
 
         [<Extension>]
         static member onValueChanged<'m when 'm :> RangeBase and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RangeBaseValueChangedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RangeBaseValueChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ValueChanged"
                 Subscribe = (fun uiElement ->
                     let rangeBase = uiElement :?> RangeBase
-                    let h = RangeBaseValueChangedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RangeBaseValueChangedEventHandler(fun _ e -> handler sender e)
                     rangeBase.ValueChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = rangeBase.ValueChanged.RemoveHandler h }

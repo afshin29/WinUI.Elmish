@@ -52,12 +52,12 @@ module AnnotatedScrollBarMod =
             |> node.set
 
         [<Extension>]
-        static member onDetailLabelRequested(node: VirtualNode<AnnotatedScrollBar>, handler: AnnotatedScrollBarDetailLabelRequestedEventArgs -> unit, ?key: string) =
+        static member onDetailLabelRequested(node: VirtualNode<AnnotatedScrollBar>, handler: AnnotatedScrollBar -> AnnotatedScrollBarDetailLabelRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DetailLabelRequested"
                 Subscribe = (fun uiElement ->
                     let annotatedScrollBar = uiElement :?> AnnotatedScrollBar
-                    let h = TypedEventHandler<AnnotatedScrollBar, AnnotatedScrollBarDetailLabelRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<AnnotatedScrollBar, AnnotatedScrollBarDetailLabelRequestedEventArgs>(fun _ e -> handler annotatedScrollBar e)
                     annotatedScrollBar.add_DetailLabelRequested h
                     { new IDisposable with
                         member _.Dispose() = annotatedScrollBar.remove_DetailLabelRequested h }
@@ -65,12 +65,12 @@ module AnnotatedScrollBarMod =
             })
 
         [<Extension>]
-        static member onScrolling(node: VirtualNode<AnnotatedScrollBar>, handler: AnnotatedScrollBarScrollingEventArgs -> unit, ?key: string) =
+        static member onScrolling(node: VirtualNode<AnnotatedScrollBar>, handler: AnnotatedScrollBar -> AnnotatedScrollBarScrollingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Scrolling"
                 Subscribe = (fun uiElement ->
                     let annotatedScrollBar = uiElement :?> AnnotatedScrollBar
-                    let h = TypedEventHandler<AnnotatedScrollBar, AnnotatedScrollBarScrollingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<AnnotatedScrollBar, AnnotatedScrollBarScrollingEventArgs>(fun _ e -> handler annotatedScrollBar e)
                     annotatedScrollBar.add_Scrolling h
                     { new IDisposable with
                         member _.Dispose() = annotatedScrollBar.remove_Scrolling h }

@@ -156,12 +156,12 @@ module ScrollViewMod =
             |> node.set
 
         [<Extension>]
-        static member onAnchorRequested(node: VirtualNode<ScrollView>, handler: ScrollingAnchorRequestedEventArgs -> unit, ?key: string) =
+        static member onAnchorRequested(node: VirtualNode<ScrollView>, handler: ScrollView -> ScrollingAnchorRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "AnchorRequested"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, ScrollingAnchorRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, ScrollingAnchorRequestedEventArgs>(fun _ e -> handler scrollView e)
                     scrollView.add_AnchorRequested h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_AnchorRequested h }
@@ -169,12 +169,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onBringingIntoView(node: VirtualNode<ScrollView>, handler: ScrollingBringingIntoViewEventArgs -> unit, ?key: string) =
+        static member onBringingIntoView(node: VirtualNode<ScrollView>, handler: ScrollView -> ScrollingBringingIntoViewEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "BringingIntoView"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, ScrollingBringingIntoViewEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, ScrollingBringingIntoViewEventArgs>(fun _ e -> handler scrollView e)
                     scrollView.add_BringingIntoView h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_BringingIntoView h }
@@ -182,12 +182,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onExtentChanged(node: VirtualNode<ScrollView>, handler: obj -> unit, ?key: string) =
+        static member onExtentChanged(node: VirtualNode<ScrollView>, handler: ScrollView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ExtentChanged"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, obj>(fun _ e -> handler scrollView e)
                     scrollView.add_ExtentChanged h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_ExtentChanged h }
@@ -195,12 +195,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onScrollAnimationStarting(node: VirtualNode<ScrollView>, handler: ScrollingScrollAnimationStartingEventArgs -> unit, ?key: string) =
+        static member onScrollAnimationStarting(node: VirtualNode<ScrollView>, handler: ScrollView -> ScrollingScrollAnimationStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ScrollAnimationStarting"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, ScrollingScrollAnimationStartingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, ScrollingScrollAnimationStartingEventArgs>(fun _ e -> handler scrollView e)
                     scrollView.add_ScrollAnimationStarting h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_ScrollAnimationStarting h }
@@ -208,12 +208,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onScrollCompleted(node: VirtualNode<ScrollView>, handler: ScrollingScrollCompletedEventArgs -> unit, ?key: string) =
+        static member onScrollCompleted(node: VirtualNode<ScrollView>, handler: ScrollView -> ScrollingScrollCompletedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ScrollCompleted"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, ScrollingScrollCompletedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, ScrollingScrollCompletedEventArgs>(fun _ e -> handler scrollView e)
                     scrollView.add_ScrollCompleted h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_ScrollCompleted h }
@@ -221,12 +221,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onScrollStarting(node: VirtualNode<ScrollView>, handler: ScrollingScrollStartingEventArgs -> unit, ?key: string) =
+        static member onScrollStarting(node: VirtualNode<ScrollView>, handler: ScrollView -> ScrollingScrollStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ScrollStarting"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, ScrollingScrollStartingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, ScrollingScrollStartingEventArgs>(fun _ e -> handler scrollView e)
                     scrollView.add_ScrollStarting h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_ScrollStarting h }
@@ -234,12 +234,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onStateChanged(node: VirtualNode<ScrollView>, handler: obj -> unit, ?key: string) =
+        static member onStateChanged(node: VirtualNode<ScrollView>, handler: ScrollView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "StateChanged"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, obj>(fun _ e -> handler scrollView e)
                     scrollView.add_StateChanged h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_StateChanged h }
@@ -247,12 +247,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onViewChanged(node: VirtualNode<ScrollView>, handler: obj -> unit, ?key: string) =
+        static member onViewChanged(node: VirtualNode<ScrollView>, handler: ScrollView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ViewChanged"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, obj>(fun _ e -> handler scrollView e)
                     scrollView.add_ViewChanged h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_ViewChanged h }
@@ -260,12 +260,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onZoomAnimationStarting(node: VirtualNode<ScrollView>, handler: ScrollingZoomAnimationStartingEventArgs -> unit, ?key: string) =
+        static member onZoomAnimationStarting(node: VirtualNode<ScrollView>, handler: ScrollView -> ScrollingZoomAnimationStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ZoomAnimationStarting"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, ScrollingZoomAnimationStartingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, ScrollingZoomAnimationStartingEventArgs>(fun _ e -> handler scrollView e)
                     scrollView.add_ZoomAnimationStarting h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_ZoomAnimationStarting h }
@@ -273,12 +273,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onZoomCompleted(node: VirtualNode<ScrollView>, handler: ScrollingZoomCompletedEventArgs -> unit, ?key: string) =
+        static member onZoomCompleted(node: VirtualNode<ScrollView>, handler: ScrollView -> ScrollingZoomCompletedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ZoomCompleted"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, ScrollingZoomCompletedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, ScrollingZoomCompletedEventArgs>(fun _ e -> handler scrollView e)
                     scrollView.add_ZoomCompleted h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_ZoomCompleted h }
@@ -286,12 +286,12 @@ module ScrollViewMod =
             })
 
         [<Extension>]
-        static member onZoomStarting(node: VirtualNode<ScrollView>, handler: ScrollingZoomStartingEventArgs -> unit, ?key: string) =
+        static member onZoomStarting(node: VirtualNode<ScrollView>, handler: ScrollView -> ScrollingZoomStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ZoomStarting"
                 Subscribe = (fun uiElement ->
                     let scrollView = uiElement :?> ScrollView
-                    let h = TypedEventHandler<ScrollView, ScrollingZoomStartingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollView, ScrollingZoomStartingEventArgs>(fun _ e -> handler scrollView e)
                     scrollView.add_ZoomStarting h
                     { new IDisposable with
                         member _.Dispose() = scrollView.remove_ZoomStarting h }

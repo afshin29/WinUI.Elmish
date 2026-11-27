@@ -127,12 +127,12 @@ module InfoBarMod =
             |> node.set
 
         [<Extension>]
-        static member onCloseButtonClick(node: VirtualNode<InfoBar>, handler: obj -> unit, ?key: string) =
+        static member onCloseButtonClick(node: VirtualNode<InfoBar>, handler: InfoBar -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CloseButtonClick"
                 Subscribe = (fun uiElement ->
                     let infoBar = uiElement :?> InfoBar
-                    let h = TypedEventHandler<InfoBar, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InfoBar, obj>(fun _ e -> handler infoBar e)
                     infoBar.add_CloseButtonClick h
                     { new IDisposable with
                         member _.Dispose() = infoBar.remove_CloseButtonClick h }
@@ -140,12 +140,12 @@ module InfoBarMod =
             })
 
         [<Extension>]
-        static member onClosed(node: VirtualNode<InfoBar>, handler: InfoBarClosedEventArgs -> unit, ?key: string) =
+        static member onClosed(node: VirtualNode<InfoBar>, handler: InfoBar -> InfoBarClosedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closed"
                 Subscribe = (fun uiElement ->
                     let infoBar = uiElement :?> InfoBar
-                    let h = TypedEventHandler<InfoBar, InfoBarClosedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InfoBar, InfoBarClosedEventArgs>(fun _ e -> handler infoBar e)
                     infoBar.add_Closed h
                     { new IDisposable with
                         member _.Dispose() = infoBar.remove_Closed h }
@@ -153,12 +153,12 @@ module InfoBarMod =
             })
 
         [<Extension>]
-        static member onClosing(node: VirtualNode<InfoBar>, handler: InfoBarClosingEventArgs -> unit, ?key: string) =
+        static member onClosing(node: VirtualNode<InfoBar>, handler: InfoBar -> InfoBarClosingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closing"
                 Subscribe = (fun uiElement ->
                     let infoBar = uiElement :?> InfoBar
-                    let h = TypedEventHandler<InfoBar, InfoBarClosingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InfoBar, InfoBarClosingEventArgs>(fun _ e -> handler infoBar e)
                     infoBar.add_Closing h
                     { new IDisposable with
                         member _.Dispose() = infoBar.remove_Closing h }
@@ -166,12 +166,12 @@ module InfoBarMod =
             })
 
         [<Extension>]
-        static member onOpened(node: VirtualNode<InfoBar>, handler: InfoBarOpenedEventArgs -> unit, ?key: string) =
+        static member onOpened(node: VirtualNode<InfoBar>, handler: InfoBar -> InfoBarOpenedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Opened"
                 Subscribe = (fun uiElement ->
                     let infoBar = uiElement :?> InfoBar
-                    let h = TypedEventHandler<InfoBar, InfoBarOpenedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InfoBar, InfoBarOpenedEventArgs>(fun _ e -> handler infoBar e)
                     infoBar.add_Opened h
                     { new IDisposable with
                         member _.Dispose() = infoBar.remove_Opened h }

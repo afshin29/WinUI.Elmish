@@ -43,12 +43,12 @@ module ScrollBarMod =
             |> node.set
 
         [<Extension>]
-        static member onScroll(node: VirtualNode<ScrollBar>, handler: ScrollEventArgs -> unit, ?key: string) =
+        static member onScroll(node: VirtualNode<ScrollBar>, handler: ScrollBar -> ScrollEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Scroll"
                 Subscribe = (fun uiElement ->
                     let scrollBar = uiElement :?> ScrollBar
-                    let h = ScrollEventHandler(fun _ e -> handler e)
+                    let h = ScrollEventHandler(fun _ e -> handler scrollBar e)
                     scrollBar.Scroll.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = scrollBar.Scroll.RemoveHandler h }

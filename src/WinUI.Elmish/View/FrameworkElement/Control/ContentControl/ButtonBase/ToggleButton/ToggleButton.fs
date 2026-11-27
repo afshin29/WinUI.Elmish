@@ -40,12 +40,13 @@ module ToggleButtonMod =
 
         [<Extension>]
         static member onChecked<'m when 'm :> ToggleButton and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Checked"
                 Subscribe = (fun uiElement ->
                     let toggleButton = uiElement :?> ToggleButton
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RoutedEventHandler(fun _ e -> handler sender e)
                     toggleButton.Checked.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = toggleButton.Checked.RemoveHandler h }
@@ -54,12 +55,13 @@ module ToggleButtonMod =
 
         [<Extension>]
         static member onIndeterminate<'m when 'm :> ToggleButton and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Indeterminate"
                 Subscribe = (fun uiElement ->
                     let toggleButton = uiElement :?> ToggleButton
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RoutedEventHandler(fun _ e -> handler sender e)
                     toggleButton.Indeterminate.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = toggleButton.Indeterminate.RemoveHandler h }
@@ -68,12 +70,13 @@ module ToggleButtonMod =
 
         [<Extension>]
         static member onUnchecked<'m when 'm :> ToggleButton and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Unchecked"
                 Subscribe = (fun uiElement ->
                     let toggleButton = uiElement :?> ToggleButton
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RoutedEventHandler(fun _ e -> handler sender e)
                     toggleButton.Unchecked.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = toggleButton.Unchecked.RemoveHandler h }

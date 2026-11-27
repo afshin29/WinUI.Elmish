@@ -37,12 +37,12 @@ module InkToolbarFlyoutItemMod =
             |> node.set
 
         [<Extension>]
-        static member onChecked(node: VirtualNode<InkToolbarFlyoutItem>, handler: obj -> unit, ?key: string) =
+        static member onChecked(node: VirtualNode<InkToolbarFlyoutItem>, handler: InkToolbarFlyoutItem -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Checked"
                 Subscribe = (fun uiElement ->
                     let inkToolbarFlyoutItem = uiElement :?> InkToolbarFlyoutItem
-                    let h = TypedEventHandler<InkToolbarFlyoutItem, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InkToolbarFlyoutItem, obj>(fun _ e -> handler inkToolbarFlyoutItem e)
                     inkToolbarFlyoutItem.add_Checked h
                     { new IDisposable with
                         member _.Dispose() = inkToolbarFlyoutItem.remove_Checked h }
@@ -50,12 +50,12 @@ module InkToolbarFlyoutItemMod =
             })
 
         [<Extension>]
-        static member onUnchecked(node: VirtualNode<InkToolbarFlyoutItem>, handler: obj -> unit, ?key: string) =
+        static member onUnchecked(node: VirtualNode<InkToolbarFlyoutItem>, handler: InkToolbarFlyoutItem -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Unchecked"
                 Subscribe = (fun uiElement ->
                     let inkToolbarFlyoutItem = uiElement :?> InkToolbarFlyoutItem
-                    let h = TypedEventHandler<InkToolbarFlyoutItem, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InkToolbarFlyoutItem, obj>(fun _ e -> handler inkToolbarFlyoutItem e)
                     inkToolbarFlyoutItem.add_Unchecked h
                     { new IDisposable with
                         member _.Dispose() = inkToolbarFlyoutItem.remove_Unchecked h }

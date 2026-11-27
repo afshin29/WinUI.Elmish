@@ -47,12 +47,13 @@ module ButtonBaseMod =
 
         [<Extension>]
         static member onClick<'m when 'm :> ButtonBase and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Click"
                 Subscribe = (fun uiElement ->
                     let buttonBase = uiElement :?> ButtonBase
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RoutedEventHandler(fun _ e -> handler sender e)
                     buttonBase.Click.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = buttonBase.Click.RemoveHandler h }

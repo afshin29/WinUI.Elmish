@@ -38,12 +38,12 @@ module TableViewGroupHeaderMod =
             |> node.set
 
         [<Extension>]
-        static member onToggleRequested(node: VirtualNode<TableViewGroupHeader>, handler: TableViewGroupHeaderToggleRequestedEventArgs -> unit, ?key: string) =
+        static member onToggleRequested(node: VirtualNode<TableViewGroupHeader>, handler: TableViewGroupHeader -> TableViewGroupHeaderToggleRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ToggleRequested"
                 Subscribe = (fun uiElement ->
                     let tableViewGroupHeader = uiElement :?> TableViewGroupHeader
-                    let h = TypedEventHandler<TableViewGroupHeader, TableViewGroupHeaderToggleRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TableViewGroupHeader, TableViewGroupHeaderToggleRequestedEventArgs>(fun _ e -> handler tableViewGroupHeader e)
                     tableViewGroupHeader.add_ToggleRequested h
                     { new IDisposable with
                         member _.Dispose() = tableViewGroupHeader.remove_ToggleRequested h }

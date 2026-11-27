@@ -113,12 +113,12 @@ module ToggleSwitchMod =
             |> node.set
 
         [<Extension>]
-        static member onToggled(node: VirtualNode<ToggleSwitch>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onToggled(node: VirtualNode<ToggleSwitch>, handler: ToggleSwitch -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Toggled"
                 Subscribe = (fun uiElement ->
                     let toggleSwitch = uiElement :?> ToggleSwitch
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler toggleSwitch e)
                     toggleSwitch.Toggled.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = toggleSwitch.Toggled.RemoveHandler h }

@@ -47,12 +47,12 @@ module BreadcrumbBarMod =
             |> node.set
 
         [<Extension>]
-        static member onItemClicked(node: VirtualNode<BreadcrumbBar>, handler: BreadcrumbBarItemClickedEventArgs -> unit, ?key: string) =
+        static member onItemClicked(node: VirtualNode<BreadcrumbBar>, handler: BreadcrumbBar -> BreadcrumbBarItemClickedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ItemClicked"
                 Subscribe = (fun uiElement ->
                     let breadcrumbBar = uiElement :?> BreadcrumbBar
-                    let h = TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>(fun _ e -> handler breadcrumbBar e)
                     breadcrumbBar.add_ItemClicked h
                     { new IDisposable with
                         member _.Dispose() = breadcrumbBar.remove_ItemClicked h }

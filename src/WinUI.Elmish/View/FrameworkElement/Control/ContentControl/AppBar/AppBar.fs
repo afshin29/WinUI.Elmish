@@ -55,12 +55,13 @@ module AppBarMod =
 
         [<Extension>]
         static member onClosed<'m when 'm :> AppBar and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closed"
                 Subscribe = (fun uiElement ->
                     let appBar = uiElement :?> AppBar
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = EventHandler<obj>(fun _ e -> handler sender e)
                     appBar.Closed.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = appBar.Closed.RemoveHandler h }
@@ -69,12 +70,13 @@ module AppBarMod =
 
         [<Extension>]
         static member onClosing<'m when 'm :> AppBar and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closing"
                 Subscribe = (fun uiElement ->
                     let appBar = uiElement :?> AppBar
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = EventHandler<obj>(fun _ e -> handler sender e)
                     appBar.Closing.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = appBar.Closing.RemoveHandler h }
@@ -83,12 +85,13 @@ module AppBarMod =
 
         [<Extension>]
         static member onOpened<'m when 'm :> AppBar and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Opened"
                 Subscribe = (fun uiElement ->
                     let appBar = uiElement :?> AppBar
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = EventHandler<obj>(fun _ e -> handler sender e)
                     appBar.Opened.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = appBar.Opened.RemoveHandler h }
@@ -97,12 +100,13 @@ module AppBarMod =
 
         [<Extension>]
         static member onOpening<'m when 'm :> AppBar and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Opening"
                 Subscribe = (fun uiElement ->
                     let appBar = uiElement :?> AppBar
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = EventHandler<obj>(fun _ e -> handler sender e)
                     appBar.Opening.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = appBar.Opening.RemoveHandler h }

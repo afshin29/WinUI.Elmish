@@ -152,12 +152,12 @@ module PivotMod =
             |> node.set
 
         [<Extension>]
-        static member onPivotItemLoaded(node: VirtualNode<Pivot>, handler: PivotItemEventArgs -> unit, ?key: string) =
+        static member onPivotItemLoaded(node: VirtualNode<Pivot>, handler: Pivot -> PivotItemEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PivotItemLoaded"
                 Subscribe = (fun uiElement ->
                     let pivot = uiElement :?> Pivot
-                    let h = TypedEventHandler<Pivot, PivotItemEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<Pivot, PivotItemEventArgs>(fun _ e -> handler pivot e)
                     pivot.add_PivotItemLoaded h
                     { new IDisposable with
                         member _.Dispose() = pivot.remove_PivotItemLoaded h }
@@ -165,12 +165,12 @@ module PivotMod =
             })
 
         [<Extension>]
-        static member onPivotItemLoading(node: VirtualNode<Pivot>, handler: PivotItemEventArgs -> unit, ?key: string) =
+        static member onPivotItemLoading(node: VirtualNode<Pivot>, handler: Pivot -> PivotItemEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PivotItemLoading"
                 Subscribe = (fun uiElement ->
                     let pivot = uiElement :?> Pivot
-                    let h = TypedEventHandler<Pivot, PivotItemEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<Pivot, PivotItemEventArgs>(fun _ e -> handler pivot e)
                     pivot.add_PivotItemLoading h
                     { new IDisposable with
                         member _.Dispose() = pivot.remove_PivotItemLoading h }
@@ -178,12 +178,12 @@ module PivotMod =
             })
 
         [<Extension>]
-        static member onPivotItemUnloaded(node: VirtualNode<Pivot>, handler: PivotItemEventArgs -> unit, ?key: string) =
+        static member onPivotItemUnloaded(node: VirtualNode<Pivot>, handler: Pivot -> PivotItemEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PivotItemUnloaded"
                 Subscribe = (fun uiElement ->
                     let pivot = uiElement :?> Pivot
-                    let h = TypedEventHandler<Pivot, PivotItemEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<Pivot, PivotItemEventArgs>(fun _ e -> handler pivot e)
                     pivot.add_PivotItemUnloaded h
                     { new IDisposable with
                         member _.Dispose() = pivot.remove_PivotItemUnloaded h }
@@ -191,12 +191,12 @@ module PivotMod =
             })
 
         [<Extension>]
-        static member onPivotItemUnloading(node: VirtualNode<Pivot>, handler: PivotItemEventArgs -> unit, ?key: string) =
+        static member onPivotItemUnloading(node: VirtualNode<Pivot>, handler: Pivot -> PivotItemEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PivotItemUnloading"
                 Subscribe = (fun uiElement ->
                     let pivot = uiElement :?> Pivot
-                    let h = TypedEventHandler<Pivot, PivotItemEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<Pivot, PivotItemEventArgs>(fun _ e -> handler pivot e)
                     pivot.add_PivotItemUnloading h
                     { new IDisposable with
                         member _.Dispose() = pivot.remove_PivotItemUnloading h }
@@ -204,12 +204,12 @@ module PivotMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<Pivot>, handler: SelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<Pivot>, handler: Pivot -> SelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let pivot = uiElement :?> Pivot
-                    let h = SelectionChangedEventHandler(fun _ e -> handler e)
+                    let h = SelectionChangedEventHandler(fun _ e -> handler pivot e)
                     pivot.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = pivot.SelectionChanged.RemoveHandler h }

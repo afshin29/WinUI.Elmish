@@ -66,12 +66,12 @@ module TabViewItemMod =
             |> node.set
 
         [<Extension>]
-        static member onCloseRequested(node: VirtualNode<TabViewItem>, handler: TabViewTabCloseRequestedEventArgs -> unit, ?key: string) =
+        static member onCloseRequested(node: VirtualNode<TabViewItem>, handler: TabViewItem -> TabViewTabCloseRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CloseRequested"
                 Subscribe = (fun uiElement ->
                     let tabViewItem = uiElement :?> TabViewItem
-                    let h = TypedEventHandler<TabViewItem, TabViewTabCloseRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TabViewItem, TabViewTabCloseRequestedEventArgs>(fun _ e -> handler tabViewItem e)
                     tabViewItem.add_CloseRequested h
                     { new IDisposable with
                         member _.Dispose() = tabViewItem.remove_CloseRequested h }

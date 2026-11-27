@@ -86,12 +86,12 @@ module InkToolbarMod =
             |> node.set
 
         [<Extension>]
-        static member onActiveToolChanged(node: VirtualNode<InkToolbar>, handler: obj -> unit, ?key: string) =
+        static member onActiveToolChanged(node: VirtualNode<InkToolbar>, handler: InkToolbar -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ActiveToolChanged"
                 Subscribe = (fun uiElement ->
                     let inkToolbar = uiElement :?> InkToolbar
-                    let h = TypedEventHandler<InkToolbar, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InkToolbar, obj>(fun _ e -> handler inkToolbar e)
                     inkToolbar.add_ActiveToolChanged h
                     { new IDisposable with
                         member _.Dispose() = inkToolbar.remove_ActiveToolChanged h }
@@ -99,12 +99,12 @@ module InkToolbarMod =
             })
 
         [<Extension>]
-        static member onEraseAllClicked(node: VirtualNode<InkToolbar>, handler: obj -> unit, ?key: string) =
+        static member onEraseAllClicked(node: VirtualNode<InkToolbar>, handler: InkToolbar -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "EraseAllClicked"
                 Subscribe = (fun uiElement ->
                     let inkToolbar = uiElement :?> InkToolbar
-                    let h = TypedEventHandler<InkToolbar, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InkToolbar, obj>(fun _ e -> handler inkToolbar e)
                     inkToolbar.add_EraseAllClicked h
                     { new IDisposable with
                         member _.Dispose() = inkToolbar.remove_EraseAllClicked h }
@@ -112,12 +112,12 @@ module InkToolbarMod =
             })
 
         [<Extension>]
-        static member onInkDrawingAttributesChanged(node: VirtualNode<InkToolbar>, handler: obj -> unit, ?key: string) =
+        static member onInkDrawingAttributesChanged(node: VirtualNode<InkToolbar>, handler: InkToolbar -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "InkDrawingAttributesChanged"
                 Subscribe = (fun uiElement ->
                     let inkToolbar = uiElement :?> InkToolbar
-                    let h = TypedEventHandler<InkToolbar, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InkToolbar, obj>(fun _ e -> handler inkToolbar e)
                     inkToolbar.add_InkDrawingAttributesChanged h
                     { new IDisposable with
                         member _.Dispose() = inkToolbar.remove_InkDrawingAttributesChanged h }
@@ -125,12 +125,12 @@ module InkToolbarMod =
             })
 
         [<Extension>]
-        static member onIsStencilButtonCheckedChanged(node: VirtualNode<InkToolbar>, handler: InkToolbarIsStencilButtonCheckedChangedEventArgs -> unit, ?key: string) =
+        static member onIsStencilButtonCheckedChanged(node: VirtualNode<InkToolbar>, handler: InkToolbar -> InkToolbarIsStencilButtonCheckedChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "IsStencilButtonCheckedChanged"
                 Subscribe = (fun uiElement ->
                     let inkToolbar = uiElement :?> InkToolbar
-                    let h = TypedEventHandler<InkToolbar, InkToolbarIsStencilButtonCheckedChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<InkToolbar, InkToolbarIsStencilButtonCheckedChangedEventArgs>(fun _ e -> handler inkToolbar e)
                     inkToolbar.add_IsStencilButtonCheckedChanged h
                     { new IDisposable with
                         member _.Dispose() = inkToolbar.remove_IsStencilButtonCheckedChanged h }

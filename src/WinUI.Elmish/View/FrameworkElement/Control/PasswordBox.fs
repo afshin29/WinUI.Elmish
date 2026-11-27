@@ -129,12 +129,12 @@ module PasswordBoxMod =
             |> node.set
 
         [<Extension>]
-        static member onContextMenuOpening(node: VirtualNode<PasswordBox>, handler: ContextMenuEventArgs -> unit, ?key: string) =
+        static member onContextMenuOpening(node: VirtualNode<PasswordBox>, handler: PasswordBox -> ContextMenuEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ContextMenuOpening"
                 Subscribe = (fun uiElement ->
                     let passwordBox = uiElement :?> PasswordBox
-                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler e)
+                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler passwordBox e)
                     passwordBox.ContextMenuOpening.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = passwordBox.ContextMenuOpening.RemoveHandler h }
@@ -142,12 +142,12 @@ module PasswordBoxMod =
             })
 
         [<Extension>]
-        static member onPasswordChanged(node: VirtualNode<PasswordBox>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onPasswordChanged(node: VirtualNode<PasswordBox>, handler: PasswordBox -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PasswordChanged"
                 Subscribe = (fun uiElement ->
                     let passwordBox = uiElement :?> PasswordBox
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler passwordBox e)
                     passwordBox.PasswordChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = passwordBox.PasswordChanged.RemoveHandler h }
@@ -155,12 +155,12 @@ module PasswordBoxMod =
             })
 
         [<Extension>]
-        static member onPasswordChanging(node: VirtualNode<PasswordBox>, handler: PasswordBoxPasswordChangingEventArgs -> unit, ?key: string) =
+        static member onPasswordChanging(node: VirtualNode<PasswordBox>, handler: PasswordBox -> PasswordBoxPasswordChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PasswordChanging"
                 Subscribe = (fun uiElement ->
                     let passwordBox = uiElement :?> PasswordBox
-                    let h = TypedEventHandler<PasswordBox, PasswordBoxPasswordChangingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<PasswordBox, PasswordBoxPasswordChangingEventArgs>(fun _ e -> handler passwordBox e)
                     passwordBox.add_PasswordChanging h
                     { new IDisposable with
                         member _.Dispose() = passwordBox.remove_PasswordChanging h }
@@ -168,12 +168,12 @@ module PasswordBoxMod =
             })
 
         [<Extension>]
-        static member onPaste(node: VirtualNode<PasswordBox>, handler: TextControlPasteEventArgs -> unit, ?key: string) =
+        static member onPaste(node: VirtualNode<PasswordBox>, handler: PasswordBox -> TextControlPasteEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Paste"
                 Subscribe = (fun uiElement ->
                     let passwordBox = uiElement :?> PasswordBox
-                    let h = TextControlPasteEventHandler(fun _ e -> handler e)
+                    let h = TextControlPasteEventHandler(fun _ e -> handler passwordBox e)
                     passwordBox.Paste.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = passwordBox.Paste.RemoveHandler h }

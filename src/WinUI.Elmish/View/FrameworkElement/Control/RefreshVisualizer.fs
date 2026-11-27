@@ -45,12 +45,12 @@ module RefreshVisualizerMod =
             |> node.set
 
         [<Extension>]
-        static member onRefreshRequested(node: VirtualNode<RefreshVisualizer>, handler: RefreshRequestedEventArgs -> unit, ?key: string) =
+        static member onRefreshRequested(node: VirtualNode<RefreshVisualizer>, handler: RefreshVisualizer -> RefreshRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "RefreshRequested"
                 Subscribe = (fun uiElement ->
                     let refreshVisualizer = uiElement :?> RefreshVisualizer
-                    let h = TypedEventHandler<RefreshVisualizer, RefreshRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RefreshVisualizer, RefreshRequestedEventArgs>(fun _ e -> handler refreshVisualizer e)
                     refreshVisualizer.add_RefreshRequested h
                     { new IDisposable with
                         member _.Dispose() = refreshVisualizer.remove_RefreshRequested h }
@@ -58,12 +58,12 @@ module RefreshVisualizerMod =
             })
 
         [<Extension>]
-        static member onRefreshStateChanged(node: VirtualNode<RefreshVisualizer>, handler: RefreshStateChangedEventArgs -> unit, ?key: string) =
+        static member onRefreshStateChanged(node: VirtualNode<RefreshVisualizer>, handler: RefreshVisualizer -> RefreshStateChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "RefreshStateChanged"
                 Subscribe = (fun uiElement ->
                     let refreshVisualizer = uiElement :?> RefreshVisualizer
-                    let h = TypedEventHandler<RefreshVisualizer, RefreshStateChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RefreshVisualizer, RefreshStateChangedEventArgs>(fun _ e -> handler refreshVisualizer e)
                     refreshVisualizer.add_RefreshStateChanged h
                     { new IDisposable with
                         member _.Dispose() = refreshVisualizer.remove_RefreshStateChanged h }

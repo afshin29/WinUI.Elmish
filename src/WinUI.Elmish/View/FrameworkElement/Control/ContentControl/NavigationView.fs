@@ -300,12 +300,12 @@ module NavigationViewMod =
             |> node.set
 
         [<Extension>]
-        static member onBackRequested(node: VirtualNode<NavigationView>, handler: NavigationViewBackRequestedEventArgs -> unit, ?key: string) =
+        static member onBackRequested(node: VirtualNode<NavigationView>, handler: NavigationView -> NavigationViewBackRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "BackRequested"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, NavigationViewBackRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, NavigationViewBackRequestedEventArgs>(fun _ e -> handler navigationView e)
                     navigationView.add_BackRequested h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_BackRequested h }
@@ -313,12 +313,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onCollapsed(node: VirtualNode<NavigationView>, handler: NavigationViewItemCollapsedEventArgs -> unit, ?key: string) =
+        static member onCollapsed(node: VirtualNode<NavigationView>, handler: NavigationView -> NavigationViewItemCollapsedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Collapsed"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, NavigationViewItemCollapsedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, NavigationViewItemCollapsedEventArgs>(fun _ e -> handler navigationView e)
                     navigationView.add_Collapsed h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_Collapsed h }
@@ -326,12 +326,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onDisplayModeChanged(node: VirtualNode<NavigationView>, handler: NavigationViewDisplayModeChangedEventArgs -> unit, ?key: string) =
+        static member onDisplayModeChanged(node: VirtualNode<NavigationView>, handler: NavigationView -> NavigationViewDisplayModeChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DisplayModeChanged"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, NavigationViewDisplayModeChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, NavigationViewDisplayModeChangedEventArgs>(fun _ e -> handler navigationView e)
                     navigationView.add_DisplayModeChanged h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_DisplayModeChanged h }
@@ -339,12 +339,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onExpanding(node: VirtualNode<NavigationView>, handler: NavigationViewItemExpandingEventArgs -> unit, ?key: string) =
+        static member onExpanding(node: VirtualNode<NavigationView>, handler: NavigationView -> NavigationViewItemExpandingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Expanding"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, NavigationViewItemExpandingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, NavigationViewItemExpandingEventArgs>(fun _ e -> handler navigationView e)
                     navigationView.add_Expanding h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_Expanding h }
@@ -352,12 +352,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onItemInvoked(node: VirtualNode<NavigationView>, handler: NavigationViewItemInvokedEventArgs -> unit, ?key: string) =
+        static member onItemInvoked(node: VirtualNode<NavigationView>, handler: NavigationView -> NavigationViewItemInvokedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ItemInvoked"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, NavigationViewItemInvokedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, NavigationViewItemInvokedEventArgs>(fun _ e -> handler navigationView e)
                     navigationView.add_ItemInvoked h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_ItemInvoked h }
@@ -365,12 +365,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onPaneClosed(node: VirtualNode<NavigationView>, handler: obj -> unit, ?key: string) =
+        static member onPaneClosed(node: VirtualNode<NavigationView>, handler: NavigationView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneClosed"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, obj>(fun _ e -> handler navigationView e)
                     navigationView.add_PaneClosed h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_PaneClosed h }
@@ -378,12 +378,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onPaneClosing(node: VirtualNode<NavigationView>, handler: NavigationViewPaneClosingEventArgs -> unit, ?key: string) =
+        static member onPaneClosing(node: VirtualNode<NavigationView>, handler: NavigationView -> NavigationViewPaneClosingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneClosing"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, NavigationViewPaneClosingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, NavigationViewPaneClosingEventArgs>(fun _ e -> handler navigationView e)
                     navigationView.add_PaneClosing h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_PaneClosing h }
@@ -391,12 +391,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onPaneOpened(node: VirtualNode<NavigationView>, handler: obj -> unit, ?key: string) =
+        static member onPaneOpened(node: VirtualNode<NavigationView>, handler: NavigationView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneOpened"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, obj>(fun _ e -> handler navigationView e)
                     navigationView.add_PaneOpened h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_PaneOpened h }
@@ -404,12 +404,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onPaneOpening(node: VirtualNode<NavigationView>, handler: obj -> unit, ?key: string) =
+        static member onPaneOpening(node: VirtualNode<NavigationView>, handler: NavigationView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneOpening"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, obj>(fun _ e -> handler navigationView e)
                     navigationView.add_PaneOpening h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_PaneOpening h }
@@ -417,12 +417,12 @@ module NavigationViewMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<NavigationView>, handler: NavigationViewSelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<NavigationView>, handler: NavigationView -> NavigationViewSelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let navigationView = uiElement :?> NavigationView
-                    let h = TypedEventHandler<NavigationView, NavigationViewSelectionChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NavigationView, NavigationViewSelectionChangedEventArgs>(fun _ e -> handler navigationView e)
                     navigationView.add_SelectionChanged h
                     { new IDisposable with
                         member _.Dispose() = navigationView.remove_SelectionChanged h }

@@ -149,12 +149,12 @@ module CalendarDatePickerMod =
             |> node.set
 
         [<Extension>]
-        static member onCalendarViewDayItemChanging(node: VirtualNode<CalendarDatePicker>, handler: CalendarViewDayItemChangingEventArgs -> unit, ?key: string) =
+        static member onCalendarViewDayItemChanging(node: VirtualNode<CalendarDatePicker>, handler: CalendarDatePicker -> CalendarViewDayItemChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CalendarViewDayItemChanging"
                 Subscribe = (fun uiElement ->
                     let calendarDatePicker = uiElement :?> CalendarDatePicker
-                    let h = CalendarViewDayItemChangingEventHandler(fun _ e -> handler e)
+                    let h = CalendarViewDayItemChangingEventHandler(fun _ e -> handler calendarDatePicker e)
                     calendarDatePicker.add_CalendarViewDayItemChanging h
                     { new IDisposable with
                         member _.Dispose() = calendarDatePicker.remove_CalendarViewDayItemChanging h }
@@ -162,12 +162,12 @@ module CalendarDatePickerMod =
             })
 
         [<Extension>]
-        static member onClosed(node: VirtualNode<CalendarDatePicker>, handler: obj -> unit, ?key: string) =
+        static member onClosed(node: VirtualNode<CalendarDatePicker>, handler: CalendarDatePicker -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closed"
                 Subscribe = (fun uiElement ->
                     let calendarDatePicker = uiElement :?> CalendarDatePicker
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler calendarDatePicker e)
                     calendarDatePicker.Closed.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = calendarDatePicker.Closed.RemoveHandler h }
@@ -175,12 +175,12 @@ module CalendarDatePickerMod =
             })
 
         [<Extension>]
-        static member onDateChanged(node: VirtualNode<CalendarDatePicker>, handler: CalendarDatePickerDateChangedEventArgs -> unit, ?key: string) =
+        static member onDateChanged(node: VirtualNode<CalendarDatePicker>, handler: CalendarDatePicker -> CalendarDatePickerDateChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DateChanged"
                 Subscribe = (fun uiElement ->
                     let calendarDatePicker = uiElement :?> CalendarDatePicker
-                    let h = TypedEventHandler<CalendarDatePicker, CalendarDatePickerDateChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<CalendarDatePicker, CalendarDatePickerDateChangedEventArgs>(fun _ e -> handler calendarDatePicker e)
                     calendarDatePicker.add_DateChanged h
                     { new IDisposable with
                         member _.Dispose() = calendarDatePicker.remove_DateChanged h }
@@ -188,12 +188,12 @@ module CalendarDatePickerMod =
             })
 
         [<Extension>]
-        static member onOpened(node: VirtualNode<CalendarDatePicker>, handler: obj -> unit, ?key: string) =
+        static member onOpened(node: VirtualNode<CalendarDatePicker>, handler: CalendarDatePicker -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Opened"
                 Subscribe = (fun uiElement ->
                     let calendarDatePicker = uiElement :?> CalendarDatePicker
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler calendarDatePicker e)
                     calendarDatePicker.Opened.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = calendarDatePicker.Opened.RemoveHandler h }

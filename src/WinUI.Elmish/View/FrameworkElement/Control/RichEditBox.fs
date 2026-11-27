@@ -185,12 +185,12 @@ module RichEditBoxMod =
             |> node.set
 
         [<Extension>]
-        static member onCandidateWindowBoundsChanged(node: VirtualNode<RichEditBox>, handler: CandidateWindowBoundsChangedEventArgs -> unit, ?key: string) =
+        static member onCandidateWindowBoundsChanged(node: VirtualNode<RichEditBox>, handler: RichEditBox -> CandidateWindowBoundsChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CandidateWindowBoundsChanged"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TypedEventHandler<RichEditBox, CandidateWindowBoundsChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichEditBox, CandidateWindowBoundsChangedEventArgs>(fun _ e -> handler richEditBox e)
                     richEditBox.add_CandidateWindowBoundsChanged h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.remove_CandidateWindowBoundsChanged h }
@@ -198,12 +198,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onContextMenuOpening(node: VirtualNode<RichEditBox>, handler: ContextMenuEventArgs -> unit, ?key: string) =
+        static member onContextMenuOpening(node: VirtualNode<RichEditBox>, handler: RichEditBox -> ContextMenuEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ContextMenuOpening"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler e)
+                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler richEditBox e)
                     richEditBox.ContextMenuOpening.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.ContextMenuOpening.RemoveHandler h }
@@ -211,12 +211,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onCopyingToClipboard(node: VirtualNode<RichEditBox>, handler: TextControlCopyingToClipboardEventArgs -> unit, ?key: string) =
+        static member onCopyingToClipboard(node: VirtualNode<RichEditBox>, handler: RichEditBox -> TextControlCopyingToClipboardEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CopyingToClipboard"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TypedEventHandler<RichEditBox, TextControlCopyingToClipboardEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichEditBox, TextControlCopyingToClipboardEventArgs>(fun _ e -> handler richEditBox e)
                     richEditBox.add_CopyingToClipboard h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.remove_CopyingToClipboard h }
@@ -224,12 +224,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onCuttingToClipboard(node: VirtualNode<RichEditBox>, handler: TextControlCuttingToClipboardEventArgs -> unit, ?key: string) =
+        static member onCuttingToClipboard(node: VirtualNode<RichEditBox>, handler: RichEditBox -> TextControlCuttingToClipboardEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CuttingToClipboard"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TypedEventHandler<RichEditBox, TextControlCuttingToClipboardEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichEditBox, TextControlCuttingToClipboardEventArgs>(fun _ e -> handler richEditBox e)
                     richEditBox.add_CuttingToClipboard h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.remove_CuttingToClipboard h }
@@ -237,12 +237,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onPaste(node: VirtualNode<RichEditBox>, handler: TextControlPasteEventArgs -> unit, ?key: string) =
+        static member onPaste(node: VirtualNode<RichEditBox>, handler: RichEditBox -> TextControlPasteEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Paste"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TextControlPasteEventHandler(fun _ e -> handler e)
+                    let h = TextControlPasteEventHandler(fun _ e -> handler richEditBox e)
                     richEditBox.Paste.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.Paste.RemoveHandler h }
@@ -250,12 +250,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<RichEditBox>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<RichEditBox>, handler: RichEditBox -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler richEditBox e)
                     richEditBox.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.SelectionChanged.RemoveHandler h }
@@ -263,12 +263,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onSelectionChanging(node: VirtualNode<RichEditBox>, handler: RichEditBoxSelectionChangingEventArgs -> unit, ?key: string) =
+        static member onSelectionChanging(node: VirtualNode<RichEditBox>, handler: RichEditBox -> RichEditBoxSelectionChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanging"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TypedEventHandler<RichEditBox, RichEditBoxSelectionChangingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichEditBox, RichEditBoxSelectionChangingEventArgs>(fun _ e -> handler richEditBox e)
                     richEditBox.add_SelectionChanging h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.remove_SelectionChanging h }
@@ -276,12 +276,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onTextChanged(node: VirtualNode<RichEditBox>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onTextChanged(node: VirtualNode<RichEditBox>, handler: RichEditBox -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextChanged"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler richEditBox e)
                     richEditBox.TextChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.TextChanged.RemoveHandler h }
@@ -289,12 +289,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onTextChanging(node: VirtualNode<RichEditBox>, handler: RichEditBoxTextChangingEventArgs -> unit, ?key: string) =
+        static member onTextChanging(node: VirtualNode<RichEditBox>, handler: RichEditBox -> RichEditBoxTextChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextChanging"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TypedEventHandler<RichEditBox, RichEditBoxTextChangingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichEditBox, RichEditBoxTextChangingEventArgs>(fun _ e -> handler richEditBox e)
                     richEditBox.add_TextChanging h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.remove_TextChanging h }
@@ -302,12 +302,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onTextCompositionChanged(node: VirtualNode<RichEditBox>, handler: TextCompositionChangedEventArgs -> unit, ?key: string) =
+        static member onTextCompositionChanged(node: VirtualNode<RichEditBox>, handler: RichEditBox -> TextCompositionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextCompositionChanged"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TypedEventHandler<RichEditBox, TextCompositionChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichEditBox, TextCompositionChangedEventArgs>(fun _ e -> handler richEditBox e)
                     richEditBox.add_TextCompositionChanged h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.remove_TextCompositionChanged h }
@@ -315,12 +315,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onTextCompositionEnded(node: VirtualNode<RichEditBox>, handler: TextCompositionEndedEventArgs -> unit, ?key: string) =
+        static member onTextCompositionEnded(node: VirtualNode<RichEditBox>, handler: RichEditBox -> TextCompositionEndedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextCompositionEnded"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TypedEventHandler<RichEditBox, TextCompositionEndedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichEditBox, TextCompositionEndedEventArgs>(fun _ e -> handler richEditBox e)
                     richEditBox.add_TextCompositionEnded h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.remove_TextCompositionEnded h }
@@ -328,12 +328,12 @@ module RichEditBoxMod =
             })
 
         [<Extension>]
-        static member onTextCompositionStarted(node: VirtualNode<RichEditBox>, handler: TextCompositionStartedEventArgs -> unit, ?key: string) =
+        static member onTextCompositionStarted(node: VirtualNode<RichEditBox>, handler: RichEditBox -> TextCompositionStartedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextCompositionStarted"
                 Subscribe = (fun uiElement ->
                     let richEditBox = uiElement :?> RichEditBox
-                    let h = TypedEventHandler<RichEditBox, TextCompositionStartedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichEditBox, TextCompositionStartedEventArgs>(fun _ e -> handler richEditBox e)
                     richEditBox.add_TextCompositionStarted h
                     { new IDisposable with
                         member _.Dispose() = richEditBox.remove_TextCompositionStarted h }

@@ -125,12 +125,12 @@ module HubMod =
             |> node.set
 
         [<Extension>]
-        static member onSectionHeaderClick(node: VirtualNode<Hub>, handler: HubSectionHeaderClickEventArgs -> unit, ?key: string) =
+        static member onSectionHeaderClick(node: VirtualNode<Hub>, handler: Hub -> HubSectionHeaderClickEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SectionHeaderClick"
                 Subscribe = (fun uiElement ->
                     let hub = uiElement :?> Hub
-                    let h = HubSectionHeaderClickEventHandler(fun _ e -> handler e)
+                    let h = HubSectionHeaderClickEventHandler(fun _ e -> handler hub e)
                     hub.SectionHeaderClick.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = hub.SectionHeaderClick.RemoveHandler h }
@@ -138,12 +138,12 @@ module HubMod =
             })
 
         [<Extension>]
-        static member onSectionsInViewChanged(node: VirtualNode<Hub>, handler: SectionsInViewChangedEventArgs -> unit, ?key: string) =
+        static member onSectionsInViewChanged(node: VirtualNode<Hub>, handler: Hub -> SectionsInViewChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SectionsInViewChanged"
                 Subscribe = (fun uiElement ->
                     let hub = uiElement :?> Hub
-                    let h = SectionsInViewChangedEventHandler(fun _ e -> handler e)
+                    let h = SectionsInViewChangedEventHandler(fun _ e -> handler hub e)
                     hub.SectionsInViewChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = hub.SectionsInViewChanged.RemoveHandler h }

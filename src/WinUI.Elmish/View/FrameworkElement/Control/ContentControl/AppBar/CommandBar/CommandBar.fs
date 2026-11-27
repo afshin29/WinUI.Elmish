@@ -58,12 +58,13 @@ module CommandBarMod =
 
         [<Extension>]
         static member onDynamicOverflowItemsChanging<'m when 'm :> CommandBar and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DynamicOverflowItemsChangingEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DynamicOverflowItemsChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DynamicOverflowItemsChanging"
                 Subscribe = (fun uiElement ->
                     let commandBar = uiElement :?> CommandBar
-                    let h = TypedEventHandler<CommandBar, DynamicOverflowItemsChangingEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<CommandBar, DynamicOverflowItemsChangingEventArgs>(fun _ e -> handler sender e)
                     commandBar.add_DynamicOverflowItemsChanging h
                     { new IDisposable with
                         member _.Dispose() = commandBar.remove_DynamicOverflowItemsChanging h }

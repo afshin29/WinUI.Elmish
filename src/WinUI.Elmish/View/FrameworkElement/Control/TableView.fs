@@ -117,12 +117,12 @@ module TableViewMod =
             |> node.set
 
         [<Extension>]
-        static member onBeginningEdit(node: VirtualNode<TableView>, handler: TableViewBeginningEditEventArgs -> unit, ?key: string) =
+        static member onBeginningEdit(node: VirtualNode<TableView>, handler: TableView -> TableViewBeginningEditEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "BeginningEdit"
                 Subscribe = (fun uiElement ->
                     let tableView = uiElement :?> TableView
-                    let h = TypedEventHandler<TableView, TableViewBeginningEditEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TableView, TableViewBeginningEditEventArgs>(fun _ e -> handler tableView e)
                     tableView.add_BeginningEdit h
                     { new IDisposable with
                         member _.Dispose() = tableView.remove_BeginningEdit h }
@@ -130,12 +130,12 @@ module TableViewMod =
             })
 
         [<Extension>]
-        static member onCellEditEnding(node: VirtualNode<TableView>, handler: TableViewCellEditEndingEventArgs -> unit, ?key: string) =
+        static member onCellEditEnding(node: VirtualNode<TableView>, handler: TableView -> TableViewCellEditEndingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CellEditEnding"
                 Subscribe = (fun uiElement ->
                     let tableView = uiElement :?> TableView
-                    let h = TypedEventHandler<TableView, TableViewCellEditEndingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TableView, TableViewCellEditEndingEventArgs>(fun _ e -> handler tableView e)
                     tableView.add_CellEditEnding h
                     { new IDisposable with
                         member _.Dispose() = tableView.remove_CellEditEnding h }
@@ -143,12 +143,12 @@ module TableViewMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<TableView>, handler: SelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<TableView>, handler: TableView -> SelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let tableView = uiElement :?> TableView
-                    let h = TypedEventHandler<TableView, SelectionChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TableView, SelectionChangedEventArgs>(fun _ e -> handler tableView e)
                     tableView.add_SelectionChanged h
                     { new IDisposable with
                         member _.Dispose() = tableView.remove_SelectionChanged h }
@@ -156,12 +156,12 @@ module TableViewMod =
             })
 
         [<Extension>]
-        static member onSorted(node: VirtualNode<TableView>, handler: TableViewSortedEventArgs -> unit, ?key: string) =
+        static member onSorted(node: VirtualNode<TableView>, handler: TableView -> TableViewSortedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Sorted"
                 Subscribe = (fun uiElement ->
                     let tableView = uiElement :?> TableView
-                    let h = TypedEventHandler<TableView, TableViewSortedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TableView, TableViewSortedEventArgs>(fun _ e -> handler tableView e)
                     tableView.add_Sorted h
                     { new IDisposable with
                         member _.Dispose() = tableView.remove_Sorted h }
@@ -169,12 +169,12 @@ module TableViewMod =
             })
 
         [<Extension>]
-        static member onSorting(node: VirtualNode<TableView>, handler: TableViewSortingEventArgs -> unit, ?key: string) =
+        static member onSorting(node: VirtualNode<TableView>, handler: TableView -> TableViewSortingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Sorting"
                 Subscribe = (fun uiElement ->
                     let tableView = uiElement :?> TableView
-                    let h = TypedEventHandler<TableView, TableViewSortingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TableView, TableViewSortingEventArgs>(fun _ e -> handler tableView e)
                     tableView.add_Sorting h
                     { new IDisposable with
                         member _.Dispose() = tableView.remove_Sorting h }

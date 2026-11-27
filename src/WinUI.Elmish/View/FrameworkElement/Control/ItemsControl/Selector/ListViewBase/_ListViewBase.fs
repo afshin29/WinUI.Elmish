@@ -216,12 +216,13 @@ module ListViewBaseMod =
 
         [<Extension>]
         static member onChoosingGroupHeaderContainer<'m when 'm :> ListViewBase and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ChoosingGroupHeaderContainerEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ChoosingGroupHeaderContainerEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ChoosingGroupHeaderContainer"
                 Subscribe = (fun uiElement ->
                     let listViewBase = uiElement :?> ListViewBase
-                    let h = TypedEventHandler<ListViewBase, ChoosingGroupHeaderContainerEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<ListViewBase, ChoosingGroupHeaderContainerEventArgs>(fun _ e -> handler sender e)
                     listViewBase.add_ChoosingGroupHeaderContainer h
                     { new IDisposable with
                         member _.Dispose() = listViewBase.remove_ChoosingGroupHeaderContainer h }
@@ -230,12 +231,13 @@ module ListViewBaseMod =
 
         [<Extension>]
         static member onChoosingItemContainer<'m when 'm :> ListViewBase and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ChoosingItemContainerEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ChoosingItemContainerEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ChoosingItemContainer"
                 Subscribe = (fun uiElement ->
                     let listViewBase = uiElement :?> ListViewBase
-                    let h = TypedEventHandler<ListViewBase, ChoosingItemContainerEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<ListViewBase, ChoosingItemContainerEventArgs>(fun _ e -> handler sender e)
                     listViewBase.add_ChoosingItemContainer h
                     { new IDisposable with
                         member _.Dispose() = listViewBase.remove_ChoosingItemContainer h }
@@ -244,12 +246,13 @@ module ListViewBaseMod =
 
         [<Extension>]
         static member onContainerContentChanging<'m when 'm :> ListViewBase and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ContainerContentChangingEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ContainerContentChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ContainerContentChanging"
                 Subscribe = (fun uiElement ->
                     let listViewBase = uiElement :?> ListViewBase
-                    let h = TypedEventHandler<ListViewBase, ContainerContentChangingEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<ListViewBase, ContainerContentChangingEventArgs>(fun _ e -> handler sender e)
                     listViewBase.add_ContainerContentChanging h
                     { new IDisposable with
                         member _.Dispose() = listViewBase.remove_ContainerContentChanging h }
@@ -258,12 +261,13 @@ module ListViewBaseMod =
 
         [<Extension>]
         static member onDragItemsCompleted<'m when 'm :> ListViewBase and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DragItemsCompletedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DragItemsCompletedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragItemsCompleted"
                 Subscribe = (fun uiElement ->
                     let listViewBase = uiElement :?> ListViewBase
-                    let h = TypedEventHandler<ListViewBase, DragItemsCompletedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<ListViewBase, DragItemsCompletedEventArgs>(fun _ e -> handler sender e)
                     listViewBase.add_DragItemsCompleted h
                     { new IDisposable with
                         member _.Dispose() = listViewBase.remove_DragItemsCompleted h }
@@ -272,12 +276,13 @@ module ListViewBaseMod =
 
         [<Extension>]
         static member onDragItemsStarting<'m when 'm :> ListViewBase and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DragItemsStartingEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DragItemsStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragItemsStarting"
                 Subscribe = (fun uiElement ->
                     let listViewBase = uiElement :?> ListViewBase
-                    let h = DragItemsStartingEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = DragItemsStartingEventHandler(fun _ e -> handler sender e)
                     listViewBase.DragItemsStarting.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = listViewBase.DragItemsStarting.RemoveHandler h }
@@ -286,12 +291,13 @@ module ListViewBaseMod =
 
         [<Extension>]
         static member onItemClick<'m when 'm :> ListViewBase and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ItemClickEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ItemClickEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ItemClick"
                 Subscribe = (fun uiElement ->
                     let listViewBase = uiElement :?> ListViewBase
-                    let h = ItemClickEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = ItemClickEventHandler(fun _ e -> handler sender e)
                     listViewBase.ItemClick.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = listViewBase.ItemClick.RemoveHandler h }

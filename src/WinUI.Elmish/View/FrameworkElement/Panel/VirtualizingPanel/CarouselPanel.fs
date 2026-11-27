@@ -64,12 +64,12 @@ module CarouselPanelMod =
             |> node.set
 
         [<Extension>]
-        static member onHorizontalSnapPointsChanged(node: VirtualNode<CarouselPanel>, handler: obj -> unit, ?key: string) =
+        static member onHorizontalSnapPointsChanged(node: VirtualNode<CarouselPanel>, handler: CarouselPanel -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "HorizontalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let carouselPanel = uiElement :?> CarouselPanel
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler carouselPanel e)
                     carouselPanel.HorizontalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = carouselPanel.HorizontalSnapPointsChanged.RemoveHandler h }
@@ -77,12 +77,12 @@ module CarouselPanelMod =
             })
 
         [<Extension>]
-        static member onVerticalSnapPointsChanged(node: VirtualNode<CarouselPanel>, handler: obj -> unit, ?key: string) =
+        static member onVerticalSnapPointsChanged(node: VirtualNode<CarouselPanel>, handler: CarouselPanel -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "VerticalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let carouselPanel = uiElement :?> CarouselPanel
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler carouselPanel e)
                     carouselPanel.VerticalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = carouselPanel.VerticalSnapPointsChanged.RemoveHandler h }

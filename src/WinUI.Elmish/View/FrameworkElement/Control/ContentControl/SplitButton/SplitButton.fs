@@ -49,12 +49,13 @@ module SplitButtonMod =
 
         [<Extension>]
         static member onClick<'m when 'm :> SplitButton and 'm: not struct>
-            (node: VirtualNode<'m>, handler: SplitButtonClickEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> SplitButtonClickEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Click"
                 Subscribe = (fun uiElement ->
                     let splitButton = uiElement :?> SplitButton
-                    let h = TypedEventHandler<SplitButton, SplitButtonClickEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<SplitButton, SplitButtonClickEventArgs>(fun _ e -> handler sender e)
                     splitButton.add_Click h
                     { new IDisposable with
                         member _.Dispose() = splitButton.remove_Click h }

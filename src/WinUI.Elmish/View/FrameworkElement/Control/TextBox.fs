@@ -216,12 +216,12 @@ module TextBoxMod =
             |> node.set
 
         [<Extension>]
-        static member onBeforeTextChanging(node: VirtualNode<TextBox>, handler: TextBoxBeforeTextChangingEventArgs -> unit, ?key: string) =
+        static member onBeforeTextChanging(node: VirtualNode<TextBox>, handler: TextBox -> TextBoxBeforeTextChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "BeforeTextChanging"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, TextBoxBeforeTextChangingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, TextBoxBeforeTextChangingEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_BeforeTextChanging h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_BeforeTextChanging h }
@@ -229,12 +229,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onCandidateWindowBoundsChanged(node: VirtualNode<TextBox>, handler: CandidateWindowBoundsChangedEventArgs -> unit, ?key: string) =
+        static member onCandidateWindowBoundsChanged(node: VirtualNode<TextBox>, handler: TextBox -> CandidateWindowBoundsChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CandidateWindowBoundsChanged"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, CandidateWindowBoundsChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, CandidateWindowBoundsChangedEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_CandidateWindowBoundsChanged h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_CandidateWindowBoundsChanged h }
@@ -242,12 +242,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onContextMenuOpening(node: VirtualNode<TextBox>, handler: ContextMenuEventArgs -> unit, ?key: string) =
+        static member onContextMenuOpening(node: VirtualNode<TextBox>, handler: TextBox -> ContextMenuEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ContextMenuOpening"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler e)
+                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler textBox e)
                     textBox.ContextMenuOpening.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = textBox.ContextMenuOpening.RemoveHandler h }
@@ -255,12 +255,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onCopyingToClipboard(node: VirtualNode<TextBox>, handler: TextControlCopyingToClipboardEventArgs -> unit, ?key: string) =
+        static member onCopyingToClipboard(node: VirtualNode<TextBox>, handler: TextBox -> TextControlCopyingToClipboardEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CopyingToClipboard"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, TextControlCopyingToClipboardEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, TextControlCopyingToClipboardEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_CopyingToClipboard h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_CopyingToClipboard h }
@@ -268,12 +268,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onCuttingToClipboard(node: VirtualNode<TextBox>, handler: TextControlCuttingToClipboardEventArgs -> unit, ?key: string) =
+        static member onCuttingToClipboard(node: VirtualNode<TextBox>, handler: TextBox -> TextControlCuttingToClipboardEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CuttingToClipboard"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, TextControlCuttingToClipboardEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, TextControlCuttingToClipboardEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_CuttingToClipboard h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_CuttingToClipboard h }
@@ -281,12 +281,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onPaste(node: VirtualNode<TextBox>, handler: TextControlPasteEventArgs -> unit, ?key: string) =
+        static member onPaste(node: VirtualNode<TextBox>, handler: TextBox -> TextControlPasteEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Paste"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TextControlPasteEventHandler(fun _ e -> handler e)
+                    let h = TextControlPasteEventHandler(fun _ e -> handler textBox e)
                     textBox.Paste.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = textBox.Paste.RemoveHandler h }
@@ -294,12 +294,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<TextBox>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<TextBox>, handler: TextBox -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler textBox e)
                     textBox.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = textBox.SelectionChanged.RemoveHandler h }
@@ -307,12 +307,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onSelectionChanging(node: VirtualNode<TextBox>, handler: TextBoxSelectionChangingEventArgs -> unit, ?key: string) =
+        static member onSelectionChanging(node: VirtualNode<TextBox>, handler: TextBox -> TextBoxSelectionChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanging"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, TextBoxSelectionChangingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, TextBoxSelectionChangingEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_SelectionChanging h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_SelectionChanging h }
@@ -320,12 +320,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onTextChanged(node: VirtualNode<TextBox>, handler: TextChangedEventArgs -> unit, ?key: string) =
+        static member onTextChanged(node: VirtualNode<TextBox>, handler: TextBox -> TextChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextChanged"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TextChangedEventHandler(fun _ e -> handler e)
+                    let h = TextChangedEventHandler(fun _ e -> handler textBox e)
                     textBox.TextChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = textBox.TextChanged.RemoveHandler h }
@@ -333,12 +333,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onTextChanging(node: VirtualNode<TextBox>, handler: TextBoxTextChangingEventArgs -> unit, ?key: string) =
+        static member onTextChanging(node: VirtualNode<TextBox>, handler: TextBox -> TextBoxTextChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextChanging"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, TextBoxTextChangingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, TextBoxTextChangingEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_TextChanging h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_TextChanging h }
@@ -346,12 +346,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onTextCompositionChanged(node: VirtualNode<TextBox>, handler: TextCompositionChangedEventArgs -> unit, ?key: string) =
+        static member onTextCompositionChanged(node: VirtualNode<TextBox>, handler: TextBox -> TextCompositionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextCompositionChanged"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, TextCompositionChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, TextCompositionChangedEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_TextCompositionChanged h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_TextCompositionChanged h }
@@ -359,12 +359,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onTextCompositionEnded(node: VirtualNode<TextBox>, handler: TextCompositionEndedEventArgs -> unit, ?key: string) =
+        static member onTextCompositionEnded(node: VirtualNode<TextBox>, handler: TextBox -> TextCompositionEndedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextCompositionEnded"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, TextCompositionEndedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, TextCompositionEndedEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_TextCompositionEnded h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_TextCompositionEnded h }
@@ -372,12 +372,12 @@ module TextBoxMod =
             })
 
         [<Extension>]
-        static member onTextCompositionStarted(node: VirtualNode<TextBox>, handler: TextCompositionStartedEventArgs -> unit, ?key: string) =
+        static member onTextCompositionStarted(node: VirtualNode<TextBox>, handler: TextBox -> TextCompositionStartedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextCompositionStarted"
                 Subscribe = (fun uiElement ->
                     let textBox = uiElement :?> TextBox
-                    let h = TypedEventHandler<TextBox, TextCompositionStartedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBox, TextCompositionStartedEventArgs>(fun _ e -> handler textBox e)
                     textBox.add_TextCompositionStarted h
                     { new IDisposable with
                         member _.Dispose() = textBox.remove_TextCompositionStarted h }

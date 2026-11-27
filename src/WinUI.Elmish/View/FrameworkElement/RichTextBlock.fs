@@ -200,12 +200,12 @@ module RichTextBlockMod =
             |> node.set
 
         [<Extension>]
-        static member onContextMenuOpening(node: VirtualNode<RichTextBlock>, handler: ContextMenuEventArgs -> unit, ?key: string) =
+        static member onContextMenuOpening(node: VirtualNode<RichTextBlock>, handler: RichTextBlock -> ContextMenuEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ContextMenuOpening"
                 Subscribe = (fun uiElement ->
                     let richTextBlock = uiElement :?> RichTextBlock
-                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler e)
+                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler richTextBlock e)
                     richTextBlock.ContextMenuOpening.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = richTextBlock.ContextMenuOpening.RemoveHandler h }
@@ -213,12 +213,12 @@ module RichTextBlockMod =
             })
 
         [<Extension>]
-        static member onIsTextTrimmedChanged(node: VirtualNode<RichTextBlock>, handler: IsTextTrimmedChangedEventArgs -> unit, ?key: string) =
+        static member onIsTextTrimmedChanged(node: VirtualNode<RichTextBlock>, handler: RichTextBlock -> IsTextTrimmedChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "IsTextTrimmedChanged"
                 Subscribe = (fun uiElement ->
                     let richTextBlock = uiElement :?> RichTextBlock
-                    let h = TypedEventHandler<RichTextBlock, IsTextTrimmedChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RichTextBlock, IsTextTrimmedChangedEventArgs>(fun _ e -> handler richTextBlock e)
                     richTextBlock.add_IsTextTrimmedChanged h
                     { new IDisposable with
                         member _.Dispose() = richTextBlock.remove_IsTextTrimmedChanged h }
@@ -226,12 +226,12 @@ module RichTextBlockMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<RichTextBlock>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<RichTextBlock>, handler: RichTextBlock -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let richTextBlock = uiElement :?> RichTextBlock
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler richTextBlock e)
                     richTextBlock.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = richTextBlock.SelectionChanged.RemoveHandler h }

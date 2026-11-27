@@ -50,12 +50,12 @@ module FrameMod =
             |> node.set
 
         [<Extension>]
-        static member onNavigated(node: VirtualNode<Frame>, handler: NavigationEventArgs -> unit, ?key: string) =
+        static member onNavigated(node: VirtualNode<Frame>, handler: Frame -> NavigationEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Navigated"
                 Subscribe = (fun uiElement ->
                     let frame = uiElement :?> Frame
-                    let h = NavigatedEventHandler(fun _ e -> handler e)
+                    let h = NavigatedEventHandler(fun _ e -> handler frame e)
                     frame.Navigated.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = frame.Navigated.RemoveHandler h }
@@ -63,12 +63,12 @@ module FrameMod =
             })
 
         [<Extension>]
-        static member onNavigating(node: VirtualNode<Frame>, handler: NavigatingCancelEventArgs -> unit, ?key: string) =
+        static member onNavigating(node: VirtualNode<Frame>, handler: Frame -> NavigatingCancelEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Navigating"
                 Subscribe = (fun uiElement ->
                     let frame = uiElement :?> Frame
-                    let h = NavigatingCancelEventHandler(fun _ e -> handler e)
+                    let h = NavigatingCancelEventHandler(fun _ e -> handler frame e)
                     frame.Navigating.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = frame.Navigating.RemoveHandler h }
@@ -76,12 +76,12 @@ module FrameMod =
             })
 
         [<Extension>]
-        static member onNavigationFailed(node: VirtualNode<Frame>, handler: NavigationFailedEventArgs -> unit, ?key: string) =
+        static member onNavigationFailed(node: VirtualNode<Frame>, handler: Frame -> NavigationFailedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "NavigationFailed"
                 Subscribe = (fun uiElement ->
                     let frame = uiElement :?> Frame
-                    let h = NavigationFailedEventHandler(fun _ e -> handler e)
+                    let h = NavigationFailedEventHandler(fun _ e -> handler frame e)
                     frame.NavigationFailed.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = frame.NavigationFailed.RemoveHandler h }
@@ -89,12 +89,12 @@ module FrameMod =
             })
 
         [<Extension>]
-        static member onNavigationStopped(node: VirtualNode<Frame>, handler: NavigationEventArgs -> unit, ?key: string) =
+        static member onNavigationStopped(node: VirtualNode<Frame>, handler: Frame -> NavigationEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "NavigationStopped"
                 Subscribe = (fun uiElement ->
                     let frame = uiElement :?> Frame
-                    let h = NavigationStoppedEventHandler(fun _ e -> handler e)
+                    let h = NavigationStoppedEventHandler(fun _ e -> handler frame e)
                     frame.NavigationStopped.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = frame.NavigationStopped.RemoveHandler h }

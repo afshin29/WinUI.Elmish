@@ -27,7 +27,6 @@ module RadioButtonsMod =
     let private headerTemplatePropertyId = getNextId ()
     let private itemTemplatePropertyId = getNextId ()
     let private itemsSourcePropertyId = getNextId ()
-    let private itemsPropertyId = getNextId ()
     let private maxColumnsPropertyId = getNextId ()
     let private selectedIndexPropertyId = getNextId ()
     let private selectedItemPropertyId = getNextId ()
@@ -79,12 +78,6 @@ module RadioButtonsMod =
             |> node.set
 
         [<Extension>]
-        static member items'<'source, 'key>
-            (node: VirtualNode<RadioButtons>, items: VirtualNode<RadioButton> list) =
-            createDependencyProperty itemsPropertyId RadioButtons.ItemsSourceProperty items
-            |> node.set
-
-        [<Extension>]
         static member maxColumns(node: VirtualNode<RadioButtons>, value: int) =
             createDependencyProperty maxColumnsPropertyId RadioButtons.MaxColumnsProperty value
             |> node.set
@@ -100,12 +93,12 @@ module RadioButtonsMod =
             |> node.set
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<RadioButtons>, handler: SelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<RadioButtons>, handler: RadioButtons -> SelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let radioButtons = uiElement :?> RadioButtons
-                    let h = SelectionChangedEventHandler(fun _ e -> handler e)
+                    let h = SelectionChangedEventHandler(fun _ e -> handler radioButtons e)
                     radioButtons.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = radioButtons.SelectionChanged.RemoveHandler h }

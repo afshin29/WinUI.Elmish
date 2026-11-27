@@ -208,12 +208,13 @@ module FrameworkElementMod =
 
         [<Extension>]
         static member onActualThemeChanged<'m when 'm :> FrameworkElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ActualThemeChanged"
                 Subscribe = (fun uiElement ->
                     let frameworkElement = uiElement :?> FrameworkElement
-                    let h = TypedEventHandler<FrameworkElement, obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<FrameworkElement, obj>(fun _ e -> handler sender e)
                     frameworkElement.add_ActualThemeChanged h
                     { new IDisposable with
                         member _.Dispose() = frameworkElement.remove_ActualThemeChanged h }
@@ -222,12 +223,13 @@ module FrameworkElementMod =
 
         [<Extension>]
         static member onDataContextChanged<'m when 'm :> FrameworkElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DataContextChangedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DataContextChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DataContextChanged"
                 Subscribe = (fun uiElement ->
                     let frameworkElement = uiElement :?> FrameworkElement
-                    let h = TypedEventHandler<FrameworkElement, DataContextChangedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<FrameworkElement, DataContextChangedEventArgs>(fun _ e -> handler sender e)
                     frameworkElement.add_DataContextChanged h
                     { new IDisposable with
                         member _.Dispose() = frameworkElement.remove_DataContextChanged h }
@@ -236,12 +238,13 @@ module FrameworkElementMod =
 
         [<Extension>]
         static member onEffectiveViewportChanged<'m when 'm :> FrameworkElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: EffectiveViewportChangedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> EffectiveViewportChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "EffectiveViewportChanged"
                 Subscribe = (fun uiElement ->
                     let frameworkElement = uiElement :?> FrameworkElement
-                    let h = TypedEventHandler<FrameworkElement, EffectiveViewportChangedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<FrameworkElement, EffectiveViewportChangedEventArgs>(fun _ e -> handler sender e)
                     frameworkElement.add_EffectiveViewportChanged h
                     { new IDisposable with
                         member _.Dispose() = frameworkElement.remove_EffectiveViewportChanged h }
@@ -250,12 +253,13 @@ module FrameworkElementMod =
 
         [<Extension>]
         static member onLayoutUpdated<'m when 'm :> FrameworkElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "LayoutUpdated"
                 Subscribe = (fun uiElement ->
                     let frameworkElement = uiElement :?> FrameworkElement
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = EventHandler<obj>(fun _ e -> handler sender e)
                     frameworkElement.LayoutUpdated.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = frameworkElement.LayoutUpdated.RemoveHandler h }
@@ -264,12 +268,13 @@ module FrameworkElementMod =
 
         [<Extension>]
         static member onLoaded<'m when 'm :> FrameworkElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Loaded"
                 Subscribe = (fun uiElement ->
                     let frameworkElement = uiElement :?> FrameworkElement
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RoutedEventHandler(fun _ e -> handler sender e)
                     frameworkElement.Loaded.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = frameworkElement.Loaded.RemoveHandler h }
@@ -278,12 +283,13 @@ module FrameworkElementMod =
 
         [<Extension>]
         static member onLoading<'m when 'm :> FrameworkElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Loading"
                 Subscribe = (fun uiElement ->
                     let frameworkElement = uiElement :?> FrameworkElement
-                    let h = TypedEventHandler<FrameworkElement, obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<FrameworkElement, obj>(fun _ e -> handler sender e)
                     frameworkElement.add_Loading h
                     { new IDisposable with
                         member _.Dispose() = frameworkElement.remove_Loading h }
@@ -292,12 +298,13 @@ module FrameworkElementMod =
 
         [<Extension>]
         static member onSizeChanged<'m when 'm :> FrameworkElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: SizeChangedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> SizeChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SizeChanged"
                 Subscribe = (fun uiElement ->
                     let frameworkElement = uiElement :?> FrameworkElement
-                    let h = SizeChangedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = SizeChangedEventHandler(fun _ e -> handler sender e)
                     frameworkElement.SizeChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = frameworkElement.SizeChanged.RemoveHandler h }
@@ -306,12 +313,13 @@ module FrameworkElementMod =
 
         [<Extension>]
         static member onUnloaded<'m when 'm :> FrameworkElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Unloaded"
                 Subscribe = (fun uiElement ->
                     let frameworkElement = uiElement :?> FrameworkElement
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RoutedEventHandler(fun _ e -> handler sender e)
                     frameworkElement.Unloaded.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = frameworkElement.Unloaded.RemoveHandler h }

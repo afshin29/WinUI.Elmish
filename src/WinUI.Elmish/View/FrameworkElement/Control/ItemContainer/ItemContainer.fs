@@ -66,12 +66,13 @@ module ItemContainerMod =
 
         [<Extension>]
         static member onItemInvoked<'m when 'm :> ItemContainer and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ItemContainerInvokedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ItemContainerInvokedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ItemInvoked"
                 Subscribe = (fun uiElement ->
                     let itemContainer = uiElement :?> ItemContainer
-                    let h = TypedEventHandler<ItemContainer, ItemContainerInvokedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<ItemContainer, ItemContainerInvokedEventArgs>(fun _ e -> handler sender e)
                     itemContainer.add_ItemInvoked h
                     { new IDisposable with
                         member _.Dispose() = itemContainer.remove_ItemInvoked h }

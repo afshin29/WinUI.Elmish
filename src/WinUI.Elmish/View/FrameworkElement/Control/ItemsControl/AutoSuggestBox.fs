@@ -102,12 +102,12 @@ module AutoSuggestBoxMod =
             |> node.set
 
         [<Extension>]
-        static member onQuerySubmitted(node: VirtualNode<AutoSuggestBox>, handler: AutoSuggestBoxQuerySubmittedEventArgs -> unit, ?key: string) =
+        static member onQuerySubmitted(node: VirtualNode<AutoSuggestBox>, handler: AutoSuggestBox -> AutoSuggestBoxQuerySubmittedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "QuerySubmitted"
                 Subscribe = (fun uiElement ->
                     let autoSuggestBox = uiElement :?> AutoSuggestBox
-                    let h = TypedEventHandler<AutoSuggestBox, AutoSuggestBoxQuerySubmittedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<AutoSuggestBox, AutoSuggestBoxQuerySubmittedEventArgs>(fun _ e -> handler autoSuggestBox e)
                     autoSuggestBox.add_QuerySubmitted h
                     { new IDisposable with
                         member _.Dispose() = autoSuggestBox.remove_QuerySubmitted h }
@@ -115,12 +115,12 @@ module AutoSuggestBoxMod =
             })
 
         [<Extension>]
-        static member onSuggestionChosen(node: VirtualNode<AutoSuggestBox>, handler: AutoSuggestBoxSuggestionChosenEventArgs -> unit, ?key: string) =
+        static member onSuggestionChosen(node: VirtualNode<AutoSuggestBox>, handler: AutoSuggestBox -> AutoSuggestBoxSuggestionChosenEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SuggestionChosen"
                 Subscribe = (fun uiElement ->
                     let autoSuggestBox = uiElement :?> AutoSuggestBox
-                    let h = TypedEventHandler<AutoSuggestBox, AutoSuggestBoxSuggestionChosenEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<AutoSuggestBox, AutoSuggestBoxSuggestionChosenEventArgs>(fun _ e -> handler autoSuggestBox e)
                     autoSuggestBox.add_SuggestionChosen h
                     { new IDisposable with
                         member _.Dispose() = autoSuggestBox.remove_SuggestionChosen h }
@@ -128,12 +128,12 @@ module AutoSuggestBoxMod =
             })
 
         [<Extension>]
-        static member onTextChanged(node: VirtualNode<AutoSuggestBox>, handler: AutoSuggestBoxTextChangedEventArgs -> unit, ?key: string) =
+        static member onTextChanged(node: VirtualNode<AutoSuggestBox>, handler: AutoSuggestBox -> AutoSuggestBoxTextChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextChanged"
                 Subscribe = (fun uiElement ->
                     let autoSuggestBox = uiElement :?> AutoSuggestBox
-                    let h = TypedEventHandler<AutoSuggestBox, AutoSuggestBoxTextChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<AutoSuggestBox, AutoSuggestBoxTextChangedEventArgs>(fun _ e -> handler autoSuggestBox e)
                     autoSuggestBox.add_TextChanged h
                     { new IDisposable with
                         member _.Dispose() = autoSuggestBox.remove_TextChanged h }

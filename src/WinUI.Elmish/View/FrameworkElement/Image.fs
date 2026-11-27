@@ -43,12 +43,12 @@ module ImageMod =
             |> node.set
 
         [<Extension>]
-        static member onImageFailed(node: VirtualNode<Image>, handler: ExceptionRoutedEventArgs -> unit, ?key: string) =
+        static member onImageFailed(node: VirtualNode<Image>, handler: Image -> ExceptionRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ImageFailed"
                 Subscribe = (fun uiElement ->
                     let image = uiElement :?> Image
-                    let h = ExceptionRoutedEventHandler(fun _ e -> handler e)
+                    let h = ExceptionRoutedEventHandler(fun _ e -> handler image e)
                     image.ImageFailed.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = image.ImageFailed.RemoveHandler h }
@@ -56,12 +56,12 @@ module ImageMod =
             })
 
         [<Extension>]
-        static member onImageOpened(node: VirtualNode<Image>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onImageOpened(node: VirtualNode<Image>, handler: Image -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ImageOpened"
                 Subscribe = (fun uiElement ->
                     let image = uiElement :?> Image
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler image e)
                     image.ImageOpened.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = image.ImageOpened.RemoveHandler h }

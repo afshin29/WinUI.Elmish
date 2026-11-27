@@ -188,12 +188,12 @@ module TextBlockMod =
             |> node.set
 
         [<Extension>]
-        static member onContextMenuOpening(node: VirtualNode<TextBlock>, handler: ContextMenuEventArgs -> unit, ?key: string) =
+        static member onContextMenuOpening(node: VirtualNode<TextBlock>, handler: TextBlock -> ContextMenuEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ContextMenuOpening"
                 Subscribe = (fun uiElement ->
                     let textBlock = uiElement :?> TextBlock
-                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler e)
+                    let h = ContextMenuOpeningEventHandler(fun _ e -> handler textBlock e)
                     textBlock.ContextMenuOpening.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = textBlock.ContextMenuOpening.RemoveHandler h }
@@ -201,12 +201,12 @@ module TextBlockMod =
             })
 
         [<Extension>]
-        static member onIsTextTrimmedChanged(node: VirtualNode<TextBlock>, handler: IsTextTrimmedChangedEventArgs -> unit, ?key: string) =
+        static member onIsTextTrimmedChanged(node: VirtualNode<TextBlock>, handler: TextBlock -> IsTextTrimmedChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "IsTextTrimmedChanged"
                 Subscribe = (fun uiElement ->
                     let textBlock = uiElement :?> TextBlock
-                    let h = TypedEventHandler<TextBlock, IsTextTrimmedChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TextBlock, IsTextTrimmedChangedEventArgs>(fun _ e -> handler textBlock e)
                     textBlock.add_IsTextTrimmedChanged h
                     { new IDisposable with
                         member _.Dispose() = textBlock.remove_IsTextTrimmedChanged h }
@@ -214,12 +214,12 @@ module TextBlockMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<TextBlock>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<TextBlock>, handler: TextBlock -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let textBlock = uiElement :?> TextBlock
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler textBlock e)
                     textBlock.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = textBlock.SelectionChanged.RemoveHandler h }

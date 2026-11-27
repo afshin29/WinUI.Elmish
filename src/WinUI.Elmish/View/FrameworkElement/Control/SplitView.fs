@@ -92,12 +92,12 @@ module SplitViewMod =
             |> node.set
 
         [<Extension>]
-        static member onPaneClosed(node: VirtualNode<SplitView>, handler: obj -> unit, ?key: string) =
+        static member onPaneClosed(node: VirtualNode<SplitView>, handler: SplitView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneClosed"
                 Subscribe = (fun uiElement ->
                     let splitView = uiElement :?> SplitView
-                    let h = TypedEventHandler<SplitView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<SplitView, obj>(fun _ e -> handler splitView e)
                     splitView.add_PaneClosed h
                     { new IDisposable with
                         member _.Dispose() = splitView.remove_PaneClosed h }
@@ -105,12 +105,12 @@ module SplitViewMod =
             })
 
         [<Extension>]
-        static member onPaneClosing(node: VirtualNode<SplitView>, handler: SplitViewPaneClosingEventArgs -> unit, ?key: string) =
+        static member onPaneClosing(node: VirtualNode<SplitView>, handler: SplitView -> SplitViewPaneClosingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneClosing"
                 Subscribe = (fun uiElement ->
                     let splitView = uiElement :?> SplitView
-                    let h = TypedEventHandler<SplitView, SplitViewPaneClosingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<SplitView, SplitViewPaneClosingEventArgs>(fun _ e -> handler splitView e)
                     splitView.add_PaneClosing h
                     { new IDisposable with
                         member _.Dispose() = splitView.remove_PaneClosing h }
@@ -118,12 +118,12 @@ module SplitViewMod =
             })
 
         [<Extension>]
-        static member onPaneOpened(node: VirtualNode<SplitView>, handler: obj -> unit, ?key: string) =
+        static member onPaneOpened(node: VirtualNode<SplitView>, handler: SplitView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneOpened"
                 Subscribe = (fun uiElement ->
                     let splitView = uiElement :?> SplitView
-                    let h = TypedEventHandler<SplitView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<SplitView, obj>(fun _ e -> handler splitView e)
                     splitView.add_PaneOpened h
                     { new IDisposable with
                         member _.Dispose() = splitView.remove_PaneOpened h }
@@ -131,12 +131,12 @@ module SplitViewMod =
             })
 
         [<Extension>]
-        static member onPaneOpening(node: VirtualNode<SplitView>, handler: obj -> unit, ?key: string) =
+        static member onPaneOpening(node: VirtualNode<SplitView>, handler: SplitView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneOpening"
                 Subscribe = (fun uiElement ->
                     let splitView = uiElement :?> SplitView
-                    let h = TypedEventHandler<SplitView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<SplitView, obj>(fun _ e -> handler splitView e)
                     splitView.add_PaneOpening h
                     { new IDisposable with
                         member _.Dispose() = splitView.remove_PaneOpening h }

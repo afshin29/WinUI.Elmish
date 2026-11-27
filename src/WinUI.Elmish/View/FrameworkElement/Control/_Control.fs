@@ -209,12 +209,13 @@ module ControlMod =
 
         [<Extension>]
         static member onFocusDisengaged<'m when 'm :> Control and 'm: not struct>
-            (node: VirtualNode<'m>, handler: FocusDisengagedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> FocusDisengagedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "FocusDisengaged"
                 Subscribe = (fun uiElement ->
                     let control = uiElement :?> Control
-                    let h = TypedEventHandler<Control, FocusDisengagedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<Control, FocusDisengagedEventArgs>(fun _ e -> handler sender e)
                     control.add_FocusDisengaged h
                     { new IDisposable with
                         member _.Dispose() = control.remove_FocusDisengaged h }
@@ -223,12 +224,13 @@ module ControlMod =
 
         [<Extension>]
         static member onFocusEngaged<'m when 'm :> Control and 'm: not struct>
-            (node: VirtualNode<'m>, handler: FocusEngagedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> FocusEngagedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "FocusEngaged"
                 Subscribe = (fun uiElement ->
                     let control = uiElement :?> Control
-                    let h = TypedEventHandler<Control, FocusEngagedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<Control, FocusEngagedEventArgs>(fun _ e -> handler sender e)
                     control.add_FocusEngaged h
                     { new IDisposable with
                         member _.Dispose() = control.remove_FocusEngaged h }
@@ -237,12 +239,13 @@ module ControlMod =
 
         [<Extension>]
         static member onIsEnabledChanged<'m when 'm :> Control and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DependencyPropertyChangedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DependencyPropertyChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "IsEnabledChanged"
                 Subscribe = (fun uiElement ->
                     let control = uiElement :?> Control
-                    let h = DependencyPropertyChangedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = DependencyPropertyChangedEventHandler(fun _ e -> handler sender e)
                     control.IsEnabledChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = control.IsEnabledChanged.RemoveHandler h }

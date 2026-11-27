@@ -223,12 +223,12 @@ module ScrollViewerMod =
             |> node.set
 
         [<Extension>]
-        static member onAnchorRequested(node: VirtualNode<ScrollViewer>, handler: AnchorRequestedEventArgs -> unit, ?key: string) =
+        static member onAnchorRequested(node: VirtualNode<ScrollViewer>, handler: ScrollViewer -> AnchorRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "AnchorRequested"
                 Subscribe = (fun uiElement ->
                     let scrollViewer = uiElement :?> ScrollViewer
-                    let h = TypedEventHandler<ScrollViewer, AnchorRequestedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ScrollViewer, AnchorRequestedEventArgs>(fun _ e -> handler scrollViewer e)
                     scrollViewer.add_AnchorRequested h
                     { new IDisposable with
                         member _.Dispose() = scrollViewer.remove_AnchorRequested h }
@@ -236,12 +236,12 @@ module ScrollViewerMod =
             })
 
         [<Extension>]
-        static member onDirectManipulationCompleted(node: VirtualNode<ScrollViewer>, handler: obj -> unit, ?key: string) =
+        static member onDirectManipulationCompleted(node: VirtualNode<ScrollViewer>, handler: ScrollViewer -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DirectManipulationCompleted"
                 Subscribe = (fun uiElement ->
                     let scrollViewer = uiElement :?> ScrollViewer
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler scrollViewer e)
                     scrollViewer.DirectManipulationCompleted.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = scrollViewer.DirectManipulationCompleted.RemoveHandler h }
@@ -249,12 +249,12 @@ module ScrollViewerMod =
             })
 
         [<Extension>]
-        static member onDirectManipulationStarted(node: VirtualNode<ScrollViewer>, handler: obj -> unit, ?key: string) =
+        static member onDirectManipulationStarted(node: VirtualNode<ScrollViewer>, handler: ScrollViewer -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DirectManipulationStarted"
                 Subscribe = (fun uiElement ->
                     let scrollViewer = uiElement :?> ScrollViewer
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler scrollViewer e)
                     scrollViewer.DirectManipulationStarted.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = scrollViewer.DirectManipulationStarted.RemoveHandler h }
@@ -262,12 +262,12 @@ module ScrollViewerMod =
             })
 
         [<Extension>]
-        static member onViewChanged(node: VirtualNode<ScrollViewer>, handler: ScrollViewerViewChangedEventArgs -> unit, ?key: string) =
+        static member onViewChanged(node: VirtualNode<ScrollViewer>, handler: ScrollViewer -> ScrollViewerViewChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ViewChanged"
                 Subscribe = (fun uiElement ->
                     let scrollViewer = uiElement :?> ScrollViewer
-                    let h = EventHandler<ScrollViewerViewChangedEventArgs>(fun _ e -> handler e)
+                    let h = EventHandler<ScrollViewerViewChangedEventArgs>(fun _ e -> handler scrollViewer e)
                     scrollViewer.ViewChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = scrollViewer.ViewChanged.RemoveHandler h }
@@ -275,12 +275,12 @@ module ScrollViewerMod =
             })
 
         [<Extension>]
-        static member onViewChanging(node: VirtualNode<ScrollViewer>, handler: ScrollViewerViewChangingEventArgs -> unit, ?key: string) =
+        static member onViewChanging(node: VirtualNode<ScrollViewer>, handler: ScrollViewer -> ScrollViewerViewChangingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ViewChanging"
                 Subscribe = (fun uiElement ->
                     let scrollViewer = uiElement :?> ScrollViewer
-                    let h = EventHandler<ScrollViewerViewChangingEventArgs>(fun _ e -> handler e)
+                    let h = EventHandler<ScrollViewerViewChangingEventArgs>(fun _ e -> handler scrollViewer e)
                     scrollViewer.ViewChanging.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = scrollViewer.ViewChanging.RemoveHandler h }

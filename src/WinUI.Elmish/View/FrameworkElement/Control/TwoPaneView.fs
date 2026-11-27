@@ -91,12 +91,12 @@ module TwoPaneViewMod =
             |> node.set
 
         [<Extension>]
-        static member onModeChanged(node: VirtualNode<TwoPaneView>, handler: obj -> unit, ?key: string) =
+        static member onModeChanged(node: VirtualNode<TwoPaneView>, handler: TwoPaneView -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ModeChanged"
                 Subscribe = (fun uiElement ->
                     let twoPaneView = uiElement :?> TwoPaneView
-                    let h = TypedEventHandler<TwoPaneView, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TwoPaneView, obj>(fun _ e -> handler twoPaneView e)
                     twoPaneView.add_ModeChanged h
                     { new IDisposable with
                         member _.Dispose() = twoPaneView.remove_ModeChanged h }

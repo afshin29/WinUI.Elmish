@@ -44,7 +44,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                     .children([
                         button_accent'("+ Increment")
                             .center()
-                            .onClick(fun _ -> dispatch Increment)
+                            .onClick(fun _ _ -> dispatch Increment)
                     
                         textBlock'($"Count: {model.Count.ToString()}")
                             .fontSize(18)
@@ -52,6 +52,6 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                     
                         button'("- Decrement")
                             .center()
-                            .onClick(fun _ -> dispatch Decrement)
+                            .onClick(fun _ _ -> dispatch Decrement)
                     ])
             ])

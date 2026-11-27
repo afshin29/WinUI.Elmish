@@ -111,12 +111,12 @@ module PopupMod =
             |> node.set
 
         [<Extension>]
-        static member onActualPlacementChanged(node: VirtualNode<Popup>, handler: obj -> unit, ?key: string) =
+        static member onActualPlacementChanged(node: VirtualNode<Popup>, handler: Popup -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ActualPlacementChanged"
                 Subscribe = (fun uiElement ->
                     let popup = uiElement :?> Popup
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler popup e)
                     popup.ActualPlacementChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = popup.ActualPlacementChanged.RemoveHandler h }
@@ -124,12 +124,12 @@ module PopupMod =
             })
 
         [<Extension>]
-        static member onClosed(node: VirtualNode<Popup>, handler: obj -> unit, ?key: string) =
+        static member onClosed(node: VirtualNode<Popup>, handler: Popup -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closed"
                 Subscribe = (fun uiElement ->
                     let popup = uiElement :?> Popup
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler popup e)
                     popup.Closed.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = popup.Closed.RemoveHandler h }
@@ -137,12 +137,12 @@ module PopupMod =
             })
 
         [<Extension>]
-        static member onOpened(node: VirtualNode<Popup>, handler: obj -> unit, ?key: string) =
+        static member onOpened(node: VirtualNode<Popup>, handler: Popup -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Opened"
                 Subscribe = (fun uiElement ->
                     let popup = uiElement :?> Popup
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler popup e)
                     popup.Opened.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = popup.Opened.RemoveHandler h }

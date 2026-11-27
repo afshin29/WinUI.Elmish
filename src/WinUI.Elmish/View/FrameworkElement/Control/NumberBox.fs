@@ -170,12 +170,12 @@ module NumberBoxMod =
             |> node.set
 
         [<Extension>]
-        static member onValueChanged(node: VirtualNode<NumberBox>, handler: NumberBoxValueChangedEventArgs -> unit, ?key: string) =
+        static member onValueChanged(node: VirtualNode<NumberBox>, handler: NumberBox -> NumberBoxValueChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ValueChanged"
                 Subscribe = (fun uiElement ->
                     let numberBox = uiElement :?> NumberBox
-                    let h = TypedEventHandler<NumberBox, NumberBoxValueChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<NumberBox, NumberBoxValueChangedEventArgs>(fun _ e -> handler numberBox e)
                     numberBox.add_ValueChanged h
                     { new IDisposable with
                         member _.Dispose() = numberBox.remove_ValueChanged h }

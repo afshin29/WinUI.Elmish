@@ -146,12 +146,12 @@ module ColorPickerMod =
             |> node.set
 
         [<Extension>]
-        static member onColorChanged(node: VirtualNode<ColorPicker>, handler: ColorChangedEventArgs -> unit, ?key: string) =
+        static member onColorChanged(node: VirtualNode<ColorPicker>, handler: ColorPicker -> ColorChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ColorChanged"
                 Subscribe = (fun uiElement ->
                     let colorPicker = uiElement :?> ColorPicker
-                    let h = TypedEventHandler<ColorPicker, ColorChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ColorPicker, ColorChangedEventArgs>(fun _ e -> handler colorPicker e)
                     colorPicker.add_ColorChanged h
                     { new IDisposable with
                         member _.Dispose() = colorPicker.remove_ColorChanged h }

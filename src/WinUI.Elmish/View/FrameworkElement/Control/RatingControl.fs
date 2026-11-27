@@ -73,12 +73,12 @@ module RatingControlMod =
             |> node.set
 
         [<Extension>]
-        static member onValueChanged(node: VirtualNode<RatingControl>, handler: obj -> unit, ?key: string) =
+        static member onValueChanged(node: VirtualNode<RatingControl>, handler: RatingControl -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ValueChanged"
                 Subscribe = (fun uiElement ->
                     let ratingControl = uiElement :?> RatingControl
-                    let h = TypedEventHandler<RatingControl, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<RatingControl, obj>(fun _ e -> handler ratingControl e)
                     ratingControl.add_ValueChanged h
                     { new IDisposable with
                         member _.Dispose() = ratingControl.remove_ValueChanged h }

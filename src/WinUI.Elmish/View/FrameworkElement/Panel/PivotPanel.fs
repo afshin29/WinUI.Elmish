@@ -27,12 +27,12 @@ module PivotPanelMod =
     type PivotPanelExtensions =
 
         [<Extension>]
-        static member onHorizontalSnapPointsChanged(node: VirtualNode<PivotPanel>, handler: obj -> unit, ?key: string) =
+        static member onHorizontalSnapPointsChanged(node: VirtualNode<PivotPanel>, handler: PivotPanel -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "HorizontalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let pivotPanel = uiElement :?> PivotPanel
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler pivotPanel e)
                     pivotPanel.HorizontalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = pivotPanel.HorizontalSnapPointsChanged.RemoveHandler h }
@@ -40,12 +40,12 @@ module PivotPanelMod =
             })
 
         [<Extension>]
-        static member onVerticalSnapPointsChanged(node: VirtualNode<PivotPanel>, handler: obj -> unit, ?key: string) =
+        static member onVerticalSnapPointsChanged(node: VirtualNode<PivotPanel>, handler: PivotPanel -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "VerticalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let pivotPanel = uiElement :?> PivotPanel
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler pivotPanel e)
                     pivotPanel.VerticalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = pivotPanel.VerticalSnapPointsChanged.RemoveHandler h }

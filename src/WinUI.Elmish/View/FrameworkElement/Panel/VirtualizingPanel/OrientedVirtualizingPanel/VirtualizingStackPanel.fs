@@ -45,12 +45,12 @@ module VirtualizingStackPanelMod =
             |> node.set
 
         [<Extension>]
-        static member onCleanUpVirtualizedItemEvent(node: VirtualNode<VirtualizingStackPanel>, handler: CleanUpVirtualizedItemEventArgs -> unit, ?key: string) =
+        static member onCleanUpVirtualizedItemEvent(node: VirtualNode<VirtualizingStackPanel>, handler: VirtualizingStackPanel -> CleanUpVirtualizedItemEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CleanUpVirtualizedItemEvent"
                 Subscribe = (fun uiElement ->
                     let virtualizingStackPanel = uiElement :?> VirtualizingStackPanel
-                    let h = CleanUpVirtualizedItemEventHandler(fun _ e -> handler e)
+                    let h = CleanUpVirtualizedItemEventHandler(fun _ e -> handler virtualizingStackPanel e)
                     virtualizingStackPanel.CleanUpVirtualizedItemEvent.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = virtualizingStackPanel.CleanUpVirtualizedItemEvent.RemoveHandler h }

@@ -121,12 +121,12 @@ module TreeViewMod =
             |> node.set
 
         [<Extension>]
-        static member onCollapsed(node: VirtualNode<TreeView>, handler: TreeViewCollapsedEventArgs -> unit, ?key: string) =
+        static member onCollapsed(node: VirtualNode<TreeView>, handler: TreeView -> TreeViewCollapsedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Collapsed"
                 Subscribe = (fun uiElement ->
                     let treeView = uiElement :?> TreeView
-                    let h = TypedEventHandler<TreeView, TreeViewCollapsedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TreeView, TreeViewCollapsedEventArgs>(fun _ e -> handler treeView e)
                     treeView.add_Collapsed h
                     { new IDisposable with
                         member _.Dispose() = treeView.remove_Collapsed h }
@@ -134,12 +134,12 @@ module TreeViewMod =
             })
 
         [<Extension>]
-        static member onDragItemsCompleted(node: VirtualNode<TreeView>, handler: TreeViewDragItemsCompletedEventArgs -> unit, ?key: string) =
+        static member onDragItemsCompleted(node: VirtualNode<TreeView>, handler: TreeView -> TreeViewDragItemsCompletedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragItemsCompleted"
                 Subscribe = (fun uiElement ->
                     let treeView = uiElement :?> TreeView
-                    let h = TypedEventHandler<TreeView, TreeViewDragItemsCompletedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TreeView, TreeViewDragItemsCompletedEventArgs>(fun _ e -> handler treeView e)
                     treeView.add_DragItemsCompleted h
                     { new IDisposable with
                         member _.Dispose() = treeView.remove_DragItemsCompleted h }
@@ -147,12 +147,12 @@ module TreeViewMod =
             })
 
         [<Extension>]
-        static member onDragItemsStarting(node: VirtualNode<TreeView>, handler: TreeViewDragItemsStartingEventArgs -> unit, ?key: string) =
+        static member onDragItemsStarting(node: VirtualNode<TreeView>, handler: TreeView -> TreeViewDragItemsStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragItemsStarting"
                 Subscribe = (fun uiElement ->
                     let treeView = uiElement :?> TreeView
-                    let h = TypedEventHandler<TreeView, TreeViewDragItemsStartingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TreeView, TreeViewDragItemsStartingEventArgs>(fun _ e -> handler treeView e)
                     treeView.add_DragItemsStarting h
                     { new IDisposable with
                         member _.Dispose() = treeView.remove_DragItemsStarting h }
@@ -160,12 +160,12 @@ module TreeViewMod =
             })
 
         [<Extension>]
-        static member onExpanding(node: VirtualNode<TreeView>, handler: TreeViewExpandingEventArgs -> unit, ?key: string) =
+        static member onExpanding(node: VirtualNode<TreeView>, handler: TreeView -> TreeViewExpandingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Expanding"
                 Subscribe = (fun uiElement ->
                     let treeView = uiElement :?> TreeView
-                    let h = TypedEventHandler<TreeView, TreeViewExpandingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TreeView, TreeViewExpandingEventArgs>(fun _ e -> handler treeView e)
                     treeView.add_Expanding h
                     { new IDisposable with
                         member _.Dispose() = treeView.remove_Expanding h }
@@ -173,12 +173,12 @@ module TreeViewMod =
             })
 
         [<Extension>]
-        static member onItemInvoked(node: VirtualNode<TreeView>, handler: TreeViewItemInvokedEventArgs -> unit, ?key: string) =
+        static member onItemInvoked(node: VirtualNode<TreeView>, handler: TreeView -> TreeViewItemInvokedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ItemInvoked"
                 Subscribe = (fun uiElement ->
                     let treeView = uiElement :?> TreeView
-                    let h = TypedEventHandler<TreeView, TreeViewItemInvokedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TreeView, TreeViewItemInvokedEventArgs>(fun _ e -> handler treeView e)
                     treeView.add_ItemInvoked h
                     { new IDisposable with
                         member _.Dispose() = treeView.remove_ItemInvoked h }
@@ -186,12 +186,12 @@ module TreeViewMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<TreeView>, handler: TreeViewSelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<TreeView>, handler: TreeView -> TreeViewSelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let treeView = uiElement :?> TreeView
-                    let h = TypedEventHandler<TreeView, TreeViewSelectionChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TreeView, TreeViewSelectionChangedEventArgs>(fun _ e -> handler treeView e)
                     treeView.add_SelectionChanged h
                     { new IDisposable with
                         member _.Dispose() = treeView.remove_SelectionChanged h }

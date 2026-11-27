@@ -80,12 +80,12 @@ module ItemsViewMod =
             |> node.set
 
         [<Extension>]
-        static member onItemInvoked(node: VirtualNode<ItemsView>, handler: ItemsViewItemInvokedEventArgs -> unit, ?key: string) =
+        static member onItemInvoked(node: VirtualNode<ItemsView>, handler: ItemsView -> ItemsViewItemInvokedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ItemInvoked"
                 Subscribe = (fun uiElement ->
                     let itemsView = uiElement :?> ItemsView
-                    let h = TypedEventHandler<ItemsView, ItemsViewItemInvokedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ItemsView, ItemsViewItemInvokedEventArgs>(fun _ e -> handler itemsView e)
                     itemsView.add_ItemInvoked h
                     { new IDisposable with
                         member _.Dispose() = itemsView.remove_ItemInvoked h }
@@ -93,12 +93,12 @@ module ItemsViewMod =
             })
 
         [<Extension>]
-        static member onSelectionChanged(node: VirtualNode<ItemsView>, handler: ItemsViewSelectionChangedEventArgs -> unit, ?key: string) =
+        static member onSelectionChanged(node: VirtualNode<ItemsView>, handler: ItemsView -> ItemsViewSelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let itemsView = uiElement :?> ItemsView
-                    let h = TypedEventHandler<ItemsView, ItemsViewSelectionChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ItemsView, ItemsViewSelectionChangedEventArgs>(fun _ e -> handler itemsView e)
                     itemsView.add_SelectionChanged h
                     { new IDisposable with
                         member _.Dispose() = itemsView.remove_SelectionChanged h }

@@ -109,12 +109,12 @@ module TitleBarMod =
             |> node.set
 
         [<Extension>]
-        static member onBackRequested(node: VirtualNode<TitleBar>, handler: obj -> unit, ?key: string) =
+        static member onBackRequested(node: VirtualNode<TitleBar>, handler: TitleBar -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "BackRequested"
                 Subscribe = (fun uiElement ->
                     let titleBar = uiElement :?> TitleBar
-                    let h = TypedEventHandler<TitleBar, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TitleBar, obj>(fun _ e -> handler titleBar e)
                     titleBar.add_BackRequested h
                     { new IDisposable with
                         member _.Dispose() = titleBar.remove_BackRequested h }
@@ -122,12 +122,12 @@ module TitleBarMod =
             })
 
         [<Extension>]
-        static member onPaneToggleRequested(node: VirtualNode<TitleBar>, handler: obj -> unit, ?key: string) =
+        static member onPaneToggleRequested(node: VirtualNode<TitleBar>, handler: TitleBar -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PaneToggleRequested"
                 Subscribe = (fun uiElement ->
                     let titleBar = uiElement :?> TitleBar
-                    let h = TypedEventHandler<TitleBar, obj>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TitleBar, obj>(fun _ e -> handler titleBar e)
                     titleBar.add_PaneToggleRequested h
                     { new IDisposable with
                         member _.Dispose() = titleBar.remove_PaneToggleRequested h }

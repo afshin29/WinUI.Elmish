@@ -53,12 +53,12 @@ module WebView2Mod =
             |> node.set
 
         [<Extension>]
-        static member onCoreProcessFailed(node: VirtualNode<WebView2>, handler: CoreWebView2ProcessFailedEventArgs -> unit, ?key: string) =
+        static member onCoreProcessFailed(node: VirtualNode<WebView2>, handler: WebView2 -> CoreWebView2ProcessFailedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CoreProcessFailed"
                 Subscribe = (fun uiElement ->
                     let webView2 = uiElement :?> WebView2
-                    let h = TypedEventHandler<WebView2, CoreWebView2ProcessFailedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<WebView2, CoreWebView2ProcessFailedEventArgs>(fun _ e -> handler webView2 e)
                     webView2.add_CoreProcessFailed h
                     { new IDisposable with
                         member _.Dispose() = webView2.remove_CoreProcessFailed h }
@@ -66,12 +66,12 @@ module WebView2Mod =
             })
 
         [<Extension>]
-        static member onCoreWebView2Initialized(node: VirtualNode<WebView2>, handler: CoreWebView2InitializedEventArgs -> unit, ?key: string) =
+        static member onCoreWebView2Initialized(node: VirtualNode<WebView2>, handler: WebView2 -> CoreWebView2InitializedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CoreWebView2Initialized"
                 Subscribe = (fun uiElement ->
                     let webView2 = uiElement :?> WebView2
-                    let h = TypedEventHandler<WebView2, CoreWebView2InitializedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<WebView2, CoreWebView2InitializedEventArgs>(fun _ e -> handler webView2 e)
                     webView2.add_CoreWebView2Initialized h
                     { new IDisposable with
                         member _.Dispose() = webView2.remove_CoreWebView2Initialized h }
@@ -79,12 +79,12 @@ module WebView2Mod =
             })
 
         [<Extension>]
-        static member onNavigationCompleted(node: VirtualNode<WebView2>, handler: CoreWebView2NavigationCompletedEventArgs -> unit, ?key: string) =
+        static member onNavigationCompleted(node: VirtualNode<WebView2>, handler: WebView2 -> CoreWebView2NavigationCompletedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "NavigationCompleted"
                 Subscribe = (fun uiElement ->
                     let webView2 = uiElement :?> WebView2
-                    let h = TypedEventHandler<WebView2, CoreWebView2NavigationCompletedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<WebView2, CoreWebView2NavigationCompletedEventArgs>(fun _ e -> handler webView2 e)
                     webView2.add_NavigationCompleted h
                     { new IDisposable with
                         member _.Dispose() = webView2.remove_NavigationCompleted h }
@@ -92,12 +92,12 @@ module WebView2Mod =
             })
 
         [<Extension>]
-        static member onNavigationStarting(node: VirtualNode<WebView2>, handler: CoreWebView2NavigationStartingEventArgs -> unit, ?key: string) =
+        static member onNavigationStarting(node: VirtualNode<WebView2>, handler: WebView2 -> CoreWebView2NavigationStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "NavigationStarting"
                 Subscribe = (fun uiElement ->
                     let webView2 = uiElement :?> WebView2
-                    let h = TypedEventHandler<WebView2, CoreWebView2NavigationStartingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<WebView2, CoreWebView2NavigationStartingEventArgs>(fun _ e -> handler webView2 e)
                     webView2.add_NavigationStarting h
                     { new IDisposable with
                         member _.Dispose() = webView2.remove_NavigationStarting h }
@@ -105,12 +105,12 @@ module WebView2Mod =
             })
 
         [<Extension>]
-        static member onWebMessageReceived(node: VirtualNode<WebView2>, handler: CoreWebView2WebMessageReceivedEventArgs -> unit, ?key: string) =
+        static member onWebMessageReceived(node: VirtualNode<WebView2>, handler: WebView2 -> CoreWebView2WebMessageReceivedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "WebMessageReceived"
                 Subscribe = (fun uiElement ->
                     let webView2 = uiElement :?> WebView2
-                    let h = TypedEventHandler<WebView2, CoreWebView2WebMessageReceivedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<WebView2, CoreWebView2WebMessageReceivedEventArgs>(fun _ e -> handler webView2 e)
                     webView2.add_WebMessageReceived h
                     { new IDisposable with
                         member _.Dispose() = webView2.remove_WebMessageReceived h }

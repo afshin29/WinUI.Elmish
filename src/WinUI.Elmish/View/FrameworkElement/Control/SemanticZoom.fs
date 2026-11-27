@@ -54,12 +54,12 @@ module SemanticZoomMod =
             |> node.set
 
         [<Extension>]
-        static member onViewChangeCompleted(node: VirtualNode<SemanticZoom>, handler: SemanticZoomViewChangedEventArgs -> unit, ?key: string) =
+        static member onViewChangeCompleted(node: VirtualNode<SemanticZoom>, handler: SemanticZoom -> SemanticZoomViewChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ViewChangeCompleted"
                 Subscribe = (fun uiElement ->
                     let semanticZoom = uiElement :?> SemanticZoom
-                    let h = SemanticZoomViewChangedEventHandler(fun _ e -> handler e)
+                    let h = SemanticZoomViewChangedEventHandler(fun _ e -> handler semanticZoom e)
                     semanticZoom.ViewChangeCompleted.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = semanticZoom.ViewChangeCompleted.RemoveHandler h }
@@ -67,12 +67,12 @@ module SemanticZoomMod =
             })
 
         [<Extension>]
-        static member onViewChangeStarted(node: VirtualNode<SemanticZoom>, handler: SemanticZoomViewChangedEventArgs -> unit, ?key: string) =
+        static member onViewChangeStarted(node: VirtualNode<SemanticZoom>, handler: SemanticZoom -> SemanticZoomViewChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ViewChangeStarted"
                 Subscribe = (fun uiElement ->
                     let semanticZoom = uiElement :?> SemanticZoom
-                    let h = SemanticZoomViewChangedEventHandler(fun _ e -> handler e)
+                    let h = SemanticZoomViewChangedEventHandler(fun _ e -> handler semanticZoom e)
                     semanticZoom.ViewChangeStarted.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = semanticZoom.ViewChangeStarted.RemoveHandler h }

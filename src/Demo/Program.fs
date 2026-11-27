@@ -96,7 +96,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                 titleBar()
                     .title("WinUI Elmish")
                     .isPaneToggleButtonVisible(true)
-                    .onPaneToggleRequested(fun _ -> dispatch TogglePane)
+                    .onPaneToggleRequested(fun _ _ -> dispatch TogglePane)
                 
                 navigationView()
                     .paneDisplayMode(NavigationViewPaneDisplayMode.Left)
@@ -143,7 +143,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                             .tag(2)
                     ])
                     .onSelectionChanged(
-                        fun args ->
+                        fun _ args ->
                             if args.IsSettingsSelected then
                                 dispatch <| Navigate SettingsPage
                             else

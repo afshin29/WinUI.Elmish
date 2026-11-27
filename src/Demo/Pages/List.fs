@@ -62,12 +62,12 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                     button'("Remove")
                         .isEnabled(model.Contacts.Length > 0)
                         .onClick(
-                            (fun _ -> dispatch <| RemoveContact (model.Contacts.Length - 1)),
+                            (fun _ _ -> dispatch <| RemoveContact (model.Contacts.Length - 1)),
                             ?key = (Some <| (model.Contacts.Length - 1).ToString()))
                         
                     button'("Remove First")
                         .isEnabled(model.Contacts.Length > 0)
-                        .onClick(fun _ -> dispatch <| RemoveContact 0)
+                        .onClick(fun _ _ -> dispatch <| RemoveContact 0)
                 ])
                     
             //listView()
@@ -92,10 +92,11 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                     (fun (contact: Contact) -> if contact.Name.Contains("John") then 0 else 1)
                 )
                 .selectionMode(ListViewSelectionMode.Single)
-                .onSelectionChanged(fun args ->
+                .onSelectionChanged(fun _ args ->
                     args.AddedItems
                     |> Seq.cast<Contact>
                     |> Seq.tryHead
                     |> ContactSelected
-                    |> dispatch)
+                    |> dispatch
+                )
         ])

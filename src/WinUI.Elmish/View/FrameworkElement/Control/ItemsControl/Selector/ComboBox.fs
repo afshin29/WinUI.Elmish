@@ -124,12 +124,12 @@ module ComboBoxMod =
             |> node.set
 
         [<Extension>]
-        static member onDropDownClosed(node: VirtualNode<ComboBox>, handler: obj -> unit, ?key: string) =
+        static member onDropDownClosed(node: VirtualNode<ComboBox>, handler: ComboBox -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DropDownClosed"
                 Subscribe = (fun uiElement ->
                     let comboBox = uiElement :?> ComboBox
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler comboBox e)
                     comboBox.DropDownClosed.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = comboBox.DropDownClosed.RemoveHandler h }
@@ -137,12 +137,12 @@ module ComboBoxMod =
             })
 
         [<Extension>]
-        static member onDropDownOpened(node: VirtualNode<ComboBox>, handler: obj -> unit, ?key: string) =
+        static member onDropDownOpened(node: VirtualNode<ComboBox>, handler: ComboBox -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DropDownOpened"
                 Subscribe = (fun uiElement ->
                     let comboBox = uiElement :?> ComboBox
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler comboBox e)
                     comboBox.DropDownOpened.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = comboBox.DropDownOpened.RemoveHandler h }
@@ -150,12 +150,12 @@ module ComboBoxMod =
             })
 
         [<Extension>]
-        static member onTextSubmitted(node: VirtualNode<ComboBox>, handler: ComboBoxTextSubmittedEventArgs -> unit, ?key: string) =
+        static member onTextSubmitted(node: VirtualNode<ComboBox>, handler: ComboBox -> ComboBoxTextSubmittedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TextSubmitted"
                 Subscribe = (fun uiElement ->
                     let comboBox = uiElement :?> ComboBox
-                    let h = TypedEventHandler<ComboBox, ComboBoxTextSubmittedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ComboBox, ComboBoxTextSubmittedEventArgs>(fun _ e -> handler comboBox e)
                     comboBox.add_TextSubmitted h
                     { new IDisposable with
                         member _.Dispose() = comboBox.remove_TextSubmitted h }

@@ -130,12 +130,12 @@ module DatePickerMod =
             |> node.set
 
         [<Extension>]
-        static member onDateChanged(node: VirtualNode<DatePicker>, handler: DatePickerValueChangedEventArgs -> unit, ?key: string) =
+        static member onDateChanged(node: VirtualNode<DatePicker>, handler: DatePicker -> DatePickerValueChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DateChanged"
                 Subscribe = (fun uiElement ->
                     let datePicker = uiElement :?> DatePicker
-                    let h = EventHandler<DatePickerValueChangedEventArgs>(fun _ e -> handler e)
+                    let h = EventHandler<DatePickerValueChangedEventArgs>(fun _ e -> handler datePicker e)
                     datePicker.DateChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = datePicker.DateChanged.RemoveHandler h }
@@ -143,12 +143,12 @@ module DatePickerMod =
             })
 
         [<Extension>]
-        static member onSelectedDateChanged(node: VirtualNode<DatePicker>, handler: DatePickerSelectedValueChangedEventArgs -> unit, ?key: string) =
+        static member onSelectedDateChanged(node: VirtualNode<DatePicker>, handler: DatePicker -> DatePickerSelectedValueChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectedDateChanged"
                 Subscribe = (fun uiElement ->
                     let datePicker = uiElement :?> DatePicker
-                    let h = TypedEventHandler<DatePicker, DatePickerSelectedValueChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<DatePicker, DatePickerSelectedValueChangedEventArgs>(fun _ e -> handler datePicker e)
                     datePicker.add_SelectedDateChanged h
                     { new IDisposable with
                         member _.Dispose() = datePicker.remove_SelectedDateChanged h }

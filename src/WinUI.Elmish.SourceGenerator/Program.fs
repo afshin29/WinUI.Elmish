@@ -240,7 +240,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                         hstack()
                             .children([
                                 button()
-                                    .onClick(fun _ -> dispatch OpenFileGenerationDialog)
+                                    .onClick(fun _ _ -> dispatch OpenFileGenerationDialog)
                                     .content(
                                         fontIcon'("\uF000")
                                             .fontSize(16)
@@ -251,7 +251,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                                     .background(SolidColorBrush(Colors.Transparent))
 
                                 button()
-                                    .onClick(fun _ -> dispatch OpenSettingsDialog)
+                                    .onClick(fun _ _ -> dispatch OpenSettingsDialog)
                                     .content(
                                         fontIcon'("\uE713")
                                             .fontSize(16)
@@ -288,7 +288,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                             treeViewReadOnly([getTreeViewNode root])
                                 .canDragItems(false)
                                 .canReorderItems(false)
-                                .onSelectionChanged(fun args ->
+                                .onSelectionChanged(fun _ args ->
                                     args.AddedItems
                                     |> Seq.cast<TreeViewNode>
                                     |> Seq.head
@@ -327,12 +327,12 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                                     button_accent'("Generate Code")
                                         .isEnabled(not model.Code.IsRequested)
                                         .visibleIf(not model.IsCodeView)
-                                        .onClick(fun _ -> dispatch CodeRequested)
+                                        .onClick(fun _ _ -> dispatch CodeRequested)
                                         .grid_column(1)
                                         
                                     button'("Back")
                                         .visibleIf(model.IsCodeView)
-                                        .onClick(fun _ -> dispatch BackToDetail)
+                                        .onClick(fun _ _ -> dispatch BackToDetail)
                                         .grid_column(1)
                                 ])
                                 .config(fun grid ->
@@ -387,7 +387,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                                     fontIcon'("\uE8C8")
                                         .fontSize(16)
                                 )
-                                .onClick(fun _ -> dispatch CopyCode)
+                                .onClick(fun _ _ -> dispatch CopyCode)
                                 .margin(Thickness(0, 16, 16, 0))
                                 .horizontalAlignment(HorizontalAlignment.Right)
                                 .verticalAlignment(VerticalAlignment.Top)
@@ -412,17 +412,17 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                                 .spacing(8)
                                 .children([
                                     button'("System")
-                                        .onClick(fun _ -> ChangeTheme ElementTheme.Default |> dispatch)
+                                        .onClick(fun _ _ -> ChangeTheme ElementTheme.Default |> dispatch)
                                         .isEnabled(model.UserTheme <> ElementTheme.Default )
                                         .center()
                         
                                     button'("Light")
-                                        .onClick(fun _ -> ChangeTheme ElementTheme.Light |> dispatch)
+                                        .onClick(fun _ _ -> ChangeTheme ElementTheme.Light |> dispatch)
                                         .isEnabled(model.UserTheme <> ElementTheme.Light )
                                         .center()
                         
                                     button'("Dark")
-                                        .onClick(fun _ -> ChangeTheme ElementTheme.Dark |> dispatch)
+                                        .onClick(fun _ _ -> ChangeTheme ElementTheme.Dark |> dispatch)
                                         .isEnabled(model.UserTheme <> ElementTheme.Dark )
                                         .center()
                                 ])
@@ -435,15 +435,15 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                                 .children([
                                     button'("Acrylic")
                                         .isEnabled(model.Backdrop <> VirtualElements.WindowBackdrop.Acrylic )
-                                        .onClick(fun _ -> ChangeBackdrop VirtualElements.WindowBackdrop.Acrylic |> dispatch)
+                                        .onClick(fun _ _ -> ChangeBackdrop VirtualElements.WindowBackdrop.Acrylic |> dispatch)
                         
                                     button'("Mica")
                                         .isEnabled(model.Backdrop <> VirtualElements.WindowBackdrop.Mica)
-                                        .onClick(fun _ -> ChangeBackdrop VirtualElements.WindowBackdrop.Mica |> dispatch)
+                                        .onClick(fun _ _ -> ChangeBackdrop VirtualElements.WindowBackdrop.Mica |> dispatch)
                         
                                     button'("Mica Alt")
                                         .isEnabled(model.Backdrop <> VirtualElements.WindowBackdrop.MicaAlt)
-                                        .onClick(fun _ -> ChangeBackdrop VirtualElements.WindowBackdrop.MicaAlt|> dispatch)
+                                        .onClick(fun _ _ -> ChangeBackdrop VirtualElements.WindowBackdrop.MicaAlt|> dispatch)
                         
                                 ])
                         ])
@@ -474,7 +474,7 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                                 .primaryButtonText("Generate Files")
                                 .isPrimaryButtonEnabled(not model.FileGeneration.IsFilesRequested)
                                 .defaultButton(ContentDialogButton.Primary)
-                                .onPrimaryButtonClick(fun arg ->
+                                .onPrimaryButtonClick(fun _ arg ->
                                     arg.Cancel <- true
                                     dispatch GenerateFiles
                                 )

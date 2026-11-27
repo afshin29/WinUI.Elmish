@@ -345,12 +345,6 @@ module UIElementMod =
             createDependencyProperty useSystemFocusVisualsPropertyId UIElement.UseSystemFocusVisualsProperty value
             |> node.set
 
-        //[<Extension>]
-        //static member visibility<'m when 'm :> UIElement and 'm: not struct>
-        //    (node: VirtualNode<'m>, value: Visibility) =
-        //    createDependencyProperty visibilityPropertyId UIElement.VisibilityProperty value
-        //    |> node.set
-
         [<Extension>]
         static member visibleIf<'m when 'm :> UIElement and 'm: not struct>
             (node: VirtualNode<'m>, condition: bool) =
@@ -534,12 +528,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onAccessKeyDisplayDismissed<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: AccessKeyDisplayDismissedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> AccessKeyDisplayDismissedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "AccessKeyDisplayDismissed"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, AccessKeyDisplayDismissedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, AccessKeyDisplayDismissedEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_AccessKeyDisplayDismissed h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_AccessKeyDisplayDismissed h }
@@ -548,12 +543,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onAccessKeyDisplayRequested<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: AccessKeyDisplayRequestedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> AccessKeyDisplayRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "AccessKeyDisplayRequested"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, AccessKeyDisplayRequestedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, AccessKeyDisplayRequestedEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_AccessKeyDisplayRequested h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_AccessKeyDisplayRequested h }
@@ -562,12 +558,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onAccessKeyInvoked<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: AccessKeyInvokedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> AccessKeyInvokedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "AccessKeyInvoked"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, AccessKeyInvokedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, AccessKeyInvokedEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_AccessKeyInvoked h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_AccessKeyInvoked h }
@@ -576,12 +573,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onBringIntoViewRequested<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: BringIntoViewRequestedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> BringIntoViewRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "BringIntoViewRequested"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, BringIntoViewRequestedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, BringIntoViewRequestedEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_BringIntoViewRequested h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_BringIntoViewRequested h }
@@ -590,12 +588,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onCharacterReceived<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: CharacterReceivedRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> CharacterReceivedRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CharacterReceived"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, CharacterReceivedRoutedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, CharacterReceivedRoutedEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_CharacterReceived h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_CharacterReceived h }
@@ -604,12 +603,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onContextCanceled<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ContextCanceled"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, RoutedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, RoutedEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_ContextCanceled h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_ContextCanceled h }
@@ -618,12 +618,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onContextRequested<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ContextRequestedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ContextRequestedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ContextRequested"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, ContextRequestedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, ContextRequestedEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_ContextRequested h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_ContextRequested h }
@@ -632,12 +633,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onDoubleTapped<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DoubleTappedRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DoubleTappedRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DoubleTapped"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = DoubleTappedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = DoubleTappedEventHandler(fun _ e -> handler sender e)
                     uiElementElement.DoubleTapped.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.DoubleTapped.RemoveHandler h }
@@ -646,12 +648,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onDragEnter<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DragEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DragEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragEnter"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = DragEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = DragEventHandler(fun _ e -> handler sender e)
                     uiElementElement.DragEnter.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.DragEnter.RemoveHandler h }
@@ -660,12 +663,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onDragLeave<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DragEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DragEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragLeave"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = DragEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = DragEventHandler(fun _ e -> handler sender e)
                     uiElementElement.DragLeave.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.DragLeave.RemoveHandler h }
@@ -674,12 +678,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onDragOver<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DragEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DragEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragOver"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = DragEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = DragEventHandler(fun _ e -> handler sender e)
                     uiElementElement.DragOver.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.DragOver.RemoveHandler h }
@@ -688,12 +693,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onDragStarting<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DragStartingEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DragStartingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DragStarting"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, DragStartingEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, DragStartingEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_DragStarting h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_DragStarting h }
@@ -702,12 +708,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onDrop<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DragEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DragEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Drop"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = DragEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = DragEventHandler(fun _ e -> handler sender e)
                     uiElementElement.Drop.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.Drop.RemoveHandler h }
@@ -716,12 +723,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onDropCompleted<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: DropCompletedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> DropCompletedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "DropCompleted"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, DropCompletedEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, DropCompletedEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_DropCompleted h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_DropCompleted h }
@@ -730,12 +738,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onGettingFocus<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: GettingFocusEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> GettingFocusEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "GettingFocus"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, GettingFocusEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, GettingFocusEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_GettingFocus h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_GettingFocus h }
@@ -744,12 +753,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onGotFocus<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "GotFocus"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RoutedEventHandler(fun _ e -> handler sender e)
                     uiElementElement.GotFocus.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.GotFocus.RemoveHandler h }
@@ -758,12 +768,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onHolding<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: HoldingRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> HoldingRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Holding"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = HoldingEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = HoldingEventHandler(fun _ e -> handler sender e)
                     uiElementElement.Holding.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.Holding.RemoveHandler h }
@@ -772,12 +783,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onKeyDown<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: KeyRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> KeyRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "KeyDown"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = KeyEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = KeyEventHandler(fun _ e -> handler sender e)
                     uiElementElement.KeyDown.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.KeyDown.RemoveHandler h }
@@ -786,12 +798,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onKeyUp<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: KeyRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> KeyRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "KeyUp"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = KeyEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = KeyEventHandler(fun _ e -> handler sender e)
                     uiElementElement.KeyUp.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.KeyUp.RemoveHandler h }
@@ -800,12 +813,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onLosingFocus<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: LosingFocusEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> LosingFocusEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "LosingFocus"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, LosingFocusEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, LosingFocusEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_LosingFocus h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_LosingFocus h }
@@ -814,12 +828,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onLostFocus<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "LostFocus"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RoutedEventHandler(fun _ e -> handler sender e)
                     uiElementElement.LostFocus.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.LostFocus.RemoveHandler h }
@@ -828,12 +843,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onManipulationCompleted<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ManipulationCompletedRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ManipulationCompletedRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ManipulationCompleted"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = ManipulationCompletedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = ManipulationCompletedEventHandler(fun _ e -> handler sender e)
                     uiElementElement.ManipulationCompleted.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.ManipulationCompleted.RemoveHandler h }
@@ -842,12 +858,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onManipulationDelta<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ManipulationDeltaRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ManipulationDeltaRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ManipulationDelta"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = ManipulationDeltaEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = ManipulationDeltaEventHandler(fun _ e -> handler sender e)
                     uiElementElement.ManipulationDelta.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.ManipulationDelta.RemoveHandler h }
@@ -856,12 +873,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onManipulationInertiaStarting<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ManipulationInertiaStartingRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ManipulationInertiaStartingRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ManipulationInertiaStarting"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = ManipulationInertiaStartingEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = ManipulationInertiaStartingEventHandler(fun _ e -> handler sender e)
                     uiElementElement.ManipulationInertiaStarting.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.ManipulationInertiaStarting.RemoveHandler h }
@@ -870,12 +888,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onManipulationStarted<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ManipulationStartedRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ManipulationStartedRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ManipulationStarted"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = ManipulationStartedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = ManipulationStartedEventHandler(fun _ e -> handler sender e)
                     uiElementElement.ManipulationStarted.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.ManipulationStarted.RemoveHandler h }
@@ -884,12 +903,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onManipulationStarting<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ManipulationStartingRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ManipulationStartingRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ManipulationStarting"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = ManipulationStartingEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = ManipulationStartingEventHandler(fun _ e -> handler sender e)
                     uiElementElement.ManipulationStarting.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.ManipulationStarting.RemoveHandler h }
@@ -898,12 +918,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onNoFocusCandidateFound<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: NoFocusCandidateFoundEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> NoFocusCandidateFoundEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "NoFocusCandidateFound"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, NoFocusCandidateFoundEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, NoFocusCandidateFoundEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_NoFocusCandidateFound h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_NoFocusCandidateFound h }
@@ -912,12 +933,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPointerCanceled<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: PointerRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> PointerRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PointerCanceled"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = PointerEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = PointerEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PointerCanceled.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PointerCanceled.RemoveHandler h }
@@ -926,12 +948,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPointerCaptureLost<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: PointerRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> PointerRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PointerCaptureLost"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = PointerEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = PointerEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PointerCaptureLost.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PointerCaptureLost.RemoveHandler h }
@@ -940,12 +963,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPointerEntered<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: PointerRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> PointerRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PointerEntered"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = PointerEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = PointerEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PointerEntered.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PointerEntered.RemoveHandler h }
@@ -954,12 +978,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPointerExited<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: PointerRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> PointerRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PointerExited"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = PointerEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = PointerEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PointerExited.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PointerExited.RemoveHandler h }
@@ -968,12 +993,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPointerMoved<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: PointerRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> PointerRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PointerMoved"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = PointerEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = PointerEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PointerMoved.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PointerMoved.RemoveHandler h }
@@ -982,12 +1008,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPointerPressed<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: PointerRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> PointerRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PointerPressed"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = PointerEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = PointerEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PointerPressed.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PointerPressed.RemoveHandler h }
@@ -996,12 +1023,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPointerReleased<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: PointerRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> PointerRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PointerReleased"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = PointerEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = PointerEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PointerReleased.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PointerReleased.RemoveHandler h }
@@ -1010,12 +1038,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPointerWheelChanged<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: PointerRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> PointerRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PointerWheelChanged"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = PointerEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = PointerEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PointerWheelChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PointerWheelChanged.RemoveHandler h }
@@ -1024,12 +1053,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPreviewKeyDown<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: KeyRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> KeyRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PreviewKeyDown"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = KeyEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = KeyEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PreviewKeyDown.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PreviewKeyDown.RemoveHandler h }
@@ -1038,12 +1068,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onPreviewKeyUp<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: KeyRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> KeyRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PreviewKeyUp"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = KeyEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = KeyEventHandler(fun _ e -> handler sender e)
                     uiElementElement.PreviewKeyUp.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.PreviewKeyUp.RemoveHandler h }
@@ -1052,12 +1083,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onProcessKeyboardAccelerators<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: ProcessKeyboardAcceleratorEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> ProcessKeyboardAcceleratorEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "ProcessKeyboardAccelerators"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TypedEventHandler<UIElement, ProcessKeyboardAcceleratorEventArgs>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TypedEventHandler<UIElement, ProcessKeyboardAcceleratorEventArgs>(fun _ e -> handler sender e)
                     uiElementElement.add_ProcessKeyboardAccelerators h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.remove_ProcessKeyboardAccelerators h }
@@ -1066,12 +1098,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onRightTapped<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: RightTappedRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> RightTappedRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "RightTapped"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = RightTappedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = RightTappedEventHandler(fun _ e -> handler sender e)
                     uiElementElement.RightTapped.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.RightTapped.RemoveHandler h }
@@ -1080,12 +1113,13 @@ module UIElementMod =
 
         [<Extension>]
         static member onTapped<'m when 'm :> UIElement and 'm: not struct>
-            (node: VirtualNode<'m>, handler: TappedRoutedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> TappedRoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Tapped"
                 Subscribe = (fun uiElement ->
                     let uiElementElement = uiElement :?> UIElement
-                    let h = TappedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = TappedEventHandler(fun _ e -> handler sender e)
                     uiElementElement.Tapped.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = uiElementElement.Tapped.RemoveHandler h }

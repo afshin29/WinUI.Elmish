@@ -82,12 +82,12 @@ module TimePickerMod =
             |> node.set
 
         [<Extension>]
-        static member onSelectedTimeChanged(node: VirtualNode<TimePicker>, handler: TimePickerSelectedValueChangedEventArgs -> unit, ?key: string) =
+        static member onSelectedTimeChanged(node: VirtualNode<TimePicker>, handler: TimePicker -> TimePickerSelectedValueChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectedTimeChanged"
                 Subscribe = (fun uiElement ->
                     let timePicker = uiElement :?> TimePicker
-                    let h = TypedEventHandler<TimePicker, TimePickerSelectedValueChangedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<TimePicker, TimePickerSelectedValueChangedEventArgs>(fun _ e -> handler timePicker e)
                     timePicker.add_SelectedTimeChanged h
                     { new IDisposable with
                         member _.Dispose() = timePicker.remove_SelectedTimeChanged h }
@@ -95,12 +95,12 @@ module TimePickerMod =
             })
 
         [<Extension>]
-        static member onTimeChanged(node: VirtualNode<TimePicker>, handler: TimePickerValueChangedEventArgs -> unit, ?key: string) =
+        static member onTimeChanged(node: VirtualNode<TimePicker>, handler: TimePicker -> TimePickerValueChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "TimeChanged"
                 Subscribe = (fun uiElement ->
                     let timePicker = uiElement :?> TimePicker
-                    let h = EventHandler<TimePickerValueChangedEventArgs>(fun _ e -> handler e)
+                    let h = EventHandler<TimePickerValueChangedEventArgs>(fun _ e -> handler timePicker e)
                     timePicker.TimeChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = timePicker.TimeChanged.RemoveHandler h }

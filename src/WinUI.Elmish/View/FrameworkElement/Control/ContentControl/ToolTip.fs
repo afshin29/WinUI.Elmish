@@ -69,12 +69,12 @@ module ToolTipMod =
             |> node.set
 
         [<Extension>]
-        static member onClosed(node: VirtualNode<ToolTip>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onClosed(node: VirtualNode<ToolTip>, handler: ToolTip -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closed"
                 Subscribe = (fun uiElement ->
                     let toolTip = uiElement :?> ToolTip
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler toolTip e)
                     toolTip.Closed.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = toolTip.Closed.RemoveHandler h }
@@ -82,12 +82,12 @@ module ToolTipMod =
             })
 
         [<Extension>]
-        static member onOpened(node: VirtualNode<ToolTip>, handler: RoutedEventArgs -> unit, ?key: string) =
+        static member onOpened(node: VirtualNode<ToolTip>, handler: ToolTip -> RoutedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Opened"
                 Subscribe = (fun uiElement ->
                     let toolTip = uiElement :?> ToolTip
-                    let h = RoutedEventHandler(fun _ e -> handler e)
+                    let h = RoutedEventHandler(fun _ e -> handler toolTip e)
                     toolTip.Opened.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = toolTip.Opened.RemoveHandler h }

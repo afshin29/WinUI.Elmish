@@ -110,12 +110,12 @@ module ItemsPresenterMod =
             |> node.set
 
         [<Extension>]
-        static member onHorizontalSnapPointsChanged(node: VirtualNode<ItemsPresenter>, handler: obj -> unit, ?key: string) =
+        static member onHorizontalSnapPointsChanged(node: VirtualNode<ItemsPresenter>, handler: ItemsPresenter -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "HorizontalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let itemsPresenter = uiElement :?> ItemsPresenter
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler itemsPresenter e)
                     itemsPresenter.HorizontalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = itemsPresenter.HorizontalSnapPointsChanged.RemoveHandler h }
@@ -123,12 +123,12 @@ module ItemsPresenterMod =
             })
 
         [<Extension>]
-        static member onVerticalSnapPointsChanged(node: VirtualNode<ItemsPresenter>, handler: obj -> unit, ?key: string) =
+        static member onVerticalSnapPointsChanged(node: VirtualNode<ItemsPresenter>, handler: ItemsPresenter -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "VerticalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let itemsPresenter = uiElement :?> ItemsPresenter
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let h = EventHandler<obj>(fun _ e -> handler itemsPresenter e)
                     itemsPresenter.VerticalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = itemsPresenter.VerticalSnapPointsChanged.RemoveHandler h }

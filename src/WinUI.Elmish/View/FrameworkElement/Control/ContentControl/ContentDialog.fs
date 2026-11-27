@@ -149,12 +149,12 @@ module ContentDialogMod =
             |> node.set
 
         [<Extension>]
-        static member onCloseButtonClick(node: VirtualNode<ContentDialog>, handler: ContentDialogButtonClickEventArgs -> unit, ?key: string) =
+        static member onCloseButtonClick(node: VirtualNode<ContentDialog>, handler: ContentDialog -> ContentDialogButtonClickEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "CloseButtonClick"
                 Subscribe = (fun uiElement ->
                     let contentDialog = uiElement :?> ContentDialog
-                    let h = TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs>(fun _ e -> handler contentDialog e)
                     contentDialog.add_CloseButtonClick h
                     { new IDisposable with
                         member _.Dispose() = contentDialog.remove_CloseButtonClick h }
@@ -162,12 +162,12 @@ module ContentDialogMod =
             })
 
         [<Extension>]
-        static member onClosed(node: VirtualNode<ContentDialog>, handler: ContentDialogClosedEventArgs -> unit, ?key: string) =
+        static member onClosed(node: VirtualNode<ContentDialog>, handler: ContentDialog -> ContentDialogClosedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closed"
                 Subscribe = (fun uiElement ->
                     let contentDialog = uiElement :?> ContentDialog
-                    let h = TypedEventHandler<ContentDialog, ContentDialogClosedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ContentDialog, ContentDialogClosedEventArgs>(fun _ e -> handler contentDialog e)
                     contentDialog.add_Closed h
                     { new IDisposable with
                         member _.Dispose() = contentDialog.remove_Closed h }
@@ -175,12 +175,12 @@ module ContentDialogMod =
             })
 
         [<Extension>]
-        static member onClosing(node: VirtualNode<ContentDialog>, handler: ContentDialogClosingEventArgs -> unit, ?key: string) =
+        static member onClosing(node: VirtualNode<ContentDialog>, handler: ContentDialog -> ContentDialogClosingEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Closing"
                 Subscribe = (fun uiElement ->
                     let contentDialog = uiElement :?> ContentDialog
-                    let h = TypedEventHandler<ContentDialog, ContentDialogClosingEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ContentDialog, ContentDialogClosingEventArgs>(fun _ e -> handler contentDialog e)
                     contentDialog.add_Closing h
                     { new IDisposable with
                         member _.Dispose() = contentDialog.remove_Closing h }
@@ -188,12 +188,12 @@ module ContentDialogMod =
             })
 
         [<Extension>]
-        static member onOpened(node: VirtualNode<ContentDialog>, handler: ContentDialogOpenedEventArgs -> unit, ?key: string) =
+        static member onOpened(node: VirtualNode<ContentDialog>, handler: ContentDialog -> ContentDialogOpenedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "Opened"
                 Subscribe = (fun uiElement ->
                     let contentDialog = uiElement :?> ContentDialog
-                    let h = TypedEventHandler<ContentDialog, ContentDialogOpenedEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ContentDialog, ContentDialogOpenedEventArgs>(fun _ e -> handler contentDialog e)
                     contentDialog.add_Opened h
                     { new IDisposable with
                         member _.Dispose() = contentDialog.remove_Opened h }
@@ -201,12 +201,12 @@ module ContentDialogMod =
             })
 
         [<Extension>]
-        static member onPrimaryButtonClick(node: VirtualNode<ContentDialog>, handler: ContentDialogButtonClickEventArgs -> unit, ?key: string) =
+        static member onPrimaryButtonClick(node: VirtualNode<ContentDialog>, handler: ContentDialog -> ContentDialogButtonClickEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "PrimaryButtonClick"
                 Subscribe = (fun uiElement ->
                     let contentDialog = uiElement :?> ContentDialog
-                    let h = TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs>(fun _ e -> handler contentDialog e)
                     contentDialog.add_PrimaryButtonClick h
                     { new IDisposable with
                         member _.Dispose() = contentDialog.remove_PrimaryButtonClick h }
@@ -214,12 +214,12 @@ module ContentDialogMod =
             })
 
         [<Extension>]
-        static member onSecondaryButtonClick(node: VirtualNode<ContentDialog>, handler: ContentDialogButtonClickEventArgs -> unit, ?key: string) =
+        static member onSecondaryButtonClick(node: VirtualNode<ContentDialog>, handler: ContentDialog -> ContentDialogButtonClickEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SecondaryButtonClick"
                 Subscribe = (fun uiElement ->
                     let contentDialog = uiElement :?> ContentDialog
-                    let h = TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs>(fun _ e -> handler e)
+                    let h = TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs>(fun _ e -> handler contentDialog e)
                     contentDialog.add_SecondaryButtonClick h
                     { new IDisposable with
                         member _.Dispose() = contentDialog.remove_SecondaryButtonClick h }

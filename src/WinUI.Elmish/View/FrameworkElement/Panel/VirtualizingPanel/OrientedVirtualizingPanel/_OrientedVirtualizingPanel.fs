@@ -64,12 +64,13 @@ module OrientedVirtualizingPanelMod =
 
         [<Extension>]
         static member onHorizontalSnapPointsChanged<'m when 'm :> OrientedVirtualizingPanel and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "HorizontalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let orientedVirtualizingPanel = uiElement :?> OrientedVirtualizingPanel
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = EventHandler<obj>(fun _ e -> handler sender e)
                     orientedVirtualizingPanel.HorizontalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = orientedVirtualizingPanel.HorizontalSnapPointsChanged.RemoveHandler h }
@@ -78,12 +79,13 @@ module OrientedVirtualizingPanelMod =
 
         [<Extension>]
         static member onVerticalSnapPointsChanged<'m when 'm :> OrientedVirtualizingPanel and 'm: not struct>
-            (node: VirtualNode<'m>, handler: obj -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> obj -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "VerticalSnapPointsChanged"
                 Subscribe = (fun uiElement ->
                     let orientedVirtualizingPanel = uiElement :?> OrientedVirtualizingPanel
-                    let h = EventHandler<obj>(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = EventHandler<obj>(fun _ e -> handler sender e)
                     orientedVirtualizingPanel.VerticalSnapPointsChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = orientedVirtualizingPanel.VerticalSnapPointsChanged.RemoveHandler h }

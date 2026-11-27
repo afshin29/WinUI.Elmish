@@ -57,12 +57,13 @@ module SelectorMod =
 
         [<Extension>]
         static member onSelectionChanged<'m when 'm :> Selector and 'm: not struct>
-            (node: VirtualNode<'m>, handler: SelectionChangedEventArgs -> unit, ?key: string) =
+            (node: VirtualNode<'m>, handler: 'm -> SelectionChangedEventArgs -> unit, ?key: string) =
             node.handle({
                 Key = key |> Option.defaultValue "SelectionChanged"
                 Subscribe = (fun uiElement ->
                     let selector = uiElement :?> Selector
-                    let h = SelectionChangedEventHandler(fun _ e -> handler e)
+                    let sender = uiElement :?> 'm
+                    let h = SelectionChangedEventHandler(fun _ e -> handler sender e)
                     selector.SelectionChanged.AddHandler h
                     { new IDisposable with
                         member _.Dispose() = selector.SelectionChanged.RemoveHandler h }

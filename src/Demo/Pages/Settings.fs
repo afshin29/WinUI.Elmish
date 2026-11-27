@@ -41,17 +41,17 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                 .spacing(8)
                 .children([
                     button'("System")
-                        .onClick(fun _ -> ChangeTheme ElementTheme.Default |> dispatch)
+                        .onClick(fun _ _ -> ChangeTheme ElementTheme.Default |> dispatch)
                         .isEnabled(model.UserTheme <> ElementTheme.Default )
                         .center()
                         
                     button'("Light")
-                        .onClick(fun _ -> ChangeTheme ElementTheme.Light |> dispatch)
+                        .onClick(fun _ _ -> ChangeTheme ElementTheme.Light |> dispatch)
                         .isEnabled(model.UserTheme <> ElementTheme.Light )
                         .center()
                         
                     button'("Dark")
-                        .onClick(fun _ -> ChangeTheme ElementTheme.Dark |> dispatch)
+                        .onClick(fun _ _ -> ChangeTheme ElementTheme.Dark |> dispatch)
                         .isEnabled(model.UserTheme <> ElementTheme.Dark )
                         .center()
                 ])
@@ -64,14 +64,14 @@ let view (model: Model) (dispatch: Dispatch<Msg>) =
                 .children([
                     button'("Acrylic")
                         .isEnabled(model.Backdrop <> VirtualElements.WindowBackdrop.Acrylic )
-                        .onClick(fun _ -> ChangeBackdrop VirtualElements.WindowBackdrop.Acrylic |> dispatch)
+                        .onClick(fun _ _ -> ChangeBackdrop VirtualElements.WindowBackdrop.Acrylic |> dispatch)
                         
                     button'("Mica")
                         .isEnabled(model.Backdrop <> VirtualElements.WindowBackdrop.Mica)
-                        .onClick(fun _ -> ChangeBackdrop VirtualElements.WindowBackdrop.Mica |> dispatch)
+                        .onClick(fun _ _ -> ChangeBackdrop VirtualElements.WindowBackdrop.Mica |> dispatch)
                         
                     button'("Mica Alt")
                         .isEnabled(model.Backdrop <> VirtualElements.WindowBackdrop.MicaAlt)
-                        .onClick(fun _ -> ChangeBackdrop VirtualElements.WindowBackdrop.MicaAlt|> dispatch)
+                        .onClick(fun _ _ -> ChangeBackdrop VirtualElements.WindowBackdrop.MicaAlt|> dispatch)
                 ])
         ])
