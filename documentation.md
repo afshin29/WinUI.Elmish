@@ -415,7 +415,7 @@ listView()
     )
 ```
 
-One thing you need to be aware of, is that the template you provide, will be wrapped in a `ContentControl`. This is 
+In version `2.6.6-preview.1`, the template you provide, would be wrapped in a `ContentControl`. This is 
 because of how code-first `DataTemplate` works:
 
 ```fsharp
@@ -437,7 +437,51 @@ let internal getDataTemplate (template: 'source -> #IVirtualNode) =
     )
 ```
 
-This might cause an issue on some controls. One that I'm aware of is the `TreeView` control.
+However, it turned out that some controls have issues with this approach and they would wrap our `ContentControl` yet another 
+time. One example that I encountered is the `TreeView` control.
+
+So, in version `2.6.6-preview.2`, the data template creation changed to this:
+
+```fsharp
+let private refreshDiff (previous: IVirtualNode option) (node: IVirtualNode) : NodeDiff =
+    // ...
+
+let internal getDataTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
+    (template: 'source -> VirtualNode<'el>) =
+    DataTemplate(fun () ->
+        let element = new 'el()
+        let frameworkElement = element :> FrameworkElement
+        let uiElement = frameworkElement :> UIElement
+        let previous: IVirtualNode option ref = ref None
+
+        frameworkElement.add_DataContextChanged(fun _ args ->
+            args.Handled <- true
+
+            match args.NewValue with
+            | :? 'source as item ->
+                let node = template item
+
+                if previous.Value.IsNone then
+                    applyConfigs element node.Configs
+
+                node.Ref
+                |> Option.iter (fun weakRef -> weakRef.SetTarget(element))
+
+                refreshDiff previous.Value node
+                |> applyDiff uiElement
+                |> ignore
+
+                previous.Value <- Some (node :> IVirtualNode)
+
+            | _ -> ()
+        )
+
+        uiElement
+    )
+```
+
+If you find that even with this approach, your data template is being wrapped again, it most likely means a bug in 
+WinUI itself. Again, the `TreeView` control had this issue (as of version 2.6.6).
 
 You can also provide multiple templates and a function that decides which index to choose:
 
@@ -529,3 +573,102 @@ navigationView()
 
 Here, we are providing different views based on our current page, which is tracked in our model in the `CurrentPage`. 
 We should use that state as the replacement key and replace our inner UI element when `model.CurrentPage` changes.
+
+### Extending Title Bar
+
+WinUI has a modern title bar control that can replace the legacy one. Using it, needs some specific settings. 
+In WinUI.Elmish, there is an extension method on `VirtualWindow` type that facilitates this (including theme update):
+
+```fsharp
+type VirtualWindow with
+
+    member window.treatFirstElementAsTitleBar () =
+        { window with
+            TreatFirstElementAsTitleBar = true }
+```
+
+Let's see how the reconciler uses this flag:
+
+```fsharp
+let inline private tryGetFirstLayoutChild (element: UIElement) =
+    match element with
+    | :? Panel as panel -> panel.Children |> Seq.tryHead
+    | _ -> None
+
+// ...
+
+if window.TreatFirstElementAsTitleBar then
+    content
+    |> tryGetFirstLayoutChild
+    |> Option.iter (fun titleBar ->
+        mainWindow.ExtendsContentIntoTitleBar <- true
+        mainWindow.SetTitleBar(titleBar)
+        (content :?> FrameworkElement).add_ActualThemeChanged(fun sender args ->
+            mainWindow.AppWindow.TitleBar.PreferredTheme <-
+                match sender.ActualTheme with
+                | ElementTheme.Light -> TitleBarTheme.Light
+                | ElementTheme.Dark -> TitleBarTheme.Dark
+                | _ -> TitleBarTheme.UseDefaultAppMode)
+        )
+```
+
+So the rule is, if your main content of the window is a panel control (`Grid`, `StackPanel`, etc.) then, it's first element 
+will be treated as the title bar. You are also responsible for the correct layout of that panel. The usage is like this:
+
+```fsharp
+mainWindow(
+    grid(
+        [GridLength.Auto; GridLength(1, GridUnitType.Star)], // <- we create an Auto row for the titleBar
+        [GridLength(1, GridUnitType.Star)]
+    )
+        .children([
+            titleBar() // <- this is the first element
+            //    .grid_columnSpan(<number-of-columns>) // <- in case you have more than one column, make sure to span this
+
+            // ...
+            // other children
+        ])
+)
+    .treatFirstElementAsTitleBar() // <- this is necessary
+```
+
+### Capturing values in your handlers
+
+Capturing values in your event handlers is not a good idea, because those handlers will not change unless their key 
+changes. And even worse if those controls are in a data template, those templates also won't change unless their 
+`diffKey` changes. So if you capture your model in your handlers, make sure to use that model (or the part that changes) 
+as the key.
+
+### Theme changing
+
+WinUI controls have the `ResquestedTheme` property that you can use to update your theme. There is one additional setting 
+that you need to apply for title bar buttons. Those three buttons are managed by OS and we need to inform the OS to update 
+their theme as well. That's why the `VirtualWindow` also has that property:
+
+```fsharp
+type VirtualWindow with
+
+    member window.requestedTheme(theme) =
+        { window with
+            RequestedTheme = Some theme }
+```
+
+The reconciler uses it for the first render:
+
+```fsharp
+if window.RequestedTheme.IsSome then
+    mainWindow.AppWindow.TitleBar.PreferredTheme <-
+        match window.RequestedTheme.Value with
+        | ElementTheme.Light -> TitleBarTheme.Light
+        | ElementTheme.Dark -> TitleBarTheme.Dark
+        | _ -> TitleBarTheme.UseDefaultAppMode
+```
+
+So make sure to provide it (you need to keep track of the current theme in your model):
+
+```fsharp
+mainWindow(
+    //...
+)
+    .requestedTheme(model.UserTheme)
+```
