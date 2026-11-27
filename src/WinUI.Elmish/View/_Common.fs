@@ -222,15 +222,12 @@ module Common =
     let internal getDataTemplate<'source, 'el when 'el :> FrameworkElement and 'el: (new: unit -> 'el) and 'el: not struct>
         (template: 'source -> VirtualNode<'el>) =
         DataTemplate(fun () ->
-            System.Diagnostics.Debug.WriteLine("---")
-            System.Diagnostics.Debug.WriteLine("inside dt")
             let element = new 'el()
             let frameworkElement = element :> FrameworkElement
             let uiElement = frameworkElement :> UIElement
             let previous: IVirtualNode option ref = ref None
 
             frameworkElement.add_DataContextChanged(fun _ args ->
-                System.Diagnostics.Debug.WriteLine($"inside handler: {args.NewValue}")
                 args.Handled <- true
 
                 match args.NewValue with
